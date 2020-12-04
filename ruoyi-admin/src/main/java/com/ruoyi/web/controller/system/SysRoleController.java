@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller.system;
 
 import java.util.List;
+
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -32,7 +34,7 @@ import com.ruoyi.system.service.ISysUserService;
 /**
  * 角色信息
  * 
- * @author ruoyi
+ * @author shitou
  */
 @RestController
 @RequestMapping("/system/role")
@@ -82,6 +84,7 @@ public class SysRoleController extends BaseController
     /**
      * 新增角色
      */
+    @ApiOperation("新增角色")
     @PreAuthorize("@ss.hasPermi('system:role:add')")
     @Log(title = "角色管理", businessType = BusinessType.INSERT)
     @PostMapping
