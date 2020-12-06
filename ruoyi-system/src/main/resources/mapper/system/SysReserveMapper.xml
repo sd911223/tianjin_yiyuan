@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysReserveMapper">
+
+    <resultMap type="BusinessReserve" id="BusinessReserveResult">
+        <id property="id" column="id"/>
+        <result property="reserveName" column="reserve_name"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="announcementStartTime" column="announcement_start_time"/>
+        <result property="announcementEndTime" column="announcement_end_time"/>
+        <result property="reserveStartTime" column="reserve_start_time"/>
+        <result property="reserveEndTime" column="reserve_end_time"/>
+        <result property="withdrawTime" column="withdraw_time"/>
+        <result property="reserveType" column="reserve_type"/>
+        <result property="reserveContent" column="reserve_content"/>
+        <result property="reserveAmContent" column="reserve_am_content"/>
+        <result property="status" column="status"/>
+        <result property="reserveRegister" column="reserve_register"/>
+        <result property="reserveNum" column="reserve_num"/>
+        <result property="annexUrl" column="annex_url"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="remark" column="remark"/>
+        <result property="release" column="release"/>
+        <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+    <sql id="selectReserveVo">
+        select d.id,
+            d.reserve_name,
+            d.dept_id,
+            d.dept_name,
+            d.announcement_start_time,
+            d.announcement_end_time,
+            d.reserve_start_time,
+            d.reserve_end_time,
+            d.withdraw_time,
+            d.reserve_type,
+            d.reserve_content,
+            d.status,
+            d.reserve_register,
+            d.reserve_num,
+            d.annex_url,
+            d.create_by,
+            d.create_time,
+            d.remark,
+            d.release,
+            d.del_flag
+        from business_reserve d
+    </sql>
+
+    <select id="selectReserveList" parameterType="SysDept" resultMap="BusinessReserveResult">
+        <include refid="selectReserveVo"/>
+        where d.del_flag = '0'
+        order by d.create_time DESC
+    </select>
+
+    <select id="selectReserveById" parameterType="Long" resultMap="BusinessReserveResult">
+        <include refid="selectReserveVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertReserve" parameterType="BusinessReserve">
+        insert into business_reserve(
+        <if test="reserveName != null and reserveName != ''">reserve_name,</if>
+        <if test="deptId != null">dept_id,</if>
+        <if test="deptName != null and deptName != ''">dept_name,</if>
+        <if test="announcementStartTime != null and announcementStartTime != ''">announcement_start_time,</if>
+        <if test="announcementEndTime != null and announcementEndTime != ''">announcement_end_time,</if>
+        <if test="reserveStartTime != null and reserveStartTime != ''">reserve_start_time,</if>
+        <if test="reserveEndTime != null and reserveEndTime != ''">reserve_end_time,</if>
+        <if test="withdrawTime != null and withdrawTime != ''">withdraw_time,</if>
+        <if test="reserveType != null and reserveType != ''">reserve_type,</if>
+        <if test="reserveContent != null and reserveContent != ''">reserve_content,</if>
+        <if test="reserveAmContent != null and reserveAmContent != ''">reserve_am_content,</if>
+        <if test="status != null and status != ''">status,</if>
+        <if test="reserveRegister != null and reserveRegister != ''">reserve_register,</if>
+        <if test="reserveNum != null">reserve_num,</if>
+        <if test="annexUrl != null and annexUrl != ''">annex_url,</if>
+        <if test="createBy != null and createBy != ''">create_by,</if>
+        <if test="createTime != null and createTime != ''">create_time,</if>
+        <if test="remark != null and remark != ''">remark,</if>
+        <if test="release != null and release != ''">release,</if>
+        <if test="delFlag != null and delFlag != ''">del_flag</if>
+        )values(
+        <if test="reserveName != null and reserveName != ''">#{reserveName},</if>
+        <if test="deptId != null">#{deptId},</if>
+        <if test="deptName != null and deptName != ''">#{deptName},</if>
+        <if test="announcementStartTime != null and announcementStartTime != ''">#{announcementStartTime},</if>
+        <if test="announcementEndTime != null and announcementEndTime != ''">#{announcementEndTime},</if>
+        <if test="reserveStartTime != null and reserveStartTime != ''">#{reserveStartTime},</if>
+        <if test="reserveEndTime != null and reserveEndTime != ''">#{reserveEndTime},</if>
+        <if test="withdrawTime != null and withdrawTime != ''">#{withdrawTime},</if>
+        <if test="reserveType != null and reserveType != ''">#{reserveType},</if>
+        <if test="reserveContent != null and reserveContent != ''">#{reserveContent},</if>
+        <if test="reserveAmContent != null and reserveAmContent != ''">#{reserveAmContent},</if>
+        <if test="status != null and status != ''">#{status},</if>
+        <if test="reserveRegister != null and reserveRegister != ''">#{reserveRegister},</if>
+        <if test="reserveNum != null">#{reserveNum},</if>
+        <if test="annexUrl != null and annexUrl != ''">#{annexUrl},</if>
+        <if test="createBy != null and createBy != ''">#{createBy},</if>
+        <if test="createTime != null and createTime != ''">#{createTime},</if>
+        <if test="createBy != null and createBy != ''">#{remark},</if>
+        <if test="release != null and release != ''">#{release},</if>
+        <if test="delFlag != null and delFlag != ''">#{delFlag}</if>
+        )
+    </insert>
+
+    <update id="updateReserve" parameterType="BusinessReserve">
+        update business_reserve
+        <set>
+            <if test="reserveName != null and reserveName != ''">reserve_name = #{reserveName},</if>
+            <if test="deptId != null">dept_id=#{deptId},</if>
+            <if test="deptName != null and deptName != ''">dept_name= #{deptName},</if>
+            <if test="announcementStartTime != null and announcementStartTime != ''">announcement_start_time=
+                #{announcementStartTime},
+            </if>
+            <if test="announcementEndTime != null and announcementEndTime != ''">announcement_end_time=
+                #{announcementEndTime},
+            </if>
+            <if test="reserveStartTime != null and reserveStartTime != ''">reserve_start_time= #{reserveStartTime},</if>
+            <if test="reserveEndTime != null and reserveEndTime != ''">reserve_end_time= #{reserveEndTime},</if>
+            <if test="withdrawTime != null and withdrawTime != ''">withdraw_time= #{withdrawTime},</if>
+            <if test="reserveType != null and reserveType != ''">reserve_type= #{reserveType},</if>
+            <if test="reserveContent != null and reserveContent != ''">reserve_content= #{reserveContent},</if>
+            <if test="reserveAmContent != null and reserveAmContent != ''">reserve_am_content= #{reserveAmContent},</if>
+            <if test="status != null and status != ''">status= #{status},</if>
+            <if test="reserveRegister != null and reserveRegister != ''">reserve_register= #{reserveRegister},</if>
+            <if test="reserveNum != null">reserve_num= #{reserveNum},</if>
+            <if test="annexUrl != null and annexUrl != ''">annex_url= #{annexUrl},</if>
+            <if test="createBy != null and createBy != ''">create_by= #{createBy},</if>
+            <if test="createTime != null and createTime != ''">create_time= #{createTime},</if>
+            <if test="remark != null and remark != ''">remark= #{remark},</if>
+            <if test="release != null and release != ''">release= #{release},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag= #{delFlag}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+    <update id="updateReserveStatus" parameterType="BusinessReserve">
+        update business_reserve
+        <set>
+            <if test="status != null and status != ''">status = #{status},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteReserveById" parameterType="Long">
+		update business_reserve set del_flag = '2' where id = #{id}
+	</delete>
+
+</mapper> 

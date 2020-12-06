@@ -64,7 +64,7 @@ public interface ISysUserService
      * @param user 用户信息
      * @return 结果
      */
-    public String checkPhoneUnique(SysUser user);
+     String checkIdCardUnique(SysUser user);
 
     /**
      * 校验email是否唯一

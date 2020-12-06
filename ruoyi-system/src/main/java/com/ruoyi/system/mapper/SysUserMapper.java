@@ -99,7 +99,7 @@ public interface SysUserMapper
      * @param phonenumber 手机号码
      * @return 结果
      */
-    public SysUser checkPhoneUnique(String phonenumber);
+    public SysUser checkIdCardUnique(String phonenumber);
 
     /**
      * 校验email是否唯一

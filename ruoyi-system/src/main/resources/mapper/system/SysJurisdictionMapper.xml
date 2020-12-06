@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysJurisdictionMapper">
+
+    <resultMap type="SysJurisdiction" id="SysJurisdictionResult">
+        <id property="id" column="id"/>
+        <result property="jurisdictionValue" column="jurisdiction_value"/>
+        <result property="jurisdictionName" column="jurisdiction_name"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+    <select id="selectJurisdictionList" resultMap="SysJurisdictionResult">
+		select id, jurisdiction_value, jurisdiction_name, create_time, del_flag from sys_jurisdiction
+		order by create_time desc
+	</select>
+
+</mapper> 

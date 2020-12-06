@@ -66,6 +66,7 @@ public class SysLoginController
      * 
      * @return 用户信息
      */
+    @ApiOperation("获取用户信息")
     @GetMapping("getInfo")
     public AjaxResult getInfo()
     {
