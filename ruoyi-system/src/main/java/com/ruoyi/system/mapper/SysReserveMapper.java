@@ -10,6 +10,35 @@ import java.util.List;
  * @author hsitou
  */
 public interface SysReserveMapper {
-
+    /**
+     * 查询活动列表
+     *
+     * @param businessReserve
+     * @return
+     */
     List<BusinessReserve> selectReserveList(BusinessReserve businessReserve);
+
+    /**
+     * 添加活动
+     *
+     * @param businessReserve
+     * @return
+     */
+    int insertReserve(BusinessReserve businessReserve);
+
+    /**
+     * 修改活动状态
+     *
+     * @param businessReserve
+     * @return
+     */
+    int updateReserveStatus(BusinessReserve businessReserve);
+
+    /**
+     * 删除活动信息
+     *
+     * @param id 活动ID
+     * @return 结果
+     */
+    int deleteReserveById(Long id);
 }

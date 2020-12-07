@@ -1,7 +1,9 @@
 package com.ruoyi.common.core.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @ApiModel("预约管理")
@@ -13,6 +15,7 @@ public class BusinessReserve {
     /**
      * 预约名称
      */
+    @NotBlank(message = "预约名称不能为空")
     private String reserveName;
     /**
      * 部门ID
@@ -25,22 +28,27 @@ public class BusinessReserve {
     /**
      * 公告开始时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date announcementStartTime;
     /**
      * 公告结束时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date announcementEndTime;
     /**
      * 预约开始时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date reserveStartTime;
     /**
      * 预约结束时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date reserveEndTime;
     /**
      * 撤回时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date withdrawTime;
     /**
      * 预约类型 0:所有人;1:特定人群
@@ -49,10 +57,12 @@ public class BusinessReserve {
     /**
      * 预约内容
      */
+    @NotBlank(message = "预约内容不能为空")
     private String reserveContent;
     /**
      * 预约公共内容
      */
+    @NotBlank(message = "预约公共内容不能为空")
     private String reserveAmContent;
     /**
      * 状态

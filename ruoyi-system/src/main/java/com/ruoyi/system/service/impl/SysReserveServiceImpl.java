@@ -1,11 +1,15 @@
 package com.ruoyi.system.service.impl;
 
 import com.ruoyi.common.core.domain.entity.BusinessReserve;
+import com.ruoyi.common.core.domain.entity.SysDept;
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.system.mapper.SysDeptMapper;
 import com.ruoyi.system.mapper.SysReserveMapper;
 import com.ruoyi.system.service.SysReserveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,8 +21,33 @@ import java.util.List;
 public class SysReserveServiceImpl implements SysReserveService {
     @Autowired
     SysReserveMapper sysReserveMapper;
+    @Autowired
+    SysDeptMapper sysDeptMapper;
+
     @Override
     public List<BusinessReserve> selectReserveList(BusinessReserve businessReserve) {
         return sysReserveMapper.selectReserveList(businessReserve);
+    }
+
+    @Override
+    public int insertReserve(BusinessReserve businessReserve) {
+        businessReserve.setCreateTime(new Date());
+        businessReserve.setStatus("0");
+        businessReserve.setCreateBy(SecurityUtils.getUsername());
+        Long deptId = SecurityUtils.getLoginUser().getUser().getDeptId();
+        businessReserve.setDeptId(deptId.intValue());
+        SysDept sysDept = sysDeptMapper.selectDeptById(deptId);
+        businessReserve.setDeptName("部门");
+        return sysReserveMapper.insertReserve(businessReserve);
+    }
+
+    @Override
+    public int updateReserveStatus(BusinessReserve businessReserve) {
+        return sysReserveMapper.updateReserveStatus(businessReserve);
+    }
+
+    @Override
+    public int deleteReserveById(Long id) {
+        return sysReserveMapper.deleteReserveById(id);
     }
 }

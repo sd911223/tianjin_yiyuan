@@ -10,5 +10,17 @@ import java.util.List;
  * @author shitou
  */
 public interface SysReserveService {
+    /**
+     * 根据条件分页查询预约管理列表
+     *
+     * @param businessReserve
+     * @return
+     */
     List<BusinessReserve> selectReserveList(BusinessReserve businessReserve);
+
+    int insertReserve(BusinessReserve businessReserve);
+
+    int updateReserveStatus(BusinessReserve businessReserve);
+
+    int deleteReserveById(Long id);
 }
