@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysBaseMapper">
+
+    <resultMap type="SysBase" id="SysBaseResult">
+        <id property="id" column="id"/>
+        <result property="passWord" column="pass_word"/>
+        <result property="reserveInstall" column="reserve_install"/>
+    </resultMap>
+
+
+
+    <update id="updateBase" parameterType="SysBase">
+        update sys_base
+        <set>
+            <if test="passWord != null and passWord != ''">pass_word = #{passWord}</if>
+            <if test="userName != null and userName != ''">reserve_install = #{reserveInstall}</if>
+        </set>
+        where id = 1
+    </update>
+
+</mapper> 
