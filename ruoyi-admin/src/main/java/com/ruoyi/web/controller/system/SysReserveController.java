@@ -15,13 +15,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
+
 /**
  * 预约管理
  *
  * @author shitou
  */
 @RestController
-@RequestMapping("/system/reserve")
+@RequestMapping(MEDICINE_API+"/system/reserve")
 @Api(tags = "预约管理")
 public class SysReserveController extends BaseController {
     @Autowired

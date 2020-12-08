@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
+
 /**
  * 部门信息
  *
@@ -27,7 +29,7 @@ import java.util.List;
  */
 @Api(tags = "部门管理")
 @RestController
-@RequestMapping("/system/dept")
+@RequestMapping(MEDICINE_API+"/system/dept")
 public class SysDeptController extends BaseController {
     @Autowired
     private ISysDeptService deptService;

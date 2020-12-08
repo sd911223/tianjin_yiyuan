@@ -7,6 +7,7 @@ package com.ruoyi.common.constant;
  */
 public class UserConstants
 {
+    public static final String MEDICINE_API = "/medicineApi";
     /**
      * 平台内系统用户的唯一标志
      */

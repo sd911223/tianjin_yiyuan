@@ -22,6 +22,8 @@ import com.ruoyi.framework.web.service.SysPermissionService;
 import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.system.service.ISysMenuService;
 
+import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
+
 /**
  * 登录验证
  * 
@@ -50,7 +52,7 @@ public class SysLoginController
      * @return 结果
      */
     @ApiOperation("登陆")
-    @PostMapping("/login")
+    @PostMapping(MEDICINE_API+"/login")
     public AjaxResult login(@RequestBody LoginBody loginBody)
     {
         AjaxResult ajax = AjaxResult.success();
@@ -67,7 +69,7 @@ public class SysLoginController
      * @return 用户信息
      */
     @ApiOperation("获取用户信息")
-    @GetMapping("getInfo")
+    @GetMapping(MEDICINE_API+"getInfo")
     public AjaxResult getInfo()
     {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());

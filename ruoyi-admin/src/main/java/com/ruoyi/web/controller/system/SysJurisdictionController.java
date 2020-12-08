@@ -13,13 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
+
 /**
  * 权限管理
  *
  * @author shitou
  */
 @RestController
-@RequestMapping("/system/jurisdiction")
+@RequestMapping(MEDICINE_API+"/system/jurisdiction")
 @Api(tags = "权限管理")
 public class SysJurisdictionController extends BaseController {
 

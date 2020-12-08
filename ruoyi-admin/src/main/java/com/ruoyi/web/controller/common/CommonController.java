@@ -21,6 +21,8 @@ import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.framework.config.ServerConfig;
 
+import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
+
 /**
  * 通用请求处理
  * 
@@ -42,7 +44,7 @@ public class CommonController
      * @param delete 是否删除
      */
     @ApiOperation("下载")
-    @GetMapping("common/download")
+    @GetMapping(MEDICINE_API+"common/download")
     public void fileDownload(String fileName, Boolean delete, HttpServletResponse response, HttpServletRequest request)
     {
         try
@@ -72,7 +74,7 @@ public class CommonController
      * 通用上传请求
      */
     @ApiOperation("上传")
-    @PostMapping("/common/upload")
+    @PostMapping(MEDICINE_API+"/common/upload")
     public AjaxResult uploadFile(MultipartFile file) throws Exception
     {
         try

@@ -28,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
+
 /**
  * 用户信息
  *
@@ -35,7 +37,7 @@ import java.util.stream.Collectors;
  */
 
 @RestController
-@RequestMapping("/system/user")
+@RequestMapping(MEDICINE_API+"/system/user")
 @Api(tags = "机构管理")
 public class SysUserController extends BaseController {
     @Autowired

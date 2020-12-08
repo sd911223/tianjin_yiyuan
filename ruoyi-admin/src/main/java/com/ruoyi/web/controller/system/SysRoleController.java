@@ -24,13 +24,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
+import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
+
 /**
  * 角色信息
  *
  * @author shitou
  */
 @RestController
-@RequestMapping("/system/role")
+@RequestMapping(MEDICINE_API+"/system/role")
 @Api(tags = "角色权限管理")
 public class SysRoleController extends BaseController {
     @Autowired

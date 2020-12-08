@@ -21,6 +21,8 @@ import com.ruoyi.common.core.redis.RedisCache;
 import com.ruoyi.common.utils.sign.Base64;
 import com.ruoyi.common.utils.uuid.IdUtils;
 
+import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
+
 /**
  * 验证码操作处理
  * 
@@ -47,7 +49,7 @@ public class CaptchaController
      * 生成验证码
      */
     @ApiOperation("生成验证码")
-    @GetMapping("/captchaImage")
+    @GetMapping(MEDICINE_API+"/captchaImage")
     public AjaxResult getCode(HttpServletResponse response) throws IOException
     {
         // 保存验证码信息
