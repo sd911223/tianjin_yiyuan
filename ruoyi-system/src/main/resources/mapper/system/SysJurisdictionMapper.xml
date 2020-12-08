@@ -14,5 +14,20 @@
 		select id, jurisdiction_value, jurisdiction_name, create_time, del_flag from sys_jurisdiction
 		order by create_time desc
 	</select>
+    <select id="checkJurNameUnique" parameterType="String" resultMap="SysJurisdictionResult">
+		select id, jurisdiction_value, jurisdiction_name, create_time, del_flag from sys_jurisdiction
+		where jurisdiction_name=#{jurisdictionName}
+	</select>
 
+    <insert id="insertJurisdiction" parameterType="SysJurisdiction">
+        insert into sys_dict_type(
+        <if test="jurisdictionValue != null and jurisdictionValue != ''">jurisdiction_value,</if>
+        <if test="jurisdictionName != null and jurisdictionName != ''">jurisdiction_name,</if>
+        create_time
+        )values(
+        <if test="jurisdictionValue != null and jurisdictionValue != ''">#{jurisdictionValue},</if>
+        <if test="jurisdictionName != null and jurisdictionName != ''">#{jurisdictionName},</if>
+        sysdate()
+        )
+    </insert>
 </mapper> 

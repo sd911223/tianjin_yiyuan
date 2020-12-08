@@ -23,7 +23,7 @@ import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
  * @author shitou
  */
 @RestController
-@RequestMapping(MEDICINE_API+"/system/reserve")
+@RequestMapping(MEDICINE_API + "/system/reserve")
 @Api(tags = "预约管理")
 public class SysReserveController extends BaseController {
     @Autowired
@@ -31,7 +31,7 @@ public class SysReserveController extends BaseController {
 
     @ApiOperation("预约管理列表")
     @GetMapping("/list")
-    public TableDataInfo<BusinessReserve> list(BusinessReserve businessReserve) {
+    public TableDataInfo list(BusinessReserve businessReserve) {
         startPage();
         List<BusinessReserve> list = sysReserveService.selectReserveList(businessReserve);
         return getDataTable(list);
@@ -61,6 +61,7 @@ public class SysReserveController extends BaseController {
         businessReserve.setStatus("1");
         return toAjax(sysReserveService.updateReserveStatus(businessReserve));
     }
+
     /**
      * 删除活动
      */

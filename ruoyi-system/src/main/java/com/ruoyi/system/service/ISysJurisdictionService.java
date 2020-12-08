@@ -16,4 +16,8 @@ public interface ISysJurisdictionService {
      * @return
      */
     List<SysJurisdiction> selectJurisdictionList();
+
+    String checkJurNameUnique(SysJurisdiction sysJurisdiction);
+
+    int insertJurisdiction(SysJurisdiction sysJurisdiction);
 }

@@ -5,6 +5,7 @@ import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysRole;
+import com.ruoyi.common.core.domain.entity.req.SysRoleReq;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
@@ -32,7 +33,7 @@ import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
  * @author shitou
  */
 @RestController
-@RequestMapping(MEDICINE_API+"/system/role")
+@RequestMapping(MEDICINE_API + "/system/role")
 @Api(tags = "角色权限管理")
 public class SysRoleController extends BaseController {
     @Autowired
@@ -67,12 +68,16 @@ public class SysRoleController extends BaseController {
     @ApiOperation("新增角色")
     @Log(title = "角色管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody SysRole role) {
+    public AjaxResult add(@Validated @RequestBody SysRoleReq sysRoleReq) {
+        SysRole role = new SysRole();
+        role.setRoleName(sysRoleReq.getRoleName());
+        role.setRoleKey(sysRoleReq.getRoleKey());
         if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role))) {
             return AjaxResult.error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
         } else if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role))) {
             return AjaxResult.error("新增角色'" + role.getRoleName() + "'失败，角色权限已存在");
         }
+        role.setRemark(sysRoleReq.getRoleName());
         role.setStatus("0");
         role.setCreateTime(new Date());
         role.setCreateBy(SecurityUtils.getUsername());

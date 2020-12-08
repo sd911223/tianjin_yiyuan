@@ -12,4 +12,8 @@ import java.util.List;
 public interface SysJurisdictionMapper {
 
     List<SysJurisdiction> selectJurisdictionList();
+
+    SysJurisdiction checkJurNameUnique(SysJurisdiction sysJurisdiction);
+
+    int insertJurisdiction(SysJurisdiction sysJurisdiction);
 }

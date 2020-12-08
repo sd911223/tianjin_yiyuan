@@ -1,6 +1,8 @@
 package com.ruoyi.system.service.impl;
 
+import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.entity.SysJurisdiction;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.mapper.SysJurisdictionMapper;
 import com.ruoyi.system.service.ISysJurisdictionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +28,19 @@ public class ISysJurisdictionServiceImpl implements ISysJurisdictionService {
     @Override
     public List<SysJurisdiction> selectJurisdictionList() {
         return sysJurisdictionMapper.selectJurisdictionList();
+    }
+
+    @Override
+    public String checkJurNameUnique(SysJurisdiction sysJurisdiction) {
+        SysJurisdiction sysJurisdiction1 = sysJurisdictionMapper.checkJurNameUnique(sysJurisdiction);
+        if (StringUtils.isNotNull(sysJurisdiction1)) {
+            return UserConstants.NOT_UNIQUE;
+        }
+        return UserConstants.UNIQUE;
+    }
+
+    @Override
+    public int insertJurisdiction(SysJurisdiction sysJurisdiction) {
+        return sysJurisdictionMapper.insertJurisdiction(sysJurisdiction);
     }
 }

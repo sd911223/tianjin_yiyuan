@@ -2,6 +2,7 @@ package com.ruoyi.common.core.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
@@ -15,70 +16,85 @@ public class BusinessReserve {
     /**
      * 预约名称
      */
+    @ApiModelProperty("预约名称")
     @NotBlank(message = "预约名称不能为空")
     private String reserveName;
     /**
      * 部门ID
      */
+    @ApiModelProperty("部门ID")
     private Integer deptId;
     /**
      * 部门名称
      */
+    @ApiModelProperty("部门名称")
     private String deptName;
     /**
      * 公告开始时间
      */
+    @ApiModelProperty("公告开始时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date announcementStartTime;
     /**
      * 公告结束时间
      */
+    @ApiModelProperty("公告结束时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date announcementEndTime;
     /**
      * 预约开始时间
      */
+    @ApiModelProperty("预约开始时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date reserveStartTime;
     /**
      * 预约结束时间
      */
+    @ApiModelProperty("预约结束时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date reserveEndTime;
     /**
      * 撤回时间
      */
+    @ApiModelProperty("撤回时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date withdrawTime;
     /**
      * 预约类型 0:所有人;1:特定人群
      */
+    @ApiModelProperty("预约类型 0:所有人;1:特定人群")
     private String reserveType;
     /**
      * 预约内容
      */
+    @ApiModelProperty("预约内容")
     @NotBlank(message = "预约内容不能为空")
     private String reserveContent;
     /**
      * 预约公共内容
      */
+    @ApiModelProperty("预约公共内容")
     @NotBlank(message = "预约公共内容不能为空")
     private String reserveAmContent;
     /**
      * 状态
      */
+    @ApiModelProperty("状态")
     private String status;
     /**
      * 预约登记信息
      */
+    @ApiModelProperty("预约登记信息")
     private String reserveRegister;
     /**
      * 预约人数
      */
+    @ApiModelProperty("预约人数")
     private Integer reserveNum;
     /**
      * 附件地址
      */
+    @ApiModelProperty("附件地址")
     private String annexUrl;
     /**
      * 创建人
