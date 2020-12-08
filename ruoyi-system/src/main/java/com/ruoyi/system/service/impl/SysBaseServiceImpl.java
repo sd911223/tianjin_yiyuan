@@ -15,4 +15,9 @@ public class SysBaseServiceImpl implements SysBaseService {
     public int updateBase(SysBase sysBase) {
         return sysBaseMapper.updateBase(sysBase);
     }
+
+    @Override
+    public SysBase selectBaseById(Long id) {
+        return sysBaseMapper.selectBaseById(1L);
+    }
 }

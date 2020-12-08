@@ -5,6 +5,7 @@ import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysDept;
+import com.ruoyi.common.core.domain.entity.req.SysDeptReq;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
@@ -29,7 +30,7 @@ import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
  */
 @Api(tags = "部门管理")
 @RestController
-@RequestMapping(MEDICINE_API+"/system/dept")
+@RequestMapping(MEDICINE_API + "/system/dept")
 public class SysDeptController extends BaseController {
     @Autowired
     private ISysDeptService deptService;
@@ -77,7 +78,7 @@ public class SysDeptController extends BaseController {
     @GetMapping("/treeselect")
     @ApiOperation("获取部门下拉树列表")
     public AjaxResult treeselect() {
-        SysDept dept =new SysDept();
+        SysDept dept = new SysDept();
         List<SysDept> depts = deptService.selectDeptList(dept);
         return AjaxResult.success(deptService.buildDeptTreeSelect(depts));
     }
@@ -100,7 +101,10 @@ public class SysDeptController extends BaseController {
     @ApiOperation("新增部门")
     @Log(title = "部门管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody SysDept dept) {
+    public AjaxResult add(@Validated @RequestBody SysDeptReq sysDeptReq) {
+        SysDept dept = new SysDept();
+        dept.setDeptName(sysDeptReq.getDeptName());
+        dept.setParentId(sysDeptReq.getParentId());
         if (UserConstants.NOT_UNIQUE.equals(deptService.checkDeptNameUnique(dept))) {
             return AjaxResult.error("新增部门'" + dept.getDeptName() + "'失败，部门名称已存在");
         }

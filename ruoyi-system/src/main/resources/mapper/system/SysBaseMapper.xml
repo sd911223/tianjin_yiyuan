@@ -11,12 +11,15 @@
     </resultMap>
 
 
-
+    <select id="selectBaseById" parameterType="Long" resultMap="SysBaseResult">
+       select pass_word,reserve_install from sys_base
+        where id = 1
+    </select>
     <update id="updateBase" parameterType="SysBase">
         update sys_base
         <set>
             <if test="passWord != null and passWord != ''">pass_word = #{passWord}</if>
-            <if test="userName != null and userName != ''">reserve_install = #{reserveInstall}</if>
+            <if test="reserveInstall != null and reserveInstall != ''">reserve_install = #{reserveInstall}</if>
         </set>
         where id = 1
     </update>

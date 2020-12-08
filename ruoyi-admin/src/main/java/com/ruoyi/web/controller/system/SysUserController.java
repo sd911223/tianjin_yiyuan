@@ -4,6 +4,7 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.entity.SysBase;
 import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
@@ -17,6 +18,7 @@ import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.system.service.ISysPostService;
 import com.ruoyi.system.service.ISysRoleService;
 import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.system.service.SysBaseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,7 @@ import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
  */
 
 @RestController
-@RequestMapping(MEDICINE_API+"/system/user")
+@RequestMapping(MEDICINE_API + "/system/user")
 @Api(tags = "机构管理")
 public class SysUserController extends BaseController {
     @Autowired
@@ -51,6 +53,8 @@ public class SysUserController extends BaseController {
 
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private SysBaseService sysBaseService;
 
     /**
      * 获取用户列表
@@ -124,9 +128,13 @@ public class SysUserController extends BaseController {
         } else if (UserConstants.NOT_UNIQUE.equals(userService.checkIdCardUnique(user))) {
             return AjaxResult.error("新增用户'" + user.getUserName() + "'失败，身份证号码已存在");
         }
+        //查询是否设置了基础密码
+        SysBase sysBase = sysBaseService.selectBaseById(1L);
+        if (StringUtils.isEmpty(sysBase.getPassWord())) {
+            return AjaxResult.error("新增用户失败，请先设置基础密码");
+        }
         user.setCreateBy(SecurityUtils.getUsername());
-        //给个默认密码
-        user.setPassword(SecurityUtils.encryptPassword("123456"));
+        user.setPassword(SecurityUtils.encryptPassword(sysBase.getPassWord()));
         return toAjax(userService.insertUser(user));
     }
 

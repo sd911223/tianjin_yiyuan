@@ -1,17 +1,21 @@
 package com.ruoyi.common.core.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Entity基类
- * 
+ *
  * @author ruoyi
  */
+@ApiModel("Entity基类")
 public class BaseEntity implements Serializable
 {
     private static final long serialVersionUID = 1L;
@@ -34,6 +38,7 @@ public class BaseEntity implements Serializable
     private Date updateTime;
 
     /** 备注 */
+    @ApiModelProperty("备注")
     private String remark;
 
     /** 开始时间 */
