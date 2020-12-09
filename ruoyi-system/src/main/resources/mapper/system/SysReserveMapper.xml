@@ -145,6 +145,7 @@
         update business_reserve
         <set>
             <if test="status != null and status != ''">status = #{status},</if>
+            release = sysdate()
         </set>
         where id = #{id}
     </update>

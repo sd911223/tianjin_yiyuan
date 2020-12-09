@@ -32,12 +32,11 @@ public class SysReserveServiceImpl implements SysReserveService {
     @Override
     public int insertReserve(BusinessReserve businessReserve) {
         businessReserve.setCreateTime(new Date());
-        businessReserve.setStatus("0");
         businessReserve.setCreateBy(SecurityUtils.getUsername());
         Long deptId = SecurityUtils.getLoginUser().getUser().getDeptId();
         businessReserve.setDeptId(deptId.intValue());
         SysDept sysDept = sysDeptMapper.selectDeptById(deptId);
-        businessReserve.setDeptName("部门");
+        businessReserve.setDeptName(sysDept.getDeptName());
         return sysReserveMapper.insertReserve(businessReserve);
     }
 
@@ -49,5 +48,10 @@ public class SysReserveServiceImpl implements SysReserveService {
     @Override
     public int deleteReserveById(Long id) {
         return sysReserveMapper.deleteReserveById(id);
+    }
+
+    @Override
+    public BusinessReserve selectReserveById(Integer id) {
+        return sysReserveMapper.selectReserveById(id);
     }
 }

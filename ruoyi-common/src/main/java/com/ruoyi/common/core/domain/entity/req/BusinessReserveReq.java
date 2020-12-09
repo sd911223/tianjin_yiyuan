@@ -1,13 +1,14 @@
-package com.ruoyi.common.core.domain.entity;
+package com.ruoyi.common.core.domain.entity.req;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
-@ApiModel("预约管理")
-public class BusinessReserve {
+@ApiModel("预约实体")
+public class BusinessReserveReq {
     /**
      * 主键ID
      */
@@ -16,17 +17,8 @@ public class BusinessReserve {
      * 预约名称
      */
     @ApiModelProperty("预约名称")
+    @NotBlank(message = "预约名称不能为空")
     private String reserveName;
-    /**
-     * 部门ID
-     */
-    @ApiModelProperty("部门ID")
-    private Integer deptId;
-    /**
-     * 部门名称
-     */
-    @ApiModelProperty("部门名称")
-    private String deptName;
     /**
      * 公告开始时间
      */
@@ -66,53 +58,24 @@ public class BusinessReserve {
      * 预约内容
      */
     @ApiModelProperty("预约内容")
+    @NotBlank(message = "预约内容不能为空")
     private String reserveContent;
     /**
      * 预约公共内容
      */
     @ApiModelProperty("预约公共内容")
+    @NotBlank(message = "预约公共内容不能为空")
     private String reserveAmContent;
-    /**
-     * 状态
-     */
-    @ApiModelProperty("状态0:未发布 1:已发布  2:正在进行 3:已结束")
-    private String status;
     /**
      * 预约登记信息
      */
     @ApiModelProperty("预约登记信息")
     private String reserveRegister;
     /**
-     * 预约人数
-     */
-    @ApiModelProperty("预约人数")
-    private Integer reserveNum;
-    /**
      * 附件地址
      */
     @ApiModelProperty("附件地址")
     private String annexUrl;
-    /**
-     * 创建人
-     */
-    private String createBy;
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-    /**
-     * 备注
-     */
-    private String remark;
-    /**
-     * 发布时间
-     */
-    private Date release;
-    /**
-     * 删除标志（0代表存在 2代表删除）
-     */
-    private String delFlag;
-
 
     public void setId(Integer id) {
         this.id = id;
@@ -120,14 +83,6 @@ public class BusinessReserve {
 
     public void setReserveName(String reserveName) {
         this.reserveName = reserveName;
-    }
-
-    public void setDeptId(Integer deptId) {
-        this.deptId = deptId;
-    }
-
-    public void setDeptName(String deptName) {
-        this.deptName = deptName;
     }
 
     public void setAnnouncementStartTime(Date announcementStartTime) {
@@ -162,40 +117,12 @@ public class BusinessReserve {
         this.reserveAmContent = reserveAmContent;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public void setReserveRegister(String reserveRegister) {
         this.reserveRegister = reserveRegister;
     }
 
-    public void setReserveNum(Integer reserveNum) {
-        this.reserveNum = reserveNum;
-    }
-
     public void setAnnexUrl(String annexUrl) {
         this.annexUrl = annexUrl;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public void setRelease(Date release) {
-        this.release = release;
-    }
-
-    public void setDelFlag(String delFlag) {
-        this.delFlag = delFlag;
     }
 
     public Integer getId() {
@@ -204,14 +131,6 @@ public class BusinessReserve {
 
     public String getReserveName() {
         return reserveName;
-    }
-
-    public Integer getDeptId() {
-        return deptId;
-    }
-
-    public String getDeptName() {
-        return deptName;
     }
 
     public Date getAnnouncementStartTime() {
@@ -246,67 +165,11 @@ public class BusinessReserve {
         return reserveAmContent;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
     public String getReserveRegister() {
         return reserveRegister;
-    }
-
-    public Integer getReserveNum() {
-        return reserveNum;
     }
 
     public String getAnnexUrl() {
         return annexUrl;
     }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public Date getRelease() {
-        return release;
-    }
-
-    public String getDelFlag() {
-        return delFlag;
-    }
-
-    @Override
-    public String toString() {
-        return "BusinessReserve{" +
-                "id=" + id +
-                ", reserveName='" + reserveName + '\'' +
-                ", deptId=" + deptId +
-                ", deptName='" + deptName + '\'' +
-                ", announcementStartTime=" + announcementStartTime +
-                ", announcementEndTime=" + announcementEndTime +
-                ", reserveStartTime=" + reserveStartTime +
-                ", reserveEndTime=" + reserveEndTime +
-                ", withdrawTime=" + withdrawTime +
-                ", reserveType='" + reserveType + '\'' +
-                ", reserveContent='" + reserveContent + '\'' +
-                ", reserveAmContent='" + reserveAmContent + '\'' +
-                ", status='" + status + '\'' +
-                ", reserveRegister='" + reserveRegister + '\'' +
-                ", reserveNum=" + reserveNum +
-                ", annexUrl='" + annexUrl + '\'' +
-                ", createBy='" + createBy + '\'' +
-                ", createTime=" + createTime +
-                ", remark='" + remark + '\'' +
-                ", release=" + release +
-                ", delFlag='" + delFlag + '\'' +
-                '}';
-    }
-
 }

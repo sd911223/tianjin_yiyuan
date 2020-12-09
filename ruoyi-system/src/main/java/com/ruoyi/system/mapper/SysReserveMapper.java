@@ -41,4 +41,6 @@ public interface SysReserveMapper {
      * @return 结果
      */
     int deleteReserveById(Long id);
+
+    BusinessReserve selectReserveById(Integer id);
 }
