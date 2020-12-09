@@ -21,13 +21,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
+
 /**
  * 数据字典信息
  *
  * @author shitou
  */
 @RestController
-@RequestMapping("/system/dict/type")
+@RequestMapping(MEDICINE_API +"/system/dict/type")
 @Api(tags = "数据字典信息")
 public class SysDictTypeController extends BaseController {
     @Autowired

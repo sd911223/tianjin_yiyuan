@@ -208,11 +208,11 @@ public class SysDeptServiceImpl implements ISysDeptService
             updateDeptChildren(dept.getDeptId(), newAncestors, oldAncestors);
         }
         int result = deptMapper.updateDept(dept);
-        if (UserConstants.DEPT_NORMAL.equals(dept.getStatus()))
-        {
-            // 如果该部门是启用状态，则启用该部门的所有上级部门
-            updateParentDeptStatus(dept);
-        }
+//        if (UserConstants.DEPT_NORMAL.equals(dept.getStatus()))
+//        {
+//            // 如果该部门是启用状态，则启用该部门的所有上级部门
+//            updateParentDeptStatus(dept);
+//        }
         return result;
     }
 

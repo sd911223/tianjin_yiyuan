@@ -13,6 +13,7 @@ import com.ruoyi.system.service.ISysDeptService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -118,7 +119,10 @@ public class SysDeptController extends BaseController {
     @ApiOperation("修改部门")
     @Log(title = "部门管理", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@Validated @RequestBody SysDept dept) {
+    public AjaxResult edit(@Validated @RequestBody SysDeptReq sysDeptReq) {
+        SysDept dept = new SysDept();
+        BeanUtils.copyProperties(sysDeptReq,dept);
+        dept.setStatus("0");
         if (UserConstants.NOT_UNIQUE.equals(deptService.checkDeptNameUnique(dept))) {
             return AjaxResult.error("修改部门'" + dept.getDeptName() + "'失败，部门名称已存在");
         } else if (dept.getParentId().equals(dept.getDeptId())) {
