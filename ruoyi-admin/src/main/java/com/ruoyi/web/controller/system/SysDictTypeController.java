@@ -29,7 +29,7 @@ import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
  * @author shitou
  */
 @RestController
-@RequestMapping(MEDICINE_API +"/system/dict/type")
+@RequestMapping(MEDICINE_API + "/system/dict/type")
 @Api(tags = "数据字典信息")
 public class SysDictTypeController extends BaseController {
     @Autowired
@@ -60,6 +60,15 @@ public class SysDictTypeController extends BaseController {
     @GetMapping(value = "/{dictId}")
     public AjaxResult getInfo(@PathVariable Long dictId) {
         return AjaxResult.success(dictTypeService.selectDictTypeById(dictId));
+    }
+
+    /**
+     * 通过类型查询字典
+     */
+    @ApiOperation("通过类型查询字典")
+    @GetMapping(value = "/{type}")
+    public AjaxResult getTypeInfo(@PathVariable String type) {
+        return AjaxResult.success(dictTypeService.selectDictByType(type));
     }
 
     /**

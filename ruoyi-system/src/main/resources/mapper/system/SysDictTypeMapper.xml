@@ -57,7 +57,7 @@
     </select>
     <select id="selectDictByType" parameterType="String" resultMap="SysDictTypeResult">
         <include refid="selectDictTypeVo"/>
-        where type = #{type}
+        where type = #{type} and status='0'
     </select>
     <select id="checkDictTypeUnique" parameterType="String" resultMap="SysDictTypeResult">
         <include refid="selectDictTypeVo"/>
