@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
+
 @Api(tags = "基础设置")
 @RestController
-@RequestMapping("/system/base")
+@RequestMapping(MEDICINE_API +"/system/base")
 public class SysBaseController extends BaseController {
     @Autowired
     SysBaseService sysBaseService;
@@ -27,7 +29,7 @@ public class SysBaseController extends BaseController {
      * 设置用户密码
      */
     @ApiOperation("设置用户密码")
-    @Log(title = "基础设置", businessType = BusinessType.INSERT)
+    @Log(title = "基础设置", businessType = BusinessType.UPDATE)
     @PostMapping("/addPassWord")
     public AjaxResult addPassWord(@Validated @RequestBody SysBase sysBase) {
         if (StringUtils.isEmpty(sysBase.getPassWord())) {
@@ -37,10 +39,10 @@ public class SysBaseController extends BaseController {
     }
 
     /**
-     * 设置用户密码
+     * 单位预约设置
      */
-    @ApiOperation("设置用户密码")
-    @Log(title = "基础设置", businessType = BusinessType.INSERT)
+    @ApiOperation("单位预约设置")
+    @Log(title = "基础设置", businessType = BusinessType.UPDATE)
     @PostMapping("/addReserveInstall")
     public AjaxResult addReserveInstall(@Validated @RequestBody SysBase sysBase) {
         if (StringUtils.isEmpty(sysBase.getReserveInstall())) {
