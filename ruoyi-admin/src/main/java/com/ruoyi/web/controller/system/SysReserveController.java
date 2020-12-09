@@ -84,8 +84,11 @@ public class SysReserveController extends BaseController {
     @ApiOperation("删除活动")
     @Log(title = "部门管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
-    public AjaxResult remove(@PathVariable Long id) {
-
+    public AjaxResult remove(@PathVariable Integer id) {
+        BusinessReserve businessReserve = sysReserveService.selectReserveById(id);
+        if (!"0".equals(businessReserve.getStatus())) {
+            return AjaxResult.error("删除活动'" + id + "'失败，只有未发布活动可删除");
+        }
         return toAjax(sysReserveService.deleteReserveById(id));
     }
 

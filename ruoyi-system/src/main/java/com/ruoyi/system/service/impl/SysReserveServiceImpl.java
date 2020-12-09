@@ -46,7 +46,7 @@ public class SysReserveServiceImpl implements SysReserveService {
     }
 
     @Override
-    public int deleteReserveById(Long id) {
+    public int deleteReserveById(Integer id) {
         return sysReserveMapper.deleteReserveById(id);
     }
 

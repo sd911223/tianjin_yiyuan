@@ -150,7 +150,7 @@
         where id = #{id}
     </update>
 
-    <delete id="deleteReserveById" parameterType="Long">
+    <delete id="deleteReserveById" parameterType="Integer">
 		update business_reserve set del_flag = '2' where id = #{id}
 	</delete>
 
