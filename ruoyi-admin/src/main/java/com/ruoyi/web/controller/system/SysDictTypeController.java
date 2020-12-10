@@ -66,7 +66,7 @@ public class SysDictTypeController extends BaseController {
      * 通过类型查询字典
      */
     @ApiOperation("通过类型查询字典")
-    @GetMapping(value = "/{type}")
+    @GetMapping(value = "/getTypeInfo/{type}")
     public AjaxResult getTypeInfo(@PathVariable String type) {
         return AjaxResult.success(dictTypeService.selectDictByType(type));
     }

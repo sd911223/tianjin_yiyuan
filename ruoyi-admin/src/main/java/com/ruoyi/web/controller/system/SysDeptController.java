@@ -121,12 +121,15 @@ public class SysDeptController extends BaseController {
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysDeptReq sysDeptReq) {
         SysDept dept = new SysDept();
-        BeanUtils.copyProperties(sysDeptReq,dept);
+        BeanUtils.copyProperties(sysDeptReq, dept);
         dept.setStatus("0");
+        if (!StringUtils.isEmpty(sysDeptReq.getRemark())) {
+            dept.setRemark(sysDeptReq.getRemark());
+        }
 //        if (UserConstants.NOT_UNIQUE.equals(deptService.checkDeptNameUnique(dept))) {
 //            return AjaxResult.error("修改部门'" + dept.getDeptName() + "'失败，部门名称已存在");
 //        } else
-            if (dept.getParentId().equals(dept.getDeptId())) {
+        if (dept.getParentId().equals(dept.getDeptId())) {
             return AjaxResult.error("修改部门'" + dept.getDeptName() + "'失败，上级部门不能是自己");
         } else if (StringUtils.equals(UserConstants.DEPT_DISABLE, dept.getStatus())
                 && deptService.selectNormalChildrenDeptById(dept.getDeptId()) > 0) {
