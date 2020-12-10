@@ -5,7 +5,6 @@ import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysBase;
-import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -28,7 +27,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
 
@@ -101,19 +99,19 @@ public class SysUserController extends BaseController {
     /**
      * 根据用户编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:user:query')")
-    @GetMapping(value = {"/", "/{userId}"})
+    @ApiOperation("根据用户编号获取详细信息")
+    @GetMapping(value = {"/{userId}"})
     public AjaxResult getInfo(@PathVariable(value = "userId", required = false) Long userId) {
-        AjaxResult ajax = AjaxResult.success();
-        List<SysRole> roles = roleService.selectRoleAll();
-        ajax.put("roles", SysUser.isAdmin(userId) ? roles : roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
-        ajax.put("posts", postService.selectPostAll());
-        if (StringUtils.isNotNull(userId)) {
-            ajax.put(AjaxResult.DATA_TAG, userService.selectUserById(userId));
-            ajax.put("postIds", postService.selectPostListByUserId(userId));
-            ajax.put("roleIds", roleService.selectRoleListByUserId(userId));
-        }
-        return ajax;
+//        AjaxResult ajax = AjaxResult.success();
+//        List<SysRole> roles = roleService.selectRoleAll();
+//        ajax.put("roles", SysUser.isAdmin(userId) ? roles : roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
+//        ajax.put("posts", postService.selectPostAll());
+//        if (StringUtils.isNotNull(userId)) {
+//            ajax.put(AjaxResult.DATA_TAG, userService.selectUserById(userId));
+//            ajax.put("postIds", postService.selectPostListByUserId(userId));
+//            ajax.put("roleIds", roleService.selectRoleListByUserId(userId));
+//        }
+        return AjaxResult.success(userService.selectUserById(userId));
     }
 
     /**

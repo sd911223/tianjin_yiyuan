@@ -123,9 +123,10 @@ public class SysDeptController extends BaseController {
         SysDept dept = new SysDept();
         BeanUtils.copyProperties(sysDeptReq,dept);
         dept.setStatus("0");
-        if (UserConstants.NOT_UNIQUE.equals(deptService.checkDeptNameUnique(dept))) {
-            return AjaxResult.error("修改部门'" + dept.getDeptName() + "'失败，部门名称已存在");
-        } else if (dept.getParentId().equals(dept.getDeptId())) {
+//        if (UserConstants.NOT_UNIQUE.equals(deptService.checkDeptNameUnique(dept))) {
+//            return AjaxResult.error("修改部门'" + dept.getDeptName() + "'失败，部门名称已存在");
+//        } else
+            if (dept.getParentId().equals(dept.getDeptId())) {
             return AjaxResult.error("修改部门'" + dept.getDeptName() + "'失败，上级部门不能是自己");
         } else if (StringUtils.equals(UserConstants.DEPT_DISABLE, dept.getStatus())
                 && deptService.selectNormalChildrenDeptById(dept.getDeptId()) > 0) {

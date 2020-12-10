@@ -32,7 +32,7 @@ public interface ISysUserService
      * @param userId 用户ID
      * @return 用户对象信息
      */
-    public SysUser selectUserById(Long userId);
+     SysUser selectUserById(Long userId);
 
     /**
      * 根据用户ID查询用户所属角色组
