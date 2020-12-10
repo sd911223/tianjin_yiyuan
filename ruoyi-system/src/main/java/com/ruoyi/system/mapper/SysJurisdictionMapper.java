@@ -16,4 +16,6 @@ public interface SysJurisdictionMapper {
     SysJurisdiction checkJurNameUnique(SysJurisdiction sysJurisdiction);
 
     int insertJurisdiction(SysJurisdiction sysJurisdiction);
+
+    SysJurisdiction selectJurisdictionById(Integer id);
 }

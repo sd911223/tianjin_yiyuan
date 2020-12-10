@@ -43,4 +43,9 @@ public class ISysJurisdictionServiceImpl implements ISysJurisdictionService {
     public int insertJurisdiction(SysJurisdiction sysJurisdiction) {
         return sysJurisdictionMapper.insertJurisdiction(sysJurisdiction);
     }
+
+    @Override
+    public SysJurisdiction selectJurisdictionById(Integer id) {
+        return sysJurisdictionMapper.selectJurisdictionById(id);
+    }
 }

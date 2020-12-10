@@ -20,4 +20,6 @@ public interface ISysJurisdictionService {
     String checkJurNameUnique(SysJurisdiction sysJurisdiction);
 
     int insertJurisdiction(SysJurisdiction sysJurisdiction);
+
+    SysJurisdiction selectJurisdictionById(Integer id);
 }

@@ -67,7 +67,7 @@ public class SysDeptController extends BaseController {
     /**
      * 根据部门编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:dept:query')")
+    @ApiOperation("根据部门编号获取详细信息")
     @GetMapping(value = "/{deptId}")
     public AjaxResult getInfo(@PathVariable Long deptId) {
         return AjaxResult.success(deptService.selectDeptById(deptId));

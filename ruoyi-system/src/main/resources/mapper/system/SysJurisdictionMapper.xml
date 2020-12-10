@@ -14,6 +14,13 @@
 		select id, jurisdiction_value, jurisdiction_name, create_time, del_flag from sys_jurisdiction
 		order by create_time desc
 	</select>
+
+    <select id="selectJurisdictionById" resultMap="SysJurisdictionResult" parameterType="Integer">
+		select id, jurisdiction_value, jurisdiction_name, create_time, del_flag from sys_jurisdiction
+		where id=#{id}
+		order by create_time desc
+	</select>
+
     <select id="checkJurNameUnique" parameterType="String" resultMap="SysJurisdictionResult">
 		select id, jurisdiction_value, jurisdiction_name, create_time, del_flag from sys_jurisdiction
 		where jurisdiction_name=#{jurisdictionName}

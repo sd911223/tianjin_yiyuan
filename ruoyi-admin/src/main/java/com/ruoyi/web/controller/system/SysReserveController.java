@@ -97,7 +97,7 @@ public class SysReserveController extends BaseController {
      * 根据id获取预约信息
      */
     @ApiOperation("根据id获取预约信息")
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/getInfo/{id}")
     public AjaxResult getInfo(@PathVariable Integer id) {
         return AjaxResult.success(sysReserveService.selectReserveById(id));
     }
@@ -106,7 +106,7 @@ public class SysReserveController extends BaseController {
      * 查看链接
      */
     @ApiOperation("查看链接")
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/getUrl/{id}")
     public AjaxResult getUrl(@PathVariable Integer id) {
         return AjaxResult.success("www.baidu.com");
     }
@@ -115,7 +115,7 @@ public class SysReserveController extends BaseController {
      * 签到码
      */
     @ApiOperation("签到码")
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/getSignUrl/{id}")
     public AjaxResult getSignUrl(@PathVariable Integer id) {
         return AjaxResult.success("www.baidu.com");
     }

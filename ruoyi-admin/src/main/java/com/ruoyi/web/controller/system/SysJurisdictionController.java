@@ -49,4 +49,16 @@ public class SysJurisdictionController extends BaseController {
         }
         return toAjax(iSysJurisdictionService.insertJurisdiction(sysJurisdiction));
     }
+
+    /**
+     * 获取基本设置
+     *
+     * @param id
+     * @return
+     */
+    @ApiOperation("根据id获取详细信息")
+    @GetMapping(value = "/{id}")
+    public AjaxResult getInfo(@PathVariable Integer id) {
+        return AjaxResult.success(iSysJurisdictionService.selectJurisdictionById(id));
+    }
 }
