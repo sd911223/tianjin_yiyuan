@@ -104,8 +104,7 @@ public class SysDeptController extends BaseController {
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysDeptReq sysDeptReq) {
         SysDept dept = new SysDept();
-        dept.setDeptName(sysDeptReq.getDeptName());
-        dept.setParentId(sysDeptReq.getParentId());
+        BeanUtils.copyProperties(sysDeptReq, dept);
         if (UserConstants.NOT_UNIQUE.equals(deptService.checkDeptNameUnique(dept))) {
             return AjaxResult.error("新增部门'" + dept.getDeptName() + "'失败，部门名称已存在");
         }
