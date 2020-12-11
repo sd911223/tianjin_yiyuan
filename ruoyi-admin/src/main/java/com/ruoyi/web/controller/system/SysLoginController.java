@@ -69,7 +69,7 @@ public class SysLoginController
      * @return 用户信息
      */
     @ApiOperation("获取用户信息")
-    @GetMapping(MEDICINE_API+"getInfo")
+    @GetMapping(MEDICINE_API+"/getInfo")
     public AjaxResult getInfo()
     {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
