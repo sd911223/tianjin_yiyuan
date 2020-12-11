@@ -31,6 +31,43 @@ public class SysDictTypeReq {
     @ApiModelProperty("备注")
     private String remark;
 
+    private String type;
+    private String parentCode;
+    private String dictionaryData;
+    private String dataDictionary;
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setParentCode(String parentCode) {
+        this.parentCode = parentCode;
+    }
+
+    public void setDictionaryData(String dictionaryData) {
+        this.dictionaryData = dictionaryData;
+    }
+
+    public void setDataDictionary(String dataDictionary) {
+        this.dataDictionary = dataDictionary;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getParentCode() {
+        return parentCode;
+    }
+
+    public String getDictionaryData() {
+        return dictionaryData;
+    }
+
+    public String getDataDictionary() {
+        return dataDictionary;
+    }
+
     public Long getDictId() {
         return dictId;
     }
@@ -61,5 +98,19 @@ public class SysDictTypeReq {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        return "SysDictTypeReq{" +
+                "dictId=" + dictId +
+                ", dictName='" + dictName + '\'' +
+                ", dictType='" + dictType + '\'' +
+                ", remark='" + remark + '\'' +
+                ", type='" + type + '\'' +
+                ", parentCode='" + parentCode + '\'' +
+                ", dictionaryData='" + dictionaryData + '\'' +
+                ", dataDictionary='" + dataDictionary + '\'' +
+                '}';
     }
 }

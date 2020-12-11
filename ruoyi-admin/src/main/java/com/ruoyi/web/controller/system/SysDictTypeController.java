@@ -14,6 +14,7 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.service.ISysDictTypeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -79,11 +80,7 @@ public class SysDictTypeController extends BaseController {
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysDictTypeReq sysDictTypeReq) {
         SysDictType dict = new SysDictType();
-        dict.setDictName(sysDictTypeReq.getDictName());
-        dict.setDictType(sysDictTypeReq.getDictType());
-        if (!StringUtils.isEmpty(sysDictTypeReq.getRemark())) {
-            dict.setRemark(sysDictTypeReq.getRemark());
-        }
+        BeanUtils.copyProperties(sysDictTypeReq, dict);
         if (UserConstants.NOT_UNIQUE.equals(dictTypeService.checkDictTypeUnique(dict))) {
             return AjaxResult.error("新增字典'" + dict.getDictName() + "'失败，字典类型已存在");
         }

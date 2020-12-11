@@ -50,8 +50,34 @@ public class SysDictType extends BaseEntity {
     /**
      * 状态（0正常 1停用）
      */
-    @Excel(name = "状态", readConverterExp = "0=正常,1=停用")
     private String status;
+    private String parentCode;
+    private String dictionaryData;
+    private String dataDictionary;
+
+    public void setParentCode(String parentCode) {
+        this.parentCode = parentCode;
+    }
+
+    public void setDictionaryData(String dictionaryData) {
+        this.dictionaryData = dictionaryData;
+    }
+
+    public void setDataDictionary(String dataDictionary) {
+        this.dataDictionary = dataDictionary;
+    }
+
+    public String getParentCode() {
+        return parentCode;
+    }
+
+    public String getDictionaryData() {
+        return dictionaryData;
+    }
+
+    public String getDataDictionary() {
+        return dataDictionary;
+    }
 
     public void setType(String type) {
         this.type = type;

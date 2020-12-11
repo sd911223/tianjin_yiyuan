@@ -14,11 +14,13 @@
         <result property="createTime" column="create_time"/>
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
-        <result property="updateTime" column="update_time"/>
+        <result property="parentCode" column="parent_code"/>
+        <result property="dictionaryData" column="dictionary_data"/>
+        <result property="dataDictionary" column="data_dictionary"/>
     </resultMap>
 
     <sql id="selectDictTypeVo">
-        select dict_id, dict_name, dict_type,type, status, create_by, create_time, remark
+        select dict_id, dict_name, dict_type,type, status, create_by, create_time, remark,data_dictionary,dictionary_data,parent_code
 		from sys_dict_type
     </sql>
 
@@ -84,6 +86,10 @@
             <if test="status != null">status = #{status},</if>
             <if test="remark != null">remark = #{remark},</if>
             <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="parentCode != null and parentCode != ''">parent_code = #{parentCode},</if>
+            <if test="dictionaryData != null and dictionaryData != ''">dictionary_data = #{dictionaryData},</if>
+            <if test="dataDictionary != null and dataDictionary != ''">data_dictionary = #{dataDictionary},</if>
             update_time = sysdate()
         </set>
         where dict_id = #{dictId}
@@ -96,6 +102,10 @@
         <if test="status != null">status,</if>
         <if test="remark != null and remark != ''">remark,</if>
         <if test="createBy != null and createBy != ''">create_by,</if>
+        <if test="type != null and type != ''">type,</if>
+        <if test="parentCode != null and parentCode != ''">parent_code,</if>
+        <if test="dictionaryData != null and dictionaryData != ''">dictionary_data,</if>
+        <if test="dataDictionary != null and dataDictionary != ''">data_dictionary,</if>
         create_time
         )values(
         <if test="dictName != null and dictName != ''">#{dictName},</if>
@@ -103,6 +113,10 @@
         <if test="status != null">#{status},</if>
         <if test="remark != null and remark != ''">#{remark},</if>
         <if test="createBy != null and createBy != ''">#{createBy},</if>
+        <if test="type != null and type != ''">#{type},</if>
+        <if test="parentCode != null and parentCode != ''">#{parentCode},</if>
+        <if test="dictionaryData != null and dictionaryData != ''">#{dictionaryData},</if>
+        <if test="dataDictionary != null and dataDictionary != ''">#{dataDictionary},</if>
         sysdate()
         )
     </insert>
