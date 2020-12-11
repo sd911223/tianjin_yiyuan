@@ -26,6 +26,7 @@
         <result property="remark" column="remark"/>
         <result property="release" column="release"/>
         <result property="delFlag" column="del_flag"/>
+        <result property="idCard" column="id_card"/>
     </resultMap>
 
     <sql id="selectReserveVo">
@@ -48,13 +49,25 @@
             d.create_time,
             d.remark,
             d.release,
-            d.del_flag
+            d.del_flag,
+            d.id_card
         from business_reserve d
     </sql>
-
-    <select id="selectReserveList" parameterType="SysDept" resultMap="BusinessReserveResult">
+    <select id="selectReserveList" parameterType="BusinessReserve" resultMap="BusinessReserveResult">
         <include refid="selectReserveVo"/>
         where d.del_flag = '0'
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+            <if test="reserveName != null and reserveName != ''">
+                AND dept_name like concat('%', #{reserveName}, '%')
+            </if>
+            <if test="announcementStartTime != null">
+                AND date_format(announcement_start_time,'%y%m%d') &gt;= date_format(#{announcementStartTime},'%y%m%d')
+            </if>
+            <if test="announcementEndTime != null">
+                AND date_format(announcement_end_time,'%y%m%d') &lt;= date_format(#{announcementEndTime},'%y%m%d')
+            </if>
         order by d.create_time DESC
     </select>
 
@@ -81,19 +94,20 @@
         <if test="reserveNum != null">reserve_num,</if>
         <if test="annexUrl != null and annexUrl != ''">annex_url,</if>
         <if test="createBy != null and createBy != ''">create_by,</if>
-        <if test="createTime != null ">create_time,</if>
         <if test="remark != null and remark != ''">remark,</if>
         <if test="release != null">release,</if>
-        <if test="delFlag != null and delFlag != ''">del_flag</if>
+        <if test="delFlag != null and delFlag != ''">del_flag,</if>
+        <if test="idCard != null and idCard != ''">id_card,</if>
+        create_time
         )values(
         <if test="reserveName != null and reserveName != ''">#{reserveName},</if>
         <if test="deptId != null">#{deptId},</if>
         <if test="deptName != null and deptName != ''">#{deptName},</if>
-        <if test="announcementStartTime != null and announcementStartTime != ''">#{announcementStartTime},</if>
-        <if test="announcementEndTime != null and announcementEndTime != ''">#{announcementEndTime},</if>
-        <if test="reserveStartTime != null and reserveStartTime != ''">#{reserveStartTime},</if>
-        <if test="reserveEndTime != null and reserveEndTime != ''">#{reserveEndTime},</if>
-        <if test="withdrawTime != null and withdrawTime != ''">#{withdrawTime},</if>
+        <if test="announcementStartTime != null">#{announcementStartTime},</if>
+        <if test="announcementEndTime != null">#{announcementEndTime},</if>
+        <if test="reserveStartTime != null">#{reserveStartTime},</if>
+        <if test="reserveEndTime != null">#{reserveEndTime},</if>
+        <if test="withdrawTime != null">#{withdrawTime},</if>
         <if test="reserveType != null and reserveType != ''">#{reserveType},</if>
         <if test="reserveContent != null and reserveContent != ''">#{reserveContent},</if>
         <if test="reserveAmContent != null and reserveAmContent != ''">#{reserveAmContent},</if>
@@ -102,10 +116,12 @@
         <if test="reserveNum != null">#{reserveNum},</if>
         <if test="annexUrl != null and annexUrl != ''">#{annexUrl},</if>
         <if test="createBy != null and createBy != ''">#{createBy},</if>
-        <if test="createTime != null and createTime != ''">#{createTime},</if>
-        <if test="createBy != null and createBy != ''">#{remark},</if>
-        <if test="release != null and release != ''">#{release},</if>
-        <if test="delFlag != null and delFlag != ''">#{delFlag}</if>
+        <if test="createTime != null">#{createTime},</if>
+        <if test="remark != null and remark != ''">#{remark},</if>
+        <if test="release != null">#{release},</if>
+        <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+        <if test="idCard != null and idCard != ''">#{idCard},</if>
+        sysdate()
         )
     </insert>
 
@@ -115,15 +131,15 @@
             <if test="reserveName != null and reserveName != ''">reserve_name = #{reserveName},</if>
             <if test="deptId != null">dept_id=#{deptId},</if>
             <if test="deptName != null and deptName != ''">dept_name= #{deptName},</if>
-            <if test="announcementStartTime != null and announcementStartTime != ''">announcement_start_time=
+            <if test="announcementStartTime != null">announcement_start_time=
                 #{announcementStartTime},
             </if>
-            <if test="announcementEndTime != null and announcementEndTime != ''">announcement_end_time=
+            <if test="announcementEndTime != null">announcement_end_time=
                 #{announcementEndTime},
             </if>
-            <if test="reserveStartTime != null and reserveStartTime != ''">reserve_start_time= #{reserveStartTime},</if>
-            <if test="reserveEndTime != null and reserveEndTime != ''">reserve_end_time= #{reserveEndTime},</if>
-            <if test="withdrawTime != null and withdrawTime != ''">withdraw_time= #{withdrawTime},</if>
+            <if test="reserveStartTime != null">reserve_start_time= #{reserveStartTime},</if>
+            <if test="reserveEndTime != null">reserve_end_time= #{reserveEndTime},</if>
+            <if test="withdrawTime != null">withdraw_time= #{withdrawTime},</if>
             <if test="reserveType != null and reserveType != ''">reserve_type= #{reserveType},</if>
             <if test="reserveContent != null and reserveContent != ''">reserve_content= #{reserveContent},</if>
             <if test="reserveAmContent != null and reserveAmContent != ''">reserve_am_content= #{reserveAmContent},</if>
@@ -132,9 +148,10 @@
             <if test="reserveNum != null">reserve_num= #{reserveNum},</if>
             <if test="annexUrl != null and annexUrl != ''">annex_url= #{annexUrl},</if>
             <if test="createBy != null and createBy != ''">create_by= #{createBy},</if>
-            <if test="createTime != null and createTime != ''">create_time= #{createTime},</if>
+            <if test="createTime != null">create_time= #{createTime},</if>
             <if test="remark != null and remark != ''">remark= #{remark},</if>
-            <if test="release != null and release != ''">release= #{release},</if>
+            <if test="release != null">release= #{release},</if>
+            <if test="idCard != null and idCard != ''">idCard= #{idCard},</if>
             <if test="delFlag != null and delFlag != ''">del_flag= #{delFlag}</if>
         </set>
         where id = #{id}

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysReservePersonnelMapper">
+
+    <resultMap type="BusinessReservePersonnel" id="BusinessReservePersonnelResult">
+        <id property="id" column="id"/>
+        <result property="reserveNumber" column="reserve_number"/>
+        <result property="appointmentDate" column="appointment_date"/>
+        <result property="appointmentPeriod" column="appointment_period"/>
+        <result property="reserveName" column="reserve_name"/>
+        <result property="reserveId" column="reserve_id"/>
+        <result property="numberLimit" column="number_limit"/>
+        <result property="createTime" column="create_time"/>
+        <result property="name" column="name"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="idCard" column="id_card"/>
+        <result property="sex" column="sex"/>
+        <result property="education" column="education"/>
+        <result property="status" column="status"/>
+        <result property="expand_1" column="expand_1"/>
+        <result property="expand_2" column="expand_2"/>
+        <result property="expand_3" column="expand_3"/>
+        <result property="expand_4" column="expand_4"/>
+        <result property="expand_5" column="expand_5"/>
+        <result property="expand_6" column="expand_6"/>
+        <result property="expand_7" column="expand_7"/>
+        <result property="expand_8" column="expand_8"/>
+    </resultMap>
+
+    <sql id="selectReserveContentVo">
+        select d.id,
+            d.reserve_number,
+            d.appointment_date,
+            d.appointment_period,
+            d.reserve_name,
+            d.reserve_id,
+            d.create_time,
+            d.name,
+            d.phone_number,
+            d.id_card,
+            d.sex,
+            d.education,
+            d.status,
+            d.expand_1,
+            d.expand_2,
+            d.expand_3,
+            d.expand_4,
+            d.expand_5,
+            d.expand_6,
+            d.expand_7,
+            d.expand_8
+        from business_reserve_personnel d
+    </sql>
+
+    <select id="selectPersonnelById" parameterType="Integer" resultMap="BusinessReservePersonnelResult">
+        <include refid="selectReserveContentVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectPersonnelByRId" parameterType="Integer" resultMap="BusinessReservePersonnelResult">
+        <include refid="selectReserveContentVo"/>
+        where reserve_id = #{reserveId}
+    </select>
+
+</mapper> 

@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
+import java.util.List;
 
 @ApiModel("预约实体")
 public class BusinessReserveReq {
@@ -64,18 +65,46 @@ public class BusinessReserveReq {
      * 预约公共内容
      */
     @ApiModelProperty("预约公共内容")
-    @NotBlank(message = "预约公共内容不能为空")
-    private String reserveAmContent;
+    private List<ReserveAmContentReq> reserveAmContentList;
     /**
      * 预约登记信息
      */
     @ApiModelProperty("预约登记信息")
-    private String reserveRegister;
+    private List<ReserveRegisterReq> reserveRegisterList;
     /**
      * 附件地址
      */
     @ApiModelProperty("附件地址")
     private String annexUrl;
+    /**
+     * 特殊人群身份证
+     */
+    @ApiModelProperty("特殊人群身份证")
+    private List<String> idCardList;
+
+    public void setIdCardList(List<String> idCardList) {
+        this.idCardList = idCardList;
+    }
+
+    public List<String> getIdCardList() {
+        return idCardList;
+    }
+
+    public void setReserveAmContentList(List<ReserveAmContentReq> reserveAmContentList) {
+        this.reserveAmContentList = reserveAmContentList;
+    }
+
+    public void setReserveRegisterList(List<ReserveRegisterReq> reserveRegisterList) {
+        this.reserveRegisterList = reserveRegisterList;
+    }
+
+    public List<ReserveAmContentReq> getReserveAmContentList() {
+        return reserveAmContentList;
+    }
+
+    public List<ReserveRegisterReq> getReserveRegisterList() {
+        return reserveRegisterList;
+    }
 
     public void setId(Integer id) {
         this.id = id;
@@ -113,13 +142,6 @@ public class BusinessReserveReq {
         this.reserveContent = reserveContent;
     }
 
-    public void setReserveAmContent(String reserveAmContent) {
-        this.reserveAmContent = reserveAmContent;
-    }
-
-    public void setReserveRegister(String reserveRegister) {
-        this.reserveRegister = reserveRegister;
-    }
 
     public void setAnnexUrl(String annexUrl) {
         this.annexUrl = annexUrl;
@@ -161,15 +183,8 @@ public class BusinessReserveReq {
         return reserveContent;
     }
 
-    public String getReserveAmContent() {
-        return reserveAmContent;
-    }
-
-    public String getReserveRegister() {
-        return reserveRegister;
-    }
-
     public String getAnnexUrl() {
         return annexUrl;
     }
+
 }

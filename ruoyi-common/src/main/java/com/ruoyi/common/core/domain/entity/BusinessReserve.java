@@ -112,7 +112,45 @@ public class BusinessReserve {
      * 删除标志（0代表存在 2代表删除）
      */
     private String delFlag;
+    /**
+     * 身份证
+     */
+    @ApiModelProperty("身份证")
+    private String idCard;
+    /**
+     * 已到
+     */
+    @ApiModelProperty("已到")
+    private Integer arrived;
+    /**
+     * 爽约
+     */
+    @ApiModelProperty("爽约")
+    private Integer notHere;
 
+    public void setArrived(Integer arrived) {
+        this.arrived = arrived;
+    }
+
+    public void setNotHere(Integer notHere) {
+        this.notHere = notHere;
+    }
+
+    public Integer getArrived() {
+        return arrived;
+    }
+
+    public Integer getNotHere() {
+        return notHere;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
 
     public void setId(Integer id) {
         this.id = id;

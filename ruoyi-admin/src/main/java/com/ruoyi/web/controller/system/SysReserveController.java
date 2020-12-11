@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.system;
 
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -9,6 +10,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.system.service.SysReserveContentService;
 import com.ruoyi.system.service.SysReserveService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,8 +34,10 @@ import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
 public class SysReserveController extends BaseController {
     @Autowired
     SysReserveService sysReserveService;
+    @Autowired
+    SysReserveContentService sysReserveContentService;
 
-    @ApiOperation("预约管理列表/现场办理列表")
+    @ApiOperation("预约管理列表")
     @GetMapping("/list")
     public TableDataInfo list(@RequestParam("pageNum") Integer pageNum,
                               @RequestParam("pageSize") Integer pageSize,
@@ -68,7 +72,42 @@ public class SysReserveController extends BaseController {
     public AjaxResult add(@Validated @RequestBody BusinessReserveReq businessReserveReq) {
         BusinessReserve businessReserve = new BusinessReserve();
         BeanUtils.copyProperties(businessReserveReq, businessReserve);
-        return toAjax(sysReserveService.insertReserve(businessReserve));
+        if (!businessReserveReq.getReserveRegisterList().isEmpty()) {
+            businessReserve.setReserveRegister(JSON.toJSONString(businessReserveReq.getReserveRegisterList()));
+        }
+        if (!businessReserveReq.getReserveAmContentList().isEmpty()) {
+            businessReserve.setReserveAmContent(JSON.toJSONString(businessReserveReq.getReserveAmContentList()));
+        }
+        if (!businessReserveReq.getIdCardList().isEmpty()) {
+            businessReserve.setIdCard(JSON.toJSONString(businessReserveReq.getIdCardList()));
+        }
+        return toAjax(sysReserveService.insertReserve(businessReserve,businessReserveReq.getReserveAmContentList()));
+    }
+
+
+    /**
+     * 修改预约
+     */
+    @ApiOperation("修改预约")
+    @Log(title = "预约管理", businessType = BusinessType.UPDATE)
+    @PutMapping
+    public AjaxResult edit(@Validated @RequestBody BusinessReserveReq businessReserveReq) {
+        BusinessReserve businessReserve = sysReserveService.selectReserveById(businessReserveReq.getId());
+        if (!"0".equals(businessReserve.getStatus())) {
+            return AjaxResult.error("删除活动'" + businessReserveReq.getId() + "'失败，只有未发布活动可修改");
+        }
+        BusinessReserve upReserve = new BusinessReserve();
+        BeanUtils.copyProperties(businessReserveReq, upReserve);
+        if (!businessReserveReq.getReserveRegisterList().isEmpty()) {
+            upReserve.setReserveRegister(JSON.toJSONString(businessReserveReq.getReserveRegisterList()));
+        }
+        if (!businessReserveReq.getReserveAmContentList().isEmpty()) {
+            upReserve.setReserveAmContent(JSON.toJSONString(businessReserveReq.getReserveAmContentList()));
+        }
+        if (!businessReserveReq.getIdCardList().isEmpty()) {
+            upReserve.setIdCard(JSON.toJSONString(businessReserveReq.getIdCardList()));
+        }
+        return toAjax(sysReserveService.updateReserve(upReserve));
     }
 
     /**

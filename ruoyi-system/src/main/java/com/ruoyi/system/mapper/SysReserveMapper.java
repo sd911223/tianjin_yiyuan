@@ -43,4 +43,6 @@ public interface SysReserveMapper {
     int deleteReserveById(Integer id);
 
     BusinessReserve selectReserveById(Integer id);
+
+    int updateReserve(BusinessReserve upReserve);
 }
