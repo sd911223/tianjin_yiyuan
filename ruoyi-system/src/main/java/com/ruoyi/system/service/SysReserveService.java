@@ -27,5 +27,5 @@ public interface SysReserveService {
 
     BusinessReserve selectReserveById(Integer id);
 
-    int updateReserve(BusinessReserve upReserve);
+    int updateReserve(BusinessReserve upReserve, List<ReserveAmContentReq> reserveAmContentList);
 }

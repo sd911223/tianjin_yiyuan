@@ -38,8 +38,8 @@ public class SysReserveServiceImpl implements SysReserveService {
     public int insertReserve(BusinessReserve businessReserve, List<ReserveAmContentReq> reserveAmContentList) {
         if (!reserveAmContentList.isEmpty()) {
             reserveAmContentList.forEach(e -> {
-                BusinessReserveContent businessReserveContent= new BusinessReserveContent();
-                BeanUtils.copyProperties(e,businessReserveContent);
+                BusinessReserveContent businessReserveContent = new BusinessReserveContent();
+                BeanUtils.copyProperties(e, businessReserveContent);
                 sysReserveContentMapper.insertReserveContent(businessReserveContent);
             });
         }
@@ -67,7 +67,20 @@ public class SysReserveServiceImpl implements SysReserveService {
     }
 
     @Override
-    public int updateReserve(BusinessReserve upReserve) {
+    public int updateReserve(BusinessReserve upReserve, List<ReserveAmContentReq> reserveAmContentList) {
+        if (!reserveAmContentList.isEmpty()) {
+            List<BusinessReserveContent> contentList = sysReserveContentMapper.selectContentByRId(upReserve.getId());
+            if (!contentList.isEmpty()) {
+                contentList.forEach(content -> {
+                    sysReserveContentMapper.delectReserveContent(content.getId());
+                });
+            }
+            reserveAmContentList.forEach(e -> {
+                BusinessReserveContent businessReserveContent = new BusinessReserveContent();
+                BeanUtils.copyProperties(e, businessReserveContent);
+                sysReserveContentMapper.insertReserveContent(businessReserveContent);
+            });
+        }
         return sysReserveMapper.updateReserve(upReserve);
     }
 }

@@ -81,7 +81,7 @@ public class SysReserveController extends BaseController {
         if (!businessReserveReq.getIdCardList().isEmpty()) {
             businessReserve.setIdCard(JSON.toJSONString(businessReserveReq.getIdCardList()));
         }
-        return toAjax(sysReserveService.insertReserve(businessReserve,businessReserveReq.getReserveAmContentList()));
+        return toAjax(sysReserveService.insertReserve(businessReserve, businessReserveReq.getReserveAmContentList()));
     }
 
 
@@ -107,7 +107,7 @@ public class SysReserveController extends BaseController {
         if (!businessReserveReq.getIdCardList().isEmpty()) {
             upReserve.setIdCard(JSON.toJSONString(businessReserveReq.getIdCardList()));
         }
-        return toAjax(sysReserveService.updateReserve(upReserve));
+        return toAjax(sysReserveService.updateReserve(upReserve, businessReserveReq.getReserveAmContentList()));
     }
 
     /**

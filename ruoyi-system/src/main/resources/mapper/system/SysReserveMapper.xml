@@ -38,6 +38,7 @@
             d.announcement_end_time,
             d.reserve_start_time,
             d.reserve_end_time,
+            d,reserve_am_content,
             d.withdraw_time,
             d.reserve_type,
             d.reserve_content,

@@ -14,4 +14,6 @@ public interface SysReserveContentMapper {
     int insertReserveContent(BusinessReserveContent businessReserveContent);
 
     List<BusinessReserveContent> selectContentByRId(Integer reserveId);
+
+    int delectReserveContent(Integer id);
 }

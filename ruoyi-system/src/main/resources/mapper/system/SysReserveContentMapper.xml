@@ -26,6 +26,10 @@
             d.sort_number
         from business_reserve_content d
     </sql>
+    <delete id="delectReserveContent" parameterType="Integer">
+        delete from business_reserve_content
+        where id=#{id};
+    </delete>
 
     <select id="selectContentById" parameterType="Integer" resultMap="BusinessReserveContentResult">
         <include refid="selectReserveContentVo"/>
