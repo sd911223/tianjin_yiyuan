@@ -71,7 +71,7 @@
         order by d.create_time DESC
     </select>
 
-    <select id="selectReserveById" parameterType="Long" resultMap="BusinessReserveResult">
+    <select id="selectReserveById" parameterType="Integer" resultMap="BusinessReserveResult">
         <include refid="selectReserveVo"/>
         where id = #{id}
     </select>
@@ -151,7 +151,7 @@
             <if test="createTime != null">create_time= #{createTime},</if>
             <if test="remark != null and remark != ''">remark= #{remark},</if>
             <if test="release != null">release= #{release},</if>
-            <if test="idCard != null and idCard != ''">idCard= #{idCard},</if>
+            <if test="idCard != null and idCard != ''">id_card= #{idCard},</if>
             <if test="delFlag != null and delFlag != ''">del_flag= #{delFlag}</if>
         </set>
         where id = #{id}

@@ -44,7 +44,7 @@ public class CommonController
      * @param delete 是否删除
      */
     @ApiOperation("下载")
-    @GetMapping(MEDICINE_API+"common/download")
+    @GetMapping(MEDICINE_API+"/common/download")
     public void fileDownload(String fileName, Boolean delete, HttpServletResponse response, HttpServletRequest request)
     {
         try
