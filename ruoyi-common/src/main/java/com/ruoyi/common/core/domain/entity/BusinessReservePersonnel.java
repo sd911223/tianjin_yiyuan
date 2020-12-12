@@ -1,6 +1,7 @@
 package com.ruoyi.common.core.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ruoyi.common.annotation.Excel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -16,6 +17,7 @@ public class BusinessReservePersonnel {
      * 预约号
      */
     @ApiModelProperty("预约号")
+    @Excel(name = "预约号")
     private String reserveNumber;
     /**
      * 日期
@@ -49,17 +51,20 @@ public class BusinessReservePersonnel {
     /**
      * 姓名
      */
+    @Excel(name = "姓名")
     @ApiModelProperty("姓名")
     private String name;
     /**
      * 手机号
      */
     @ApiModelProperty("手机号")
+    @Excel(name = "手机号")
     private String phoneNumber;
     /**
      * 身份证
      */
     @ApiModelProperty("身份证")
+    @Excel(name = "身份证")
     private String idCard;
     /**
      * 性别
@@ -75,12 +80,14 @@ public class BusinessReservePersonnel {
      * 状态 0未办结 1:已办结 2:未到场
      */
     @ApiModelProperty("状态 0未办结 1:已办结 2:未到场")
+    @Excel(name = "状态", readConverterExp = "0=未办结,1=已办结,2=未到场")
     private String status;
     /**
-     * 扩展
+     * 签到时间
      */
-    @ApiModelProperty("扩展字段")
-    private String expand_1;
+    @ApiModelProperty("签到时间")
+    @Excel(name = "签到时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    private String signTime;
     /**
      * 扩展
      */
@@ -116,6 +123,14 @@ public class BusinessReservePersonnel {
      */
     @ApiModelProperty("扩展字段")
     private String expand_8;
+
+    public void setSignTime(String signTime) {
+        this.signTime = signTime;
+    }
+
+    public String getSignTime() {
+        return signTime;
+    }
 
     public void setId(Integer id) {
         this.id = id;
@@ -169,9 +184,6 @@ public class BusinessReservePersonnel {
         this.status = status;
     }
 
-    public void setExpand_1(String expand_1) {
-        this.expand_1 = expand_1;
-    }
 
     public void setExpand_2(String expand_2) {
         this.expand_2 = expand_2;
@@ -251,10 +263,6 @@ public class BusinessReservePersonnel {
 
     public String getStatus() {
         return status;
-    }
-
-    public String getExpand_1() {
-        return expand_1;
     }
 
     public String getExpand_2() {
