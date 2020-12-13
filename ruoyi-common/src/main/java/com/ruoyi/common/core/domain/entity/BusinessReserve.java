@@ -107,7 +107,7 @@ public class BusinessReserve {
     /**
      * 发布时间
      */
-    private Date release;
+    private Date releaseTime;
     /**
      * 删除标志（0代表存在 2代表删除）
      */
@@ -127,6 +127,14 @@ public class BusinessReserve {
      */
     @ApiModelProperty("爽约")
     private Integer notHere;
+
+    public Date getReleaseTime() {
+        return releaseTime;
+    }
+
+    public void setReleaseTime(Date releaseTime) {
+        this.releaseTime = releaseTime;
+    }
 
     public void setArrived(Integer arrived) {
         this.arrived = arrived;
@@ -228,9 +236,6 @@ public class BusinessReserve {
         this.remark = remark;
     }
 
-    public void setRelease(Date release) {
-        this.release = release;
-    }
 
     public void setDelFlag(String delFlag) {
         this.delFlag = delFlag;
@@ -312,9 +317,6 @@ public class BusinessReserve {
         return remark;
     }
 
-    public Date getRelease() {
-        return release;
-    }
 
     public String getDelFlag() {
         return delFlag;
@@ -342,7 +344,6 @@ public class BusinessReserve {
                 ", createBy='" + createBy + '\'' +
                 ", createTime=" + createTime +
                 ", remark='" + remark + '\'' +
-                ", release=" + release +
                 ", delFlag='" + delFlag + '\'' +
                 '}';
     }

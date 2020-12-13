@@ -41,10 +41,10 @@ public class SysReserveController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(@RequestParam("pageNum") Integer pageNum,
                               @RequestParam("pageSize") Integer pageSize,
-                              @RequestParam("reserveName") String reserveName,
-                              @RequestParam("status") String status,
-                              @RequestParam("startTime") String startTime,
-                              @RequestParam("endTime") String endTime) {
+                              @RequestParam(value = "reserveName",required = false) String reserveName,
+                              @RequestParam(value ="status",required = false) String status,
+                              @RequestParam(value ="startTime",required = false) String startTime,
+                              @RequestParam(value ="endTime",required = false) String endTime) {
         startPage();
         BusinessReserve businessReserve = new BusinessReserve();
         if (!StringUtils.isEmpty(reserveName)) {
@@ -115,10 +115,10 @@ public class SysReserveController extends BaseController {
      */
     @ApiOperation("发布活动")
     @GetMapping(value = "/{id}")
-    public AjaxResult add(@PathVariable Long id) {
+    public AjaxResult add(@PathVariable Integer id) {
 
         BusinessReserve businessReserve = new BusinessReserve();
-        businessReserve.setId(id.intValue());
+        businessReserve.setId(id);
         businessReserve.setStatus("1");
         return toAjax(sysReserveService.updateReserveStatus(businessReserve));
     }

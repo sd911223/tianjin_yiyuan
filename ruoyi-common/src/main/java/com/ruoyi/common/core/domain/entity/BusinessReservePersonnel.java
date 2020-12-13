@@ -86,8 +86,9 @@ public class BusinessReservePersonnel {
      * 签到时间
      */
     @ApiModelProperty("签到时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "签到时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    private String signTime;
+    private Date signTime;
     /**
      * 扩展
      */
@@ -124,12 +125,12 @@ public class BusinessReservePersonnel {
     @ApiModelProperty("扩展字段")
     private String expand_8;
 
-    public void setSignTime(String signTime) {
-        this.signTime = signTime;
+    public Date getSignTime() {
+        return signTime;
     }
 
-    public String getSignTime() {
-        return signTime;
+    public void setSignTime(Date signTime) {
+        this.signTime = signTime;
     }
 
     public void setId(Integer id) {

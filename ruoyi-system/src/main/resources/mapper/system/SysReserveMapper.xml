@@ -24,7 +24,7 @@
         <result property="createBy" column="create_by"/>
         <result property="createTime" column="create_time"/>
         <result property="remark" column="remark"/>
-        <result property="release" column="release"/>
+        <result property="releaseTime" column="release_time"/>
         <result property="delFlag" column="del_flag"/>
         <result property="idCard" column="id_card"/>
     </resultMap>
@@ -38,7 +38,7 @@
             d.announcement_end_time,
             d.reserve_start_time,
             d.reserve_end_time,
-            d,reserve_am_content,
+            d.reserve_am_content,
             d.withdraw_time,
             d.reserve_type,
             d.reserve_content,
@@ -49,7 +49,7 @@
             d.create_by,
             d.create_time,
             d.remark,
-            d.release,
+            d.release_time,
             d.del_flag,
             d.id_card
         from business_reserve d
@@ -96,7 +96,7 @@
         <if test="annexUrl != null and annexUrl != ''">annex_url,</if>
         <if test="createBy != null and createBy != ''">create_by,</if>
         <if test="remark != null and remark != ''">remark,</if>
-        <if test="release != null">release,</if>
+        <if test="releaseTime != null">release_time,</if>
         <if test="delFlag != null and delFlag != ''">del_flag,</if>
         <if test="idCard != null and idCard != ''">id_card,</if>
         create_time
@@ -119,7 +119,7 @@
         <if test="createBy != null and createBy != ''">#{createBy},</if>
         <if test="createTime != null">#{createTime},</if>
         <if test="remark != null and remark != ''">#{remark},</if>
-        <if test="release != null">#{release},</if>
+        <if test="releaseTime != null">#{releaseTime},</if>
         <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
         <if test="idCard != null and idCard != ''">#{idCard},</if>
         sysdate()
@@ -151,7 +151,7 @@
             <if test="createBy != null and createBy != ''">create_by= #{createBy},</if>
             <if test="createTime != null">create_time= #{createTime},</if>
             <if test="remark != null and remark != ''">remark= #{remark},</if>
-            <if test="release != null">release= #{release},</if>
+            <if test="releaseTime != null">release_time= #{releaseTime},</if>
             <if test="idCard != null and idCard != ''">id_card= #{idCard},</if>
             <if test="delFlag != null and delFlag != ''">del_flag= #{delFlag}</if>
         </set>
@@ -163,7 +163,7 @@
         update business_reserve
         <set>
             <if test="status != null and status != ''">status = #{status},</if>
-            release = sysdate()
+            release_time = sysdate()
         </set>
         where id = #{id}
     </update>
