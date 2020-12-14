@@ -14,4 +14,7 @@ public interface SysReservePersonnelMapper {
     int updatePersonnelStatus(BusinessReservePersonnel businessReservePersonnel);
 
     int insertPersonnel(BusinessReservePersonnel businessReservePersonnel);
+
+    int updatePersonnelCanceType(BusinessReservePersonnel businessReservePersonnel);
+
 }

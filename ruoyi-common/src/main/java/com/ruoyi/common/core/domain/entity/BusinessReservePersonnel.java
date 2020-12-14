@@ -106,7 +106,7 @@ public class BusinessReservePersonnel {
      * 扩展
      */
     @ApiModelProperty("扩展字段")
-    private String expand_4;
+    private String canceType;
     /**
      * 扩展
      */
@@ -127,6 +127,14 @@ public class BusinessReservePersonnel {
      */
     @ApiModelProperty("扩展字段")
     private String expand_8;
+
+    public String getCanceType() {
+        return canceType;
+    }
+
+    public void setCanceType(String canceType) {
+        this.canceType = canceType;
+    }
 
     public String getOpenId() {
         return openId;
@@ -204,10 +212,6 @@ public class BusinessReservePersonnel {
         this.status = status;
     }
 
-    public void setExpand_4(String expand_4) {
-        this.expand_4 = expand_4;
-    }
-
     public void setExpand_5(String expand_5) {
         this.expand_5 = expand_5;
     }
@@ -274,10 +278,6 @@ public class BusinessReservePersonnel {
 
     public String getStatus() {
         return status;
-    }
-
-    public String getExpand_4() {
-        return expand_4;
     }
 
     public String getExpand_5() {

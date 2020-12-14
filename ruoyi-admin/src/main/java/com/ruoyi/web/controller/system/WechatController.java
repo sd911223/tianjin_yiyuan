@@ -1,15 +1,15 @@
 package com.ruoyi.web.controller.system;
 
 import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.entity.*;
+import com.ruoyi.common.core.domain.entity.BusinessReserve;
+import com.ruoyi.common.core.domain.entity.BusinessReserveContent;
+import com.ruoyi.common.core.domain.entity.BusinessReservePersonnel;
+import com.ruoyi.common.core.domain.entity.req.ReserveCancelReq;
 import com.ruoyi.common.core.domain.entity.resp.BusinessReserveResp;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.service.SysReserveContentService;
 import com.ruoyi.system.service.SysReserveService;
 import com.ruoyi.system.service.WechatService;
@@ -81,5 +81,28 @@ public class WechatController extends BaseController {
 
         return wechatService.insertPersonnel(businessReservePersonnel);
     }
+
+    /**
+     * 我的预约
+     */
+    @ApiOperation("我的预约")
+    @GetMapping("/myReserve")
+    public TableDataInfo myReserve(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestParam("openId") String openId) {
+        startPage();
+        List<BusinessReservePersonnel> list = wechatService.myReserve(openId);
+        return getDataTable(list);
+    }
+
+    /**
+     * 我要预约-取消
+     */
+    @ApiOperation("我要预约-取消")
+    @Log(title = "微信公众号", businessType = BusinessType.INSERT)
+    @PostMapping("/cancel")
+    public AjaxResult cancel(@Validated @RequestBody ReserveCancelReq reserveCancelReq) {
+
+        return wechatService.reserveCancel(reserveCancelReq);
+    }
+
 
 }

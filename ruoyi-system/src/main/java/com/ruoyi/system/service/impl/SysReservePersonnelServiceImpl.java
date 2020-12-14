@@ -36,6 +36,7 @@ public class SysReservePersonnelServiceImpl implements SysReservePersonnelServic
         if (!StringUtils.isEmpty(siteDetailedReq.getPhoneNumber())) {
             businessReservePersonnel.setPhoneNumber(siteDetailedReq.getPhoneNumber());
         }
+        businessReservePersonnel.setCanceType("0");
         return sysReservePersonnelMapper.selectPersonneList(businessReservePersonnel);
     }
 

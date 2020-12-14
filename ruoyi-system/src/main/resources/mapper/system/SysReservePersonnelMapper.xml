@@ -22,7 +22,7 @@
         <result property="signTime" column="sign_time"/>
         <result property="contentId" column="content_id"/>
         <result property="openId" column="open_id"/>
-        <result property="expand_4" column="expand_4"/>
+        <result property="canceType" column="cance_type"/>
         <result property="expand_5" column="expand_5"/>
         <result property="expand_6" column="expand_6"/>
         <result property="expand_7" column="expand_7"/>
@@ -46,13 +46,14 @@
             d.sign_time,
             d.content_id,
             d.open_id,
-            d.expand_4,
+            d.cance_type,
             d.expand_5,
             d.expand_6,
             d.expand_7,
             d.expand_8
         from business_reserve_personnel d
     </sql>
+
     <insert id="insertPersonnel" parameterType="BusinessReservePersonnel">
         insert into business_reserve_personnel(
         <if test="reserveNumber != null and reserveNumber != ''">reserve_number,</if>
@@ -67,7 +68,7 @@
         <if test="education != null and education != ''">education,</if>
         <if test="contentId != null">content_id,</if>
         <if test="openId != null and openId != ''">open_id,</if>
-        <if test="expand_4 != null and expand_4 != ''">expand_4,</if>
+        <if test="canceType != null and canceType != ''">cance_type,</if>
         <if test="expand_5 != null and expand_5 != ''">expand_5,</if>
         <if test="expand_6 != null and expand_6 != ''">expand_6,</if>
         <if test="expand_7 != null and expand_7 != ''">expand_7,</if>
@@ -86,7 +87,7 @@
         <if test="education != null and education != ''">#{education},</if>
         <if test="contentId != null">#{contentId},</if>
         <if test="openId != null and openId != ''">#{openId},</if>
-        <if test="expand_4 != null and expand_4 != ''">#{expand_4},</if>
+        <if test="canceType != null and canceType != ''">#{canceType},</if>
         <if test="expand_5 != null and expand_5 != ''">#{expand_5},</if>
         <if test="expand_6 != null and expand_6 != ''">#{expand_6},</if>
         <if test="expand_7 != null and expand_7 != ''">#{expand_7},</if>
@@ -94,6 +95,7 @@
         sysdate()
         )
     </insert>
+
     <update id="updatePersonnelStatus" parameterType="BusinessReservePersonnel">
         update business_reserve_personnel
         <set>
@@ -103,10 +105,21 @@
         where id = #{id}
     </update>
 
+    <update id="updatePersonnelCanceType" parameterType="BusinessReservePersonnel">
+        update business_reserve_personnel
+        <set>
+            <if test="canceType != null and canceType != ''">cance_type = '1',</if>
+            update_time = sysdate()
+        </set>
+        where id = #{id}
+
+    </update>
+
     <select id="selectPersonnelById" parameterType="Integer" resultMap="BusinessReservePersonnelResult">
         <include refid="selectReserveContentVo"/>
         where id = #{id}
     </select>
+
     <select id="selectPersonnelByRId" parameterType="Integer" resultMap="BusinessReservePersonnelResult">
         <include refid="selectReserveContentVo"/>
         where reserve_id = #{reserveId}
@@ -115,11 +128,17 @@
     <select id="selectPersonneList" parameterType="BusinessReservePersonnel" resultMap="BusinessReservePersonnelResult">
         <include refid="selectReserveContentVo"/>
         <where>
+            <if test="openId != null and openId != ''">
+                AND open_id = #{openId}
+            </if>
             <if test="reserveNumber != null and reserveNumber != ''">
                 AND reserve_number like concat('%', #{reserveNumber}, '%')
             </if>
             <if test="reserveId != null and reserveId != ''">
                 AND reserve_id = #{reserveId}
+            </if>
+            <if test="contentId != null and contentId != ''">
+                AND content_id = #{contentId}
             </if>
             <if test="idCard != null and idCard != ''">
                 AND id_card = #{idCard}
