@@ -311,16 +311,15 @@ public class SysUserServiceImpl implements ISysUserService
      */
     public void insertUserRole(SysUser user)
     {
-        Long[] roles = user.getRoleIds();
+        Long roles = user.getRoleIds();
         if (StringUtils.isNotNull(roles))
         {
             // 新增用户与角色管理
             List<SysUserRole> list = new ArrayList<SysUserRole>();
-            for (Long roleId : roles)
             {
                 SysUserRole ur = new SysUserRole();
                 ur.setUserId(user.getUserId());
-                ur.setRoleId(roleId);
+                ur.setRoleId(roles);
                 list.add(ur);
             }
             if (list.size() > 0)
@@ -453,5 +452,10 @@ public class SysUserServiceImpl implements ISysUserService
             successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
         }
         return successMsg.toString();
+    }
+
+    @Override
+    public List<SysUser> selectUserByUserName1(String userName) {
+        return userMapper.selectUserByUserName1(userName);
     }
 }

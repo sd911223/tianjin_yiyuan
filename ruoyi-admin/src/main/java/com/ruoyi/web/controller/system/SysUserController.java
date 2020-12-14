@@ -61,11 +61,8 @@ public class SysUserController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestParam("userName") String userName) {
         startPage();
-        SysUser sysUser = new SysUser();
-        if (!StringUtils.isEmpty(userName)) {
-            sysUser.setUserName(userName);
-        }
-        List<SysUser> list = userService.selectUserList(sysUser);
+
+        List<SysUser> list = userService.selectUserByUserName1(userName);
         return getDataTable(list);
     }
 

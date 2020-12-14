@@ -16,7 +16,7 @@ public interface ISysUserService
      * @param user 用户信息
      * @return 用户信息集合信息
      */
-    public List<SysUser> selectUserList(SysUser user);
+     List<SysUser> selectUserList(SysUser user);
 
     /**
      * 通过用户名查询用户
@@ -24,7 +24,7 @@ public interface ISysUserService
      * @param userName 用户名
      * @return 用户对象信息
      */
-    public SysUser selectUserByUserName(String userName);
+    SysUser selectUserByUserName(String userName);
 
     /**
      * 通过用户ID查询用户
@@ -164,4 +164,6 @@ public interface ISysUserService
      * @return 结果
      */
     public String importUser(List<SysUser> userList, Boolean isUpdateSupport, String operName);
+
+    List<SysUser> selectUserByUserName1(String userName);
 }

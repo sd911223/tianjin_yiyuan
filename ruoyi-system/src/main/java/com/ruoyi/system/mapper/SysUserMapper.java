@@ -27,6 +27,8 @@ public interface SysUserMapper {
      */
     SysUser selectUserByUserName(String userName);
 
+    List<SysUser> selectUserByUserName1(String userName);
+
     /**
      * 通过用户ID查询用户
      *

@@ -118,13 +118,21 @@ public class SysUser extends BaseEntity {
      * 角色组
      */
     @ApiModelProperty("角色组")
-    private Long[] roleIds;
+    private Long roleIds;
 
     /**
      * 岗位组
      */
     @ApiModelProperty("岗位组")
     private Long[] postIds;
+
+    public void setRoleIds(Long roleIds) {
+        this.roleIds = roleIds;
+    }
+
+    public Long getRoleIds() {
+        return roleIds;
+    }
 
     public SysUser() {
 
@@ -249,14 +257,6 @@ public class SysUser extends BaseEntity {
 
     public void setRoles(List<SysRole> roles) {
         this.roles = roles;
-    }
-
-    public Long[] getRoleIds() {
-        return roleIds;
-    }
-
-    public void setRoleIds(Long[] roleIds) {
-        this.roleIds = roleIds;
     }
 
     public Long[] getPostIds() {
