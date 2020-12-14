@@ -20,8 +20,8 @@
         <result property="education" column="education"/>
         <result property="status" column="status"/>
         <result property="signTime" column="sign_time"/>
-        <result property="expand_2" column="expand_2"/>
-        <result property="expand_3" column="expand_3"/>
+        <result property="contentId" column="content_id"/>
+        <result property="openId" column="open_id"/>
         <result property="expand_4" column="expand_4"/>
         <result property="expand_5" column="expand_5"/>
         <result property="expand_6" column="expand_6"/>
@@ -44,8 +44,8 @@
             d.education,
             d.status,
             d.sign_time,
-            d.expand_2,
-            d.expand_3,
+            d.content_id,
+            d.open_id,
             d.expand_4,
             d.expand_5,
             d.expand_6,
@@ -53,6 +53,47 @@
             d.expand_8
         from business_reserve_personnel d
     </sql>
+    <insert id="insertPersonnel" parameterType="BusinessReservePersonnel">
+        insert into business_reserve_personnel(
+        <if test="reserveNumber != null and reserveNumber != ''">reserve_number,</if>
+        <if test="appointmentDate != null">appointment_date,</if>
+        <if test="appointmentPeriod != null and appointmentPeriod != ''">appointment_period,</if>
+        <if test="reserveName != null and reserveName != ''">reserve_name,</if>
+        <if test="reserveId != null">reserve_id,</if>
+        <if test="name != null and name != ''">name,</if>
+        <if test="phoneNumber != null and phoneNumber != ''">phone_number,</if>
+        <if test="idCard != null and idCard != ''">id_card,</if>
+        <if test="sex != null and sex != ''">sex,</if>
+        <if test="education != null and education != ''">education,</if>
+        <if test="contentId != null">content_id,</if>
+        <if test="openId != null and openId != ''">open_id,</if>
+        <if test="expand_4 != null and expand_4 != ''">expand_4,</if>
+        <if test="expand_5 != null and expand_5 != ''">expand_5,</if>
+        <if test="expand_6 != null and expand_6 != ''">expand_6,</if>
+        <if test="expand_7 != null and expand_7 != ''">expand_7,</if>
+        <if test="expand_8 != null and expand_8 != ''">expand_8,</if>
+        create_time
+        )values(
+        <if test="reserveNumber != null and reserveNumber != ''">#{reserveNumber},</if>
+        <if test="appointmentDate != null">#{appointmentDate},</if>
+        <if test="appointmentPeriod != null and appointmentPeriod != ''">#{appointmentPeriod},</if>
+        <if test="reserveName != null and reserveName != ''">#{reserveName},</if>
+        <if test="reserveId != null">#{reserveId},</if>
+        <if test="name != null and name != ''">#{name},</if>
+        <if test="phoneNumber != null and phoneNumber != ''">#{phoneNumber},</if>
+        <if test="idCard != null and idCard != ''">#{idCard},</if>
+        <if test="sex != null and sex != ''">#{sex},</if>
+        <if test="education != null and education != ''">#{education},</if>
+        <if test="contentId != null">#{contentId},</if>
+        <if test="openId != null and openId != ''">#{openId},</if>
+        <if test="expand_4 != null and expand_4 != ''">#{expand_4},</if>
+        <if test="expand_5 != null and expand_5 != ''">#{expand_5},</if>
+        <if test="expand_6 != null and expand_6 != ''">#{expand_6},</if>
+        <if test="expand_7 != null and expand_7 != ''">#{expand_7},</if>
+        <if test="expand_8 != null and expand_8 != ''">#{expand_8},</if>
+        sysdate()
+        )
+    </insert>
     <update id="updatePersonnelStatus" parameterType="BusinessReservePersonnel">
         update business_reserve_personnel
         <set>

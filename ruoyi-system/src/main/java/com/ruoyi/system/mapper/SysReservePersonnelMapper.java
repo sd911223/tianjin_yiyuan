@@ -12,4 +12,6 @@ public interface SysReservePersonnelMapper {
     List<BusinessReservePersonnel> selectPersonneList(BusinessReservePersonnel businessReservePersonnel);
 
     int updatePersonnelStatus(BusinessReservePersonnel businessReservePersonnel);
+
+    int insertPersonnel(BusinessReservePersonnel businessReservePersonnel);
 }

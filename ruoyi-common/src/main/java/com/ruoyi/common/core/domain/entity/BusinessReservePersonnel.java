@@ -5,6 +5,7 @@ import com.ruoyi.common.annotation.Excel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @ApiModel("预约人员")
@@ -42,6 +43,7 @@ public class BusinessReservePersonnel {
      * 预约ID
      */
     @ApiModelProperty("预约ID")
+    @NotBlank(message = "预约ID不能为空")
     private Integer reserveId;
     /**
      * 扫码时间
@@ -90,15 +92,16 @@ public class BusinessReservePersonnel {
     @Excel(name = "签到时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date signTime;
     /**
-     * 扩展
+     * 内容ID
      */
-    @ApiModelProperty("扩展字段")
-    private String expand_2;
+    @NotBlank(message = "内容ID不能为空")
+    @ApiModelProperty("内容ID")
+    private Integer contentId;
     /**
-     * 扩展
+     * openID
      */
-    @ApiModelProperty("扩展字段")
-    private String expand_3;
+    @ApiModelProperty("openID")
+    private String openId;
     /**
      * 扩展
      */
@@ -124,6 +127,22 @@ public class BusinessReservePersonnel {
      */
     @ApiModelProperty("扩展字段")
     private String expand_8;
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+
+    public Integer getContentId() {
+        return contentId;
+    }
+
+    public void setContentId(Integer contentId) {
+        this.contentId = contentId;
+    }
 
     public Date getSignTime() {
         return signTime;
@@ -183,15 +202,6 @@ public class BusinessReservePersonnel {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-
-    public void setExpand_2(String expand_2) {
-        this.expand_2 = expand_2;
-    }
-
-    public void setExpand_3(String expand_3) {
-        this.expand_3 = expand_3;
     }
 
     public void setExpand_4(String expand_4) {
@@ -264,14 +274,6 @@ public class BusinessReservePersonnel {
 
     public String getStatus() {
         return status;
-    }
-
-    public String getExpand_2() {
-        return expand_2;
-    }
-
-    public String getExpand_3() {
-        return expand_3;
     }
 
     public String getExpand_4() {

@@ -1,24 +1,24 @@
 package com.ruoyi.web.controller.system;
 
-import com.github.pagehelper.PageInfo;
-import com.ruoyi.common.constant.HttpStatus;
+import com.ruoyi.common.annotation.Log;
+import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.entity.BusinessReserve;
-import com.ruoyi.common.core.domain.entity.BusinessReserveContent;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.entity.*;
 import com.ruoyi.common.core.domain.entity.resp.BusinessReserveResp;
 import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.service.SysReserveContentService;
 import com.ruoyi.system.service.SysReserveService;
 import com.ruoyi.system.service.WechatService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
@@ -51,34 +51,38 @@ public class WechatController extends BaseController {
         return getDataTable(list);
     }
 
-    @ApiOperation("预约查询")
-    @GetMapping("/queryReserve")
-    public TableDataInfo queryReserve(@RequestParam("pageNum") Integer pageNum,
-                                      @RequestParam("pageSize") Integer pageSize) {
-        startPage();
-        BusinessReserve businessReserve = new BusinessReserve();
-        ArrayList<BusinessReserveResp> reserveRespArrayList = new ArrayList<>();
-        //查询状态为发布的 1:已发布
-        businessReserve.setStatus("1");
-        List<BusinessReserve> list = sysReserveService.selectReserveList(businessReserve);
-        if (!list.isEmpty()) {
-            list.forEach(e -> {
-                BusinessReserveResp businessReserveResp = new BusinessReserveResp();
-                List<BusinessReserveContent> businessReserveContents = sysReserveContentService.selectContentByRId(e.getId());
-                businessReserveResp.setBusinessReserveContentList(businessReserveContents);
-                businessReserveResp.setId(e.getId());
-                businessReserveResp.setReserveName(e.getReserveName());
-                businessReserveResp.setReserveRegister(e.getReserveRegister());
-                reserveRespArrayList.add(businessReserveResp);
-            });
-        }
+    /**
+     * 我要预约-查询
+     *
+     * @param id
+     * @return
+     */
+    @ApiOperation("我要预约-查询")
+    @GetMapping("/queryReserve/{id}")
+    public AjaxResult queryReserve(@PathVariable Integer id) {
+        BusinessReserve businessReserve = sysReserveService.selectReserveById(id);
+        BusinessReserveResp businessReserveResp = new BusinessReserveResp();
+        List<BusinessReserveContent> businessReserveContents = sysReserveContentService.selectContentByRId(businessReserve.getId());
+        businessReserveResp.setBusinessReserveContentList(businessReserveContents);
+        businessReserveResp.setId(businessReserve.getId());
+        businessReserveResp.setReserveName(businessReserve.getReserveName());
+        businessReserveResp.setReserveRegister(businessReserve.getReserveRegister());
+        return AjaxResult.success(businessReserveResp);
 
-        TableDataInfo rspData = new TableDataInfo();
-        rspData.setCode(HttpStatus.SUCCESS);
-        rspData.setMsg("查询成功");
-        rspData.setRows(reserveRespArrayList);
-        rspData.setTotal(new PageInfo(list).getTotal());
-        return rspData;
+    }
+
+    /**
+     * 我要预约-保存
+     */
+    @ApiOperation("我要预约-保存")
+    @Log(title = "微信公众号", businessType = BusinessType.INSERT)
+    @PostMapping
+    public AjaxResult add(@Validated @RequestBody BusinessReservePersonnel businessReservePersonnel) {
+        BusinessReserve businessReserve = sysReserveService.selectReserveById(businessReservePersonnel.getReserveId());
+        if (businessReserve == null) {
+            return AjaxResult.error("我要预约-预约号'" + businessReservePersonnel.getReserveId() + "'失败，预约项目不存在");
+        }
+        return wechatService.insertPersonnel(businessReservePersonnel);
     }
 
 }
