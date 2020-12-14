@@ -78,10 +78,7 @@ public class WechatController extends BaseController {
     @Log(title = "微信公众号", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@Validated @RequestBody BusinessReservePersonnel businessReservePersonnel) {
-        BusinessReserve businessReserve = sysReserveService.selectReserveById(businessReservePersonnel.getReserveId());
-        if (businessReserve == null) {
-            return AjaxResult.error("我要预约-预约号'" + businessReservePersonnel.getReserveId() + "'失败，预约项目不存在");
-        }
+
         return wechatService.insertPersonnel(businessReservePersonnel);
     }
 

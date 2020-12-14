@@ -78,5 +78,8 @@
         </set>
         where id = #{id}
     </update>
+    <update id="updateSurplusNumber">
+     update business_reserve_content set surplus_number = #{surplusNumber} where id = #{id}
+    </update>
 
 </mapper> 

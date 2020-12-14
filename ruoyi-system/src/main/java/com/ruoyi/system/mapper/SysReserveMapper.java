@@ -45,4 +45,7 @@ public interface SysReserveMapper {
     BusinessReserve selectReserveById(Integer id);
 
     int updateReserve(BusinessReserve upReserve);
+
+    int updateReserveNum(BusinessReserve businessReserve);
+
 }

@@ -18,4 +18,6 @@ public interface SysReserveContentMapper {
     BusinessReserveContent  selectContentById(Integer id);
 
     int delectReserveContent(Integer id);
+
+    int updateSurplusNumber(BusinessReserveContent businessReserveContent);
 }
