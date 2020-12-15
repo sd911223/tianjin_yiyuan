@@ -12,6 +12,7 @@ import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.system.service.ISysUserService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -63,12 +64,16 @@ public class SysProfileController extends BaseController {
     /**
      * 重置密码
      */
+    @ApiOperation("修改密碼")
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
     @PutMapping("/updatePwd")
-    public AjaxResult updatePwd(String oldPassword, String newPassword) {
+    public AjaxResult updatePwd(String oldPassword, String newPassword,String newPasswordTow) {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         String userName = loginUser.getUsername();
         String password = loginUser.getPassword();
+        if (!newPassword.equals(newPasswordTow)){
+            return AjaxResult.error("兩次新密码不相同");
+        }
         if (!SecurityUtils.matchesPassword(oldPassword, password)) {
             return AjaxResult.error("修改密码失败，旧密码错误");
         }
