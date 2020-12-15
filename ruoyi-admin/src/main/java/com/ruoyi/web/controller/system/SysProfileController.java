@@ -12,6 +12,7 @@ import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.system.service.ISysUserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +20,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
+
 /**
  * 个人信息 业务处理
  *
  * @author ruoyi
  */
+@Api(tags = "个人信息")
 @RestController
-@RequestMapping("/system/user/profile")
+@RequestMapping(MEDICINE_API +"/system/user/profile")
 public class SysProfileController extends BaseController {
     @Autowired
     private ISysUserService userService;
@@ -64,7 +68,7 @@ public class SysProfileController extends BaseController {
     /**
      * 重置密码
      */
-    @ApiOperation("修改密碼")
+    @ApiOperation("修改密码")
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
     @PutMapping("/updatePwd")
     public AjaxResult updatePwd(String oldPassword, String newPassword,String newPasswordTow) {
