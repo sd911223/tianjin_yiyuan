@@ -12,4 +12,6 @@ public interface WechatService {
     List<BusinessReservePersonnel> myReserve(String openId);
 
     AjaxResult reserveCancel(ReserveCancelReq reserveCancelReq);
+
+    AjaxResult getAccessToken();
 }

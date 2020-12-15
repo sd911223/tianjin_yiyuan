@@ -117,3 +117,7 @@ xss:
   excludes: /system/notice/*
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+wechat:
+  appid: wx47bd8aa584b53c77
+  secret: 6cb1462e6a2341d7c0e281add7d84461
+  access_token_url: https://api.weixin.qq.com/cgi-bin/token

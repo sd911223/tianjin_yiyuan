@@ -104,5 +104,12 @@ public class WechatController extends BaseController {
         return wechatService.reserveCancel(reserveCancelReq);
     }
 
+    @ApiOperation("获取access_token")
+    @GetMapping("/accessToken")
+    public AjaxResult getAccessToken() {
+
+        return wechatService.getAccessToken();
+    }
+
 
 }

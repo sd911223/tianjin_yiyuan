@@ -1,15 +1,19 @@
 package com.ruoyi.system.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.BusinessReserve;
 import com.ruoyi.common.core.domain.entity.BusinessReserveContent;
 import com.ruoyi.common.core.domain.entity.BusinessReservePersonnel;
 import com.ruoyi.common.core.domain.entity.req.ReserveCancelReq;
+import com.ruoyi.common.core.domain.entity.resp.WechatResp;
+import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.system.mapper.SysReserveContentMapper;
 import com.ruoyi.system.mapper.SysReserveMapper;
 import com.ruoyi.system.mapper.SysReservePersonnelMapper;
 import com.ruoyi.system.service.WechatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +27,30 @@ public class WechatServiceImpl implements WechatService {
     SysReserveContentMapper sysReserveContentMapper;
     @Autowired
     SysReserveMapper sysReserveMapper;
+
+    @Value("${wechat.appid}")
+    private String appid;
+    @Value("{${wechat.secret}}")
+    private String secret;
+
+    @Value("${wechat.access_token_url}")
+    private String accessTokenUrl;
+
+    public AjaxResult getAccessToken() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("grant_type=client_credential&");
+        sb.append("appid=");
+        sb.append(appid);
+        sb.append("&secret=");
+        sb.append(secret);
+        String s = HttpUtils.sendGet(accessTokenUrl, sb.toString());
+        WechatResp wechatResp = JSON.parseObject(JSON.toJSONString(s), WechatResp.class);
+        if (!"".equals(wechatResp.getAccess_token())) {
+            return AjaxResult.success(wechatResp.getAccess_token());
+        } else {
+            return AjaxResult.error("获取accessToken失败");
+        }
+    }
 
     @Transactional
     @Override
