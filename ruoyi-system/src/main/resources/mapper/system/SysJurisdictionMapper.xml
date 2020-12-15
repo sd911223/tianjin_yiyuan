@@ -12,7 +12,7 @@
     </resultMap>
     <select id="selectJurisdictionList" resultMap="SysJurisdictionResult">
 		select id, jurisdiction_value, jurisdiction_name, create_time, del_flag from sys_jurisdiction
-		order by create_time desc
+		ORDER BY order_num ASC
 	</select>
 
     <select id="selectJurisdictionById" resultMap="SysJurisdictionResult" parameterType="Integer">
