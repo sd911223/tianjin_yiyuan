@@ -1,9 +1,9 @@
 # 项目相关配置
 ruoyi:
   # 名称
-  name: RuoYi
+  name: ShiTou
   # 版本
-  version: 3.2.1
+  version: 1.0.0
   # 版权年份
   copyrightYear: 2020
   # 实例演示开关

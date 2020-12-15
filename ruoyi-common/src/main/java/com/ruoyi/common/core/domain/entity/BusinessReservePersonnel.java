@@ -127,6 +127,45 @@ public class BusinessReservePersonnel {
      */
     @ApiModelProperty("扩展字段")
     private String expand_8;
+    @ApiModelProperty("扩展字段")
+    private String expand_9;
+    @ApiModelProperty("扩展字段")
+    private String expand_10;
+    @ApiModelProperty("扩展字段")
+    private String expand_4;
+
+    private String dictionaryId;
+    public String getDictionaryId() {
+        return dictionaryId;
+    }
+
+    public void setDictionaryId(String dictionaryId) {
+        this.dictionaryId = dictionaryId;
+    }
+
+    public void setExpand_9(String expand_9) {
+        this.expand_9 = expand_9;
+    }
+
+    public void setExpand_10(String expand_10) {
+        this.expand_10 = expand_10;
+    }
+
+    public void setExpand_4(String expand_4) {
+        this.expand_4 = expand_4;
+    }
+
+    public String getExpand_9() {
+        return expand_9;
+    }
+
+    public String getExpand_10() {
+        return expand_10;
+    }
+
+    public String getExpand_4() {
+        return expand_4;
+    }
 
     public String getCanceType() {
         return canceType;

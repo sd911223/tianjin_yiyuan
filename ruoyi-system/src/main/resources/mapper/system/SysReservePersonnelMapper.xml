@@ -27,6 +27,10 @@
         <result property="expand_6" column="expand_6"/>
         <result property="expand_7" column="expand_7"/>
         <result property="expand_8" column="expand_8"/>
+        <result property="expand_9" column="expand_9"/>
+        <result property="expand_10" column="expand_10"/>
+        <result property="expand_4" column="expand_4"/>
+        <result property="dictionaryId" column="dictionary_id"/>
     </resultMap>
 
     <sql id="selectReserveContentVo">
@@ -50,7 +54,11 @@
             d.expand_5,
             d.expand_6,
             d.expand_7,
-            d.expand_8
+            d.expand_8,
+            d.expand_9,
+            d.expand_10,
+            d.expand_4,
+            d.dictionary_id
         from business_reserve_personnel d
     </sql>
 
@@ -73,6 +81,10 @@
         <if test="expand_6 != null and expand_6 != ''">expand_6,</if>
         <if test="expand_7 != null and expand_7 != ''">expand_7,</if>
         <if test="expand_8 != null and expand_8 != ''">expand_8,</if>
+        <if test="expand_9 != null and expand_9 != ''">expand_9,</if>
+        <if test="expand_10 != null and expand_10 != ''">expand_10,</if>
+        <if test="expand_4 != null and expand_4 != ''">expand_4,</if>
+        <if test="dictionaryId != null and dictionaryId != ''">dictionary_id,</if>
         create_time
         )values(
         <if test="reserveNumber != null and reserveNumber != ''">#{reserveNumber},</if>
@@ -92,6 +104,10 @@
         <if test="expand_6 != null and expand_6 != ''">#{expand_6},</if>
         <if test="expand_7 != null and expand_7 != ''">#{expand_7},</if>
         <if test="expand_8 != null and expand_8 != ''">#{expand_8},</if>
+        <if test="expand_9 != null and expand_9 != ''">#{expand_9},</if>
+        <if test="expand_10 != null and expand_10 != ''">#{expand_10},</if>
+        <if test="expand_4 != null and expand_4 != ''">#{expand_4},</if>
+        <if test="dictionaryId != null and dictionaryId != ''">#{dictionaryId},</if>
         sysdate()
         )
     </insert>
