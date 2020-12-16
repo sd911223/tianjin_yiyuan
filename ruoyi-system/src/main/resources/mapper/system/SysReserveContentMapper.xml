@@ -13,6 +13,8 @@
         <result property="reserveId" column="reserve_id"/>
         <result property="surplusNumber" column="surplus_number"/>
         <result property="sortNumber" column="sort_number"/>
+        <result property="dictionaryId" column="dictionary_id"/>
+        <result property="submitName" column="submit_name"/>
     </resultMap>
 
     <sql id="selectReserveContentVo">
@@ -23,6 +25,8 @@
             d.number_limit,
             d.reserve_id,
             d.surplus_number,
+            d.submit_name,
+            d.dictionary_id,
             d.sort_number
         from business_reserve_content d
     </sql>
@@ -48,6 +52,8 @@
         <if test="reserveId != null ">reserve_id,</if>
         <if test="surplusNumber != null ">surplus_number,</if>
         <if test="sortNumber != null ">sort_number,</if>
+        <if test="dictionaryId != null ">dictionary_id,</if>
+        <if test="submitName != null and submitName != ''">submit_name,</if>
         create_time
         )values(
         <if test="appointmentDate != null">#{appointmentDate},</if>
@@ -57,6 +63,8 @@
         <if test="reserveId != null ">#{reserveId},</if>
         <if test="surplusNumber != null ">#{surplusNumber},</if>
         <if test="sortNumber != null ">#{sortNumber},</if>
+        <if test="dictionaryId != null ">#{dictionaryId},</if>
+        <if test="submitName != null and submitName != ''">#{submitName},</if>
         sysdate()
         )
     </insert>

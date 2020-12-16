@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.system;
 
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
@@ -81,6 +82,8 @@ public class SysDictTypeController extends BaseController {
     public AjaxResult add(@Validated @RequestBody SysDictTypeReq sysDictTypeReq) {
         SysDictType dict = new SysDictType();
         BeanUtils.copyProperties(sysDictTypeReq, dict);
+        dict.setDataDictionary(JSON.toJSONString(sysDictTypeReq.getDataDictionary()));
+        dict.setDictionaryData(JSON.toJSONString(sysDictTypeReq.getDictionaryData()));
         if (UserConstants.NOT_UNIQUE.equals(dictTypeService.checkDictTypeUnique(dict))) {
             return AjaxResult.error("新增字典'" + dict.getDictName() + "'失败，字典类型已存在");
         }

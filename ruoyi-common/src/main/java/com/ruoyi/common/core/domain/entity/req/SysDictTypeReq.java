@@ -1,6 +1,5 @@
 package com.ruoyi.common.core.domain.entity.req;
 
-import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -35,7 +34,15 @@ public class SysDictTypeReq {
     private String type;
     private String parentCode;
     private Object dictionaryData;
-    private String dataDictionary;
+    private Object dataDictionary;
+
+    public Object getDataDictionary() {
+        return dataDictionary;
+    }
+
+    public void setDataDictionary(Object dataDictionary) {
+        this.dataDictionary = dataDictionary;
+    }
 
     public void setDictionaryData(Object dictionaryData) {
         this.dictionaryData = dictionaryData;
@@ -53,21 +60,12 @@ public class SysDictTypeReq {
         this.parentCode = parentCode;
     }
 
-    public void setDataDictionary(String dataDictionary) {
-        this.dataDictionary = dataDictionary;
-    }
-
     public String getType() {
         return type;
     }
 
     public String getParentCode() {
         return parentCode;
-    }
-
-
-    public String getDataDictionary() {
-        return dataDictionary;
     }
 
     public Long getDictId() {

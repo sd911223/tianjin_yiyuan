@@ -82,6 +82,8 @@ public class SysReserveServiceImpl implements SysReserveService {
             reserveAmContentList.forEach(e -> {
                 BusinessReserveContent businessReserveContent = new BusinessReserveContent();
                 BeanUtils.copyProperties(e, businessReserveContent);
+                businessReserveContent.setSurplusNumber(e.getNumberLimit());
+                businessReserveContent.setReserveId(upReserve.getId());
                 sysReserveContentMapper.insertReserveContent(businessReserveContent);
             });
         }

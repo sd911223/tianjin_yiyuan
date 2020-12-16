@@ -67,6 +67,8 @@ public class WechatController extends BaseController {
         businessReserveResp.setId(businessReserve.getId());
         businessReserveResp.setReserveName(businessReserve.getReserveName());
         businessReserveResp.setReserveRegister(businessReserve.getReserveRegister());
+        businessReserveResp.setSubmitName(businessReserve.getSubmitName());
+        businessReserveResp.setDictionaryId(businessReserve.getDictionaryId());
         return AjaxResult.success(businessReserveResp);
 
     }
@@ -104,12 +106,25 @@ public class WechatController extends BaseController {
         return wechatService.reserveCancel(reserveCancelReq);
     }
 
-    @ApiOperation("获取access_token")
-    @GetMapping("/accessToken")
+    @ApiOperation("获取基础设置access_token")
+    @GetMapping("/base/accessToken")
     public AjaxResult getAccessToken() {
 
         return wechatService.getAccessToken();
     }
 
+    @ApiOperation("获取微信code")
+    @GetMapping("/code/{url}")
+    public AjaxResult getCode(@PathVariable String url) {
+
+        return wechatService.getCode(url);
+    }
+
+    @ApiOperation("code换取access_token")
+    @GetMapping("/accessToken/{code}")
+    public AjaxResult accessToken(@PathVariable String code) {
+
+        return wechatService.accessToken(code);
+    }
 
 }

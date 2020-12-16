@@ -6,6 +6,7 @@ import com.ruoyi.common.core.domain.entity.BusinessReserve;
 import com.ruoyi.common.core.domain.entity.BusinessReserveContent;
 import com.ruoyi.common.core.domain.entity.BusinessReservePersonnel;
 import com.ruoyi.common.core.domain.entity.req.ReserveCancelReq;
+import com.ruoyi.common.core.domain.entity.resp.WechatAccessTokenResp;
 import com.ruoyi.common.core.domain.entity.resp.WechatResp;
 import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.system.mapper.SysReserveContentMapper;
@@ -33,8 +34,13 @@ public class WechatServiceImpl implements WechatService {
     @Value("{${wechat.secret}}")
     private String secret;
 
+    @Value("${wechat.base_access_token_url}")
+    private String baseAccessTokenUrl;
+    @Value("${wechat.oauth2_url}")
+    private String oauth2Url;
     @Value("${wechat.access_token_url}")
     private String accessTokenUrl;
+
 
     public AjaxResult getAccessToken() {
         StringBuffer sb = new StringBuffer();
@@ -43,12 +49,42 @@ public class WechatServiceImpl implements WechatService {
         sb.append(appid);
         sb.append("&secret=");
         sb.append(secret);
-        String s = HttpUtils.sendGet(accessTokenUrl, sb.toString());
+        String s = HttpUtils.sendGet(baseAccessTokenUrl, sb.toString());
         WechatResp wechatResp = JSON.parseObject(JSON.toJSONString(s), WechatResp.class);
         if (!"".equals(wechatResp.getAccess_token())) {
             return AjaxResult.success(wechatResp.getAccess_token());
         } else {
             return AjaxResult.error("获取accessToken失败");
+        }
+    }
+
+    @Override
+    public AjaxResult getCode(String url) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("appid=");
+        sb.append(appid);
+        sb.append("&redirect_uri=");
+        sb.append(url);
+        sb.append("&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect");
+        String s = HttpUtils.sendGet(accessTokenUrl, sb.toString());
+        return AjaxResult.success(s);
+    }
+
+    @Override
+    public AjaxResult accessToken(String code) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("appid=");
+        sb.append(appid);
+        sb.append("&secret=");
+        sb.append(secret);
+        sb.append("&code=");
+        sb.append(code);
+        sb.append("&grant_type=authorization_code");
+        String s = HttpUtils.sendGet(oauth2Url, sb.toString());
+        if (s.contains("access_token")) {
+            return AjaxResult.success(JSON.parseObject(JSON.toJSONString(s), WechatAccessTokenResp.class));
+        } else {
+            return AjaxResult.error(s);
         }
     }
 

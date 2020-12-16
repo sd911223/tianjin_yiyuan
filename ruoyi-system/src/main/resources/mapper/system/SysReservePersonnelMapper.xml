@@ -84,7 +84,7 @@
         <if test="expand_9 != null and expand_9 != ''">expand_9,</if>
         <if test="expand_10 != null and expand_10 != ''">expand_10,</if>
         <if test="expand_4 != null and expand_4 != ''">expand_4,</if>
-        <if test="dictionaryId != null and dictionaryId != ''">dictionary_id,</if>
+        <if test="dictionaryId != null">dictionary_id,</if>
         create_time
         )values(
         <if test="reserveNumber != null and reserveNumber != ''">#{reserveNumber},</if>
@@ -107,7 +107,7 @@
         <if test="expand_9 != null and expand_9 != ''">#{expand_9},</if>
         <if test="expand_10 != null and expand_10 != ''">#{expand_10},</if>
         <if test="expand_4 != null and expand_4 != ''">#{expand_4},</if>
-        <if test="dictionaryId != null and dictionaryId != ''">#{dictionaryId},</if>
+        <if test="dictionaryId != null">#{dictionaryId},</if>
         sysdate()
         )
     </insert>

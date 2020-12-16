@@ -21,11 +21,30 @@ public class BusinessReserveResp {
      */
     @ApiModelProperty("预约登记信息")
     private String reserveRegister;
+    private Integer dictionaryId;
+    private String submitName;
     /**
      * 预约内容
      */
     @ApiModelProperty("预约内容")
     private List<BusinessReserveContent> businessReserveContentList;
+
+    public void setDictionaryId(Integer dictionaryId) {
+        this.dictionaryId = dictionaryId;
+    }
+
+    public Integer getDictionaryId() {
+        return dictionaryId;
+    }
+
+    public void setSubmitName(String submitName) {
+        this.submitName = submitName;
+    }
+
+
+    public String getSubmitName() {
+        return submitName;
+    }
 
     public void setId(Integer id) {
         this.id = id;

@@ -19,6 +19,26 @@ public class ReserveAmContentReq {
     private Integer numberLimit;
     @ApiModelProperty("排序字段")
     private Integer sortNumber;
+    @ApiModelProperty("字典Id")
+    private Integer dictionaryId;
+    @ApiModelProperty("提交人")
+    private String submitName;
+
+    public void setDictionaryId(Integer dictionaryId) {
+        this.dictionaryId = dictionaryId;
+    }
+
+    public void setSubmitName(String submitName) {
+        this.submitName = submitName;
+    }
+
+    public Integer getDictionaryId() {
+        return dictionaryId;
+    }
+
+    public String getSubmitName() {
+        return submitName;
+    }
 
     public Integer getSortNumber() {
         return sortNumber;

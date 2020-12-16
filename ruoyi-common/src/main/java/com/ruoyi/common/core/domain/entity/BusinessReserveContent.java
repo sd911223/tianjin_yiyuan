@@ -51,6 +51,24 @@ public class BusinessReserveContent {
      */
     @ApiModelProperty("排序字段")
     private Integer sortNumber;
+    private Integer dictionaryId;
+    private String submitName;
+
+    public void setDictionaryId(Integer dictionaryId) {
+        this.dictionaryId = dictionaryId;
+    }
+
+    public void setSubmitName(String submitName) {
+        this.submitName = submitName;
+    }
+
+    public Integer getDictionaryId() {
+        return dictionaryId;
+    }
+
+    public String getSubmitName() {
+        return submitName;
+    }
 
     public void setSortNumber(Integer sortNumber) {
         this.sortNumber = sortNumber;

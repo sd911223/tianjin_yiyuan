@@ -27,6 +27,8 @@
         <result property="releaseTime" column="release_time"/>
         <result property="delFlag" column="del_flag"/>
         <result property="idCard" column="id_card"/>
+        <result property="dictionaryId" column="dictionary_id"/>
+        <result property="submitName" column="submit_name"/>
     </resultMap>
 
     <sql id="selectReserveVo">
@@ -51,24 +53,26 @@
             d.remark,
             d.release_time,
             d.del_flag,
+            d.dictionary_id,
+            d.submit_name,
             d.id_card
         from business_reserve d
     </sql>
     <select id="selectReserveList" parameterType="BusinessReserve" resultMap="BusinessReserveResult">
         <include refid="selectReserveVo"/>
         where d.del_flag = '0'
-            <if test="status != null and status != ''">
-                AND status = #{status}
-            </if>
-            <if test="reserveName != null and reserveName != ''">
-                AND dept_name like concat('%', #{reserveName}, '%')
-            </if>
-            <if test="announcementStartTime != null">
-                AND date_format(announcement_start_time,'%y%m%d') &gt;= date_format(#{announcementStartTime},'%y%m%d')
-            </if>
-            <if test="announcementEndTime != null">
-                AND date_format(announcement_end_time,'%y%m%d') &lt;= date_format(#{announcementEndTime},'%y%m%d')
-            </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+        <if test="reserveName != null and reserveName != ''">
+            AND dept_name like concat('%', #{reserveName}, '%')
+        </if>
+        <if test="announcementStartTime != null">
+            AND date_format(announcement_start_time,'%y%m%d') &gt;= date_format(#{announcementStartTime},'%y%m%d')
+        </if>
+        <if test="announcementEndTime != null">
+            AND date_format(announcement_end_time,'%y%m%d') &lt;= date_format(#{announcementEndTime},'%y%m%d')
+        </if>
         order by d.create_time DESC
     </select>
 
@@ -77,7 +81,7 @@
         where id = #{id}
     </select>
 
-    <insert id="insertReserve" parameterType="BusinessReserve"  useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertReserve" parameterType="BusinessReserve" useGeneratedKeys="true" keyProperty="id">
         insert into business_reserve(
         <if test="reserveName != null and reserveName != ''">reserve_name,</if>
         <if test="deptId != null">dept_id,</if>
@@ -99,6 +103,8 @@
         <if test="releaseTime != null">release_time,</if>
         <if test="delFlag != null and delFlag != ''">del_flag,</if>
         <if test="idCard != null and idCard != ''">id_card,</if>
+        <if test="dictionaryId != null">dictionary_id,</if>
+        <if test="submitName != null and submitName != ''">submit_name,</if>
         create_time
         )values(
         <if test="reserveName != null and reserveName != ''">#{reserveName},</if>
@@ -122,6 +128,8 @@
         <if test="releaseTime != null">#{releaseTime},</if>
         <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
         <if test="idCard != null and idCard != ''">#{idCard},</if>
+        <if test="dictionaryId != null">#{dictionaryId},</if>
+        <if test="submitName != null and submitName != ''">#{submitName},</if>
         sysdate()
         )
     </insert>
@@ -154,6 +162,8 @@
             <if test="releaseTime != null">release_time= #{releaseTime},</if>
             <if test="idCard != null and idCard != ''">id_card= #{idCard},</if>
             <if test="delFlag != null and delFlag != ''">del_flag= #{delFlag}</if>
+            <if test="dictionaryId != null">dictionary_id = #{dictionaryId},</if>
+            <if test="submitName != null and submitName != ''">submit_name = #{submitName},</if>
         </set>
         where id = #{id}
     </update>

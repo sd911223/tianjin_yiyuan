@@ -14,6 +14,24 @@ public class ReserveRegisterReq {
     private String contentCcope;
     @ApiModelProperty("是否可编辑")
     private String canEdit;
+    private String dictionaryId;
+    private String submitName;
+
+    public void setDictionaryId(String dictionaryId) {
+        this.dictionaryId = dictionaryId;
+    }
+
+    public void setSubmitName(String submitName) {
+        this.submitName = submitName;
+    }
+
+    public String getDictionaryId() {
+        return dictionaryId;
+    }
+
+    public String getSubmitName() {
+        return submitName;
+    }
 
     public String getIsRequired() {
         return isRequired;

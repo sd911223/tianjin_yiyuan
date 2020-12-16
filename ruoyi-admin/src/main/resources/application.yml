@@ -120,4 +120,6 @@ xss:
 wechat:
   appid: wx47bd8aa584b53c77
   secret: 6cb1462e6a2341d7c0e281add7d84461
-  access_token_url: http://yy.ambuf.com/cgi-bin/token
+  base_access_token_url: http://yy.ambuf.com/cgi-bin/token
+  oauth2_url: http://yy.ambuf.com/cgi-bin/connect/oauth2/authorize
+  access_token_url: http://yy.ambuf.com/sns/oauth2/access_token

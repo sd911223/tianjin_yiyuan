@@ -14,4 +14,8 @@ public interface WechatService {
     AjaxResult reserveCancel(ReserveCancelReq reserveCancelReq);
 
     AjaxResult getAccessToken();
+
+    AjaxResult getCode(String url);
+
+    AjaxResult accessToken(String code);
 }

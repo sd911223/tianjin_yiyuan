@@ -76,11 +76,31 @@ public class BusinessReserveReq {
      */
     @ApiModelProperty("附件地址")
     private String annexUrl;
+    @ApiModelProperty("字典Id")
+    private Integer dictionaryId;
+    @ApiModelProperty("提交人")
+    private String submitName;
     /**
      * 特殊人群身份证
      */
     @ApiModelProperty("特殊人群身份证")
     private List<String> idCardList;
+
+    public Integer getDictionaryId() {
+        return dictionaryId;
+    }
+
+    public String getSubmitName() {
+        return submitName;
+    }
+
+    public void setDictionaryId(Integer dictionaryId) {
+        this.dictionaryId = dictionaryId;
+    }
+
+    public void setSubmitName(String submitName) {
+        this.submitName = submitName;
+    }
 
     public void setIdCardList(List<String> idCardList) {
         this.idCardList = idCardList;
