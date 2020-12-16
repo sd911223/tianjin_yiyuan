@@ -36,20 +36,23 @@ public class SysReserveServiceImpl implements SysReserveService {
 
     @Override
     public int insertReserve(BusinessReserve businessReserve, List<ReserveAmContentReq> reserveAmContentList) {
-        if (!reserveAmContentList.isEmpty()) {
-            reserveAmContentList.forEach(e -> {
-                BusinessReserveContent businessReserveContent = new BusinessReserveContent();
-                BeanUtils.copyProperties(e, businessReserveContent);
-                businessReserveContent.setSurplusNumber(e.getNumberLimit());
-                sysReserveContentMapper.insertReserveContent(businessReserveContent);
-            });
-        }
+
         businessReserve.setCreateBy(SecurityUtils.getUsername());
         Long deptId = SecurityUtils.getLoginUser().getUser().getDeptId();
         businessReserve.setDeptId(deptId.intValue());
         SysDept sysDept = sysDeptMapper.selectDeptById(deptId);
         businessReserve.setDeptName(sysDept.getDeptName());
-        return sysReserveMapper.insertReserve(businessReserve);
+        int i = sysReserveMapper.insertReserve(businessReserve);
+        if (!reserveAmContentList.isEmpty()) {
+            reserveAmContentList.forEach(e -> {
+                BusinessReserveContent businessReserveContent = new BusinessReserveContent();
+                BeanUtils.copyProperties(e, businessReserveContent);
+                businessReserveContent.setSurplusNumber(e.getNumberLimit());
+                businessReserveContent.setReserveId(businessReserve.getId());
+                sysReserveContentMapper.insertReserveContent(businessReserveContent);
+            });
+        }
+        return i;
     }
 
     @Override

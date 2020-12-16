@@ -37,7 +37,7 @@
     </select>
     <select id="selectContentByRId" parameterType="Integer" resultMap="BusinessReserveContentResult">
         <include refid="selectReserveContentVo"/>
-        where reserve_id = #{reserveId}
+        where d.reserve_id = #{reserveId}
     </select>
     <insert id="insertReserveContent" parameterType="BusinessReserveContent">
         insert into business_reserve_content(

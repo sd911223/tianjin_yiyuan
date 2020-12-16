@@ -77,7 +77,7 @@
         where id = #{id}
     </select>
 
-    <insert id="insertReserve" parameterType="BusinessReserve">
+    <insert id="insertReserve" parameterType="BusinessReserve"  useGeneratedKeys="true" keyProperty="id">
         insert into business_reserve(
         <if test="reserveName != null and reserveName != ''">reserve_name,</if>
         <if test="deptId != null">dept_id,</if>
