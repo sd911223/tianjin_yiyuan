@@ -7,6 +7,7 @@ import com.ruoyi.common.core.domain.entity.BusinessReserve;
 import com.ruoyi.common.core.domain.entity.BusinessReserveContent;
 import com.ruoyi.common.core.domain.entity.BusinessReservePersonnel;
 import com.ruoyi.common.core.domain.entity.req.ReserveCancelReq;
+import com.ruoyi.common.core.domain.entity.req.TicketReq;
 import com.ruoyi.common.core.domain.entity.resp.BusinessReserveResp;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
@@ -125,6 +126,20 @@ public class WechatController extends BaseController {
     public AjaxResult accessToken(@PathVariable String code) {
 
         return wechatService.accessToken(code);
+    }
+
+    @ApiOperation("签到")
+    @PostMapping("/sign")
+    public AjaxResult sign(@Validated @RequestBody ReserveCancelReq reserveCancelReq) {
+
+        return wechatService.sign(reserveCancelReq);
+    }
+
+    @ApiOperation("获取ticket")
+    @PostMapping("/scan")
+    public AjaxResult scan(@Validated @RequestBody TicketReq ticketReq) {
+
+        return wechatService.scan(ticketReq.getUrl());
     }
 
 }

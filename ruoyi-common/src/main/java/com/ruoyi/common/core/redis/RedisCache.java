@@ -224,4 +224,15 @@ public class RedisCache
     {
         return redisTemplate.keys(pattern);
     }
+
+    /**
+     * 实现自增
+     * @param key
+     * @param delta
+     * @return
+     */
+    public Long increment(String key, long delta) {
+        return redisTemplate.opsForValue().increment(key,delta);
+    }
+
 }

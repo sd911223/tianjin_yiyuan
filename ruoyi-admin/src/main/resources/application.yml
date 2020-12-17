@@ -118,8 +118,10 @@ xss:
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
 wechat:
+  domain: http://yy.ambuf.com
   appid: wx47bd8aa584b53c77
   secret: 6cb1462e6a2341d7c0e281add7d84461
-  base_access_token_url: http://yy.ambuf.com/cgi-bin/token
-  oauth2_url: http://yy.ambuf.com/cgi-bin/connect/oauth2/authorize
-  access_token_url: http://yy.ambuf.com/sns/oauth2/access_token
+  base_access_token_url: ${wechat.domain}/cgi-bin/token
+  oauth2_url: ${wechat.domain}/cgi-bin/connect/oauth2/authorize
+  access_token_url: ${wechat.domain}/sns/oauth2/access_token
+  ticket_url: ${wechat.domain}/cgi-bin/ticket/getticket

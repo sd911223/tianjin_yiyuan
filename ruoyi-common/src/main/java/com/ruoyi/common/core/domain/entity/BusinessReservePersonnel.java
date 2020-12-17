@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @ApiModel("预约人员")
@@ -25,9 +26,6 @@ public class BusinessReservePersonnel {
      */
     @ApiModelProperty("日期")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    /**
-     * 日期
-     */
     private Date appointmentDate;
     /**
      * 日期范围
@@ -43,7 +41,7 @@ public class BusinessReservePersonnel {
      * 预约ID
      */
     @ApiModelProperty("预约ID")
-    @NotBlank(message = "预约ID不能为空")
+    @NotNull(message = "预约ID不能为空")
     private Integer reserveId;
     /**
      * 扫码时间
@@ -94,8 +92,8 @@ public class BusinessReservePersonnel {
     /**
      * 内容ID
      */
-    @NotBlank(message = "内容ID不能为空")
     @ApiModelProperty("内容ID")
+    @NotNull(message = "内容ID不能为空")
     private Integer contentId;
     /**
      * openID

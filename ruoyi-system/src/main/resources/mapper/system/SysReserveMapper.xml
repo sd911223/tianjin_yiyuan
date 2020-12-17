@@ -64,6 +64,9 @@
         <if test="status != null and status != ''">
             AND status = #{status}
         </if>
+        <if test="deptName != null and deptName != ''">
+            AND dept_name = #{deptName}
+        </if>
         <if test="reserveName != null and reserveName != ''">
             AND dept_name like concat('%', #{reserveName}, '%')
         </if>
@@ -182,7 +185,10 @@
     </update>
 
     <delete id="deleteReserveById" parameterType="Integer">
-		update business_reserve set del_flag = '2' where id = #{id}
-	</delete>
+		update business_reserve set del_flag = '2' where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 
 </mapper> 

@@ -455,7 +455,7 @@ public class SysUserServiceImpl implements ISysUserService
     }
 
     @Override
-    public List<SysUser> selectUserByUserName1(String userName) {
-        return userMapper.selectUserByUserName1(userName);
+    public List<SysUser> selectUserByUserName1(String userName,Integer deptId) {
+        return userMapper.selectUserByUserName1(userName,deptId);
     }
 }

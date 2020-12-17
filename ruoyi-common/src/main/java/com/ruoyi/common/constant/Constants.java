@@ -2,11 +2,10 @@ package com.ruoyi.common.constant;
 
 /**
  * 通用常量信息
- * 
+ *
  * @author ruoyi
  */
-public class Constants
-{
+public class Constants {
     /**
      * UTF-8 字符集
      */
@@ -56,12 +55,17 @@ public class Constants
      * 验证码 redis key
      */
     public static final String CAPTCHA_CODE_KEY = "captcha_codes:";
+    /**
+     * 微信ACCESS_TOKEN
+     */
+    public static final String ACCESS_TOKEN = "ACCESS_TOKEN:";
+    public static final String JSAPI_TICKET = "jsapi_ticket:";
 
     /**
      * 登录用户 redis key
      */
     public static final String LOGIN_TOKEN_KEY = "login_tokens:";
-    
+
     /**
      * 防重提交 redis key
      */

@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
@@ -41,10 +42,11 @@ public class SysReserveController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(@RequestParam("pageNum") Integer pageNum,
                               @RequestParam("pageSize") Integer pageSize,
-                              @RequestParam(value = "reserveName",required = false) String reserveName,
-                              @RequestParam(value ="status",required = false) String status,
-                              @RequestParam(value ="startTime",required = false) String startTime,
-                              @RequestParam(value ="endTime",required = false) String endTime) {
+                              @RequestParam(value = "reserveName", required = false) String reserveName,
+                              @RequestParam(value = "deptName", required = false) String deptName,
+                              @RequestParam(value = "status", required = false) String status,
+                              @RequestParam(value = "startTime", required = false) String startTime,
+                              @RequestParam(value = "endTime", required = false) String endTime) {
         startPage();
         BusinessReserve businessReserve = new BusinessReserve();
         if (!StringUtils.isEmpty(reserveName)) {
@@ -58,6 +60,9 @@ public class SysReserveController extends BaseController {
         }
         if (!StringUtils.isEmpty(endTime)) {
             businessReserve.setAnnouncementEndTime(DateUtils.dateTime(DateUtils.YYYY_MM_DD_HH_MM_SS, endTime));
+        }
+        if (!StringUtils.isEmpty(deptName)){
+            businessReserve.setDeptName(deptName);
         }
         List<BusinessReserve> list = sysReserveService.selectReserveList(businessReserve);
         return getDataTable(list);
@@ -129,11 +134,15 @@ public class SysReserveController extends BaseController {
     @ApiOperation("删除活动")
     @Log(title = "部门管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
-    public AjaxResult remove(@PathVariable Integer id) {
-        BusinessReserve businessReserve = sysReserveService.selectReserveById(id);
-        if (!"0".equals(businessReserve.getStatus())) {
-            return AjaxResult.error("删除活动'" + id + "'失败，只有未发布活动可删除");
+    public AjaxResult remove(@PathVariable Integer[] id) {
+        List<Integer> list = Arrays.asList(id);
+        for (int i = 0; i < list.size(); i++) {
+            BusinessReserve businessReserve = sysReserveService.selectReserveById(list.get(i));
+            if (!"0".equals(businessReserve.getStatus())) {
+                return AjaxResult.error("删除活动'" + list.get(i) + "'失败，只有未发布活动可删除");
+            }
         }
+
         return toAjax(sysReserveService.deleteReserveById(id));
     }
 
@@ -162,6 +171,6 @@ public class SysReserveController extends BaseController {
     @ApiOperation("签到码")
     @GetMapping(value = "/getSignUrl/{id}")
     public AjaxResult getSignUrl(@PathVariable Integer id) {
-        return AjaxResult.success("www.baidu.com");
+        return AjaxResult.success(id);
     }
 }

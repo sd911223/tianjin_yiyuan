@@ -59,10 +59,12 @@ public class SysUserController extends BaseController {
      */
     @ApiOperation("获取用户列表")
     @GetMapping("/list")
-    public TableDataInfo list(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestParam(value = "userName", required = false) String userName) {
+    public TableDataInfo list(@RequestParam("pageNum") Integer pageNum,
+                              @RequestParam("pageSize") Integer pageSize,
+                              @RequestParam(value = "userName", required = false) String userName,
+                              @RequestParam(value = "deptId", required = false) Integer deptId) {
         startPage();
-
-        List<SysUser> list = userService.selectUserByUserName1(userName);
+        List<SysUser> list = userService.selectUserByUserName1(userName,deptId);
         return getDataTable(list);
     }
 

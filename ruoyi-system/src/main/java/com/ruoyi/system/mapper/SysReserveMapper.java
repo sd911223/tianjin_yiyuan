@@ -40,7 +40,7 @@ public interface SysReserveMapper {
      * @param id 活动ID
      * @return 结果
      */
-    int deleteReserveById(Integer id);
+    int deleteReserveById(Integer[] id);
 
     BusinessReserve selectReserveById(Integer id);
 

@@ -23,7 +23,7 @@ public interface SysReserveService {
 
     int updateReserveStatus(BusinessReserve businessReserve);
 
-    int deleteReserveById(Integer id);
+    int deleteReserveById(Integer[] id);
 
     BusinessReserve selectReserveById(Integer id);
 

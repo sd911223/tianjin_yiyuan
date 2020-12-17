@@ -27,7 +27,7 @@ public interface SysUserMapper {
      */
     SysUser selectUserByUserName(String userName);
 
-    List<SysUser> selectUserByUserName1(String userName);
+    List<SysUser> selectUserByUserName1(@Param("userName") String userName, @Param("deptId") Integer deptId);
 
     /**
      * 通过用户ID查询用户

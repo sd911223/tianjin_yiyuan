@@ -84,9 +84,9 @@ public class SysDictTypeController extends BaseController {
         BeanUtils.copyProperties(sysDictTypeReq, dict);
         dict.setDataDictionary(JSON.toJSONString(sysDictTypeReq.getDataDictionary()));
         dict.setDictionaryData(JSON.toJSONString(sysDictTypeReq.getDictionaryData()));
-        if (UserConstants.NOT_UNIQUE.equals(dictTypeService.checkDictTypeUnique(dict))) {
-            return AjaxResult.error("新增字典'" + dict.getDictName() + "'失败，字典类型已存在");
-        }
+//        if (UserConstants.NOT_UNIQUE.equals(dictTypeService.checkDictTypeUnique(dict))) {
+//            return AjaxResult.error("新增字典'" + dict.getDictName() + "'失败，字典类型已存在");
+//        }
         dict.setCreateBy(SecurityUtils.getUsername());
         return toAjax(dictTypeService.insertDictType(dict));
     }

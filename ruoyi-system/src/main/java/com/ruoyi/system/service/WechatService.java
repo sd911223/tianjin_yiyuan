@@ -18,4 +18,8 @@ public interface WechatService {
     AjaxResult getCode(String url);
 
     AjaxResult accessToken(String code);
+
+    AjaxResult sign(ReserveCancelReq reserveCancelReq);
+
+    AjaxResult scan(String url);
 }
