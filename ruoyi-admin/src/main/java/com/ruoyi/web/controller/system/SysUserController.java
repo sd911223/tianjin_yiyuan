@@ -59,7 +59,7 @@ public class SysUserController extends BaseController {
      */
     @ApiOperation("获取用户列表")
     @GetMapping("/list")
-    public TableDataInfo list(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestParam("userName") String userName) {
+    public TableDataInfo list(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestParam(value = "userName", required = false) String userName) {
         startPage();
 
         List<SysUser> list = userService.selectUserByUserName1(userName);
@@ -166,8 +166,13 @@ public class SysUserController extends BaseController {
     @PutMapping("/resetPwd")
     public AjaxResult resetPwd(@RequestBody SysUser user) {
         userService.checkUserAllowed(user);
+        //查询是否设置了基础密码
+        SysBase sysBase = sysBaseService.selectBaseById(1L);
+        if (StringUtils.isEmpty(sysBase.getPassWord())) {
+            return AjaxResult.error("重置密码失败，请先设置基础密码");
+        }
+        user.setPassword(sysBase.getPassWord());
         user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
-        user.setUpdateBy(SecurityUtils.getUsername());
         return toAjax(userService.resetPwd(user));
     }
 
