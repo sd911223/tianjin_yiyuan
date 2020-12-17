@@ -8,6 +8,7 @@ import com.ruoyi.common.core.domain.entity.BusinessReservePersonnel;
 import com.ruoyi.common.core.domain.entity.req.ReserveCancelReq;
 import com.ruoyi.common.core.domain.entity.resp.WechatAccessTokenResp;
 import com.ruoyi.common.core.domain.entity.resp.WechatResp;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.system.mapper.SysReserveContentMapper;
 import com.ruoyi.system.mapper.SysReserveMapper;
@@ -60,6 +61,9 @@ public class WechatServiceImpl implements WechatService {
 
     @Override
     public AjaxResult getCode(String url) {
+        if (!StringUtils.isEmpty(url)) {
+            return AjaxResult.error("url不能为空");
+        }
         StringBuffer sb = new StringBuffer();
         sb.append("appid=");
         sb.append(appid);
