@@ -97,10 +97,6 @@ public class SysReserveController extends BaseController {
     @Log(title = "预约管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody BusinessReserveReq businessReserveReq) {
-        BusinessReserve businessReserve = sysReserveService.selectReserveById(businessReserveReq.getId());
-        if (!"0".equals(businessReserve.getStatus())) {
-            return AjaxResult.error("删除活动'" + businessReserveReq.getId() + "'失败，只有未发布活动可修改");
-        }
         BusinessReserve upReserve = new BusinessReserve();
         BeanUtils.copyProperties(businessReserveReq, upReserve);
         if (!businessReserveReq.getReserveRegisterList().isEmpty()) {
@@ -121,7 +117,6 @@ public class SysReserveController extends BaseController {
     @ApiOperation("发布活动")
     @GetMapping(value = "/{id}")
     public AjaxResult add(@PathVariable Integer id) {
-
         BusinessReserve businessReserve = new BusinessReserve();
         businessReserve.setId(id);
         businessReserve.setStatus("1");

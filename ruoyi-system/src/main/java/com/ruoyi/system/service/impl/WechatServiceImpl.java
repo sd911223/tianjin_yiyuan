@@ -1,6 +1,5 @@
 package com.ruoyi.system.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -8,7 +7,6 @@ import com.ruoyi.common.core.domain.entity.BusinessReserve;
 import com.ruoyi.common.core.domain.entity.BusinessReserveContent;
 import com.ruoyi.common.core.domain.entity.BusinessReservePersonnel;
 import com.ruoyi.common.core.domain.entity.req.ReserveCancelReq;
-import com.ruoyi.common.core.domain.entity.resp.WechatAccessTokenResp;
 import com.ruoyi.common.core.redis.RedisCache;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
@@ -128,15 +126,19 @@ public class WechatServiceImpl implements WechatService {
         Date appointmentDate = businessReservePersonnel.getAppointmentDate();
         String date = new SimpleDateFormat("yyyy-MM-dd").format(appointmentDate);
         String appointmentPeriod = businessReservePersonnel.getAppointmentPeriod();
+        List<BusinessReservePersonnel> businessReservePersonnels = sysReservePersonnelMapper.selectPersonneList(businessReservePersonnel);
+        if (!businessReservePersonnels.isEmpty()) {
+            return AjaxResult.error("你已预约'" + businessReservePersonnel.getAppointmentDate() + " " + businessReservePersonnel.getAppointmentPeriod() + "'项目");
+        }
         String[] split = appointmentPeriod.split("-");
         String startTime = date + " " + split[0];
         String endTime = date + " " + split[1];
         Date parseDateStart = DateUtils.parseDate(startTime);
         Date parseDateEnd = DateUtils.parseDate(endTime);
-        if (new Date().getTime()-parseDateStart.getTime()<1){
+        if (new Date().getTime() - parseDateStart.getTime() < 1) {
             return AjaxResult.error("不在预约时间内");
         }
-        if (new Date().getTime()-parseDateEnd.getTime()>1){
+        if (new Date().getTime() - parseDateEnd.getTime() > 1) {
             return AjaxResult.error("不在预约时间内");
         }
         BusinessReserve businessReserve = sysReserveMapper.selectReserveById(businessReservePersonnel.getReserveId());
