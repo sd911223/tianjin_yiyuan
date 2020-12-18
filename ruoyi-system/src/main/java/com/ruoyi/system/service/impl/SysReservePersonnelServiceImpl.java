@@ -18,6 +18,9 @@ public class SysReservePersonnelServiceImpl implements SysReservePersonnelServic
     @Override
     public List<BusinessReservePersonnel> selectPersonneList(SiteDetailedReq siteDetailedReq) {
         BusinessReservePersonnel businessReservePersonnel = new BusinessReservePersonnel();
+        if (null != siteDetailedReq.getReserveId()) {
+            businessReservePersonnel.setReserveId(siteDetailedReq.getReserveId());
+        }
         if (null != siteDetailedReq.getAppointmentDate()) {
             businessReservePersonnel.setAppointmentDate(siteDetailedReq.getAppointmentDate());
         }

@@ -92,9 +92,9 @@ public class WechatServiceImpl implements WechatService {
         sb.append("&code=");
         sb.append(code);
         sb.append("&grant_type=authorization_code");
-        String s = HttpUtils.sendGet(oauth2Url, sb.toString());
+        String s = HttpUtils.sendGet(accessTokenUrl, sb.toString());
         if (s.contains("access_token")) {
-            return AjaxResult.success(JSON.parseObject(JSON.toJSONString(s), WechatAccessTokenResp.class));
+            return AjaxResult.success(s);
         } else {
             return AjaxResult.error(s);
         }
@@ -115,7 +115,8 @@ public class WechatServiceImpl implements WechatService {
             }
             businessReservePersonnel1.setStatus("1");
             businessReservePersonnel1.setReserveNumber(orderSn);
-            sysReservePersonnelMapper.updatePersonnelStatus(businessReservePersonnel);
+            businessReservePersonnel1.setSignTime(new Date());
+            sysReservePersonnelMapper.updatePersonnelStatus(businessReservePersonnel1);
         }
         return AjaxResult.success("签到成功!签到码为: " + orderSn);
     }

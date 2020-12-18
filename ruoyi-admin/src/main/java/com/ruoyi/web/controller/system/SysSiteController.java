@@ -14,11 +14,14 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.service.SysReserveContentService;
 import com.ruoyi.system.service.SysReservePersonnelService;
 import com.ruoyi.system.service.SysReserveService;
+import com.ruoyi.web.controller.common.CommonController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
@@ -76,10 +79,14 @@ public class SysSiteController extends BaseController {
     @ApiOperation("现场办理详细导出")
     @Log(title = "现场办理详细导出", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
-    public AjaxResult export(SiteDetailedReq siteDetailedReq) {
+    public void export(SiteDetailedReq siteDetailedReq, HttpServletRequest request, HttpServletResponse response) {
         List<BusinessReservePersonnel> list = sysReservePersonnelService.selectPersonneList(siteDetailedReq);
         ExcelUtil<BusinessReservePersonnel> util = new ExcelUtil<BusinessReservePersonnel>(BusinessReservePersonnel.class);
-        return util.exportExcel(list, "现场办理导出");
+        AjaxResult ajaxResult = util.exportExcel(list, "现场办理导出");
+        if (ajaxResult.get("code").equals(200)) {
+            CommonController commonController = new CommonController();
+            commonController.fileDownload(ajaxResult.get("msg").toString(), true, response, request);
+        }
     }
 
     /**

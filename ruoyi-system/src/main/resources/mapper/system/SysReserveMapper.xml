@@ -64,6 +64,9 @@
         <if test="status != null and status != ''">
             AND status = #{status}
         </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
         <if test="deptName != null and deptName != ''">
             AND dept_name = #{deptName}
         </if>

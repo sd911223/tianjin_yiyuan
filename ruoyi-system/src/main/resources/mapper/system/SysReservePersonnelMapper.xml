@@ -116,6 +116,8 @@
         update business_reserve_personnel
         <set>
             <if test="status != null and status != ''">status = #{status},</if>
+            <if test="reserveNumber != null and reserveNumber != ''">reserve_number = #{reserveNumber},</if>
+            <if test="signTime != null">sign_time = sysdate(),</if>
             updata_time = sysdate()
         </set>
         where id = #{id}
