@@ -80,8 +80,8 @@
         <if test="userName != null and userName != ''">
             AND u.user_name like concat('%', #{userName}, '%')
         </if>
-        <if test="deptId != null">
-            AND u.dept_id =#{deptId}
+        <if test="deptId != null  and deptId != -1 ">
+            AND u.dept_id = #{deptId}
         </if>
         ORDER BY u.create_time desc
     </select>

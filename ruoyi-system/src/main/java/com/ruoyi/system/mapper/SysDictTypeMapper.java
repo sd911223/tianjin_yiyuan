@@ -46,10 +46,10 @@ public interface SysDictTypeMapper {
     /**
      * 根据字典类型查询信息
      *
-     * @param type
+     * @param dictName
      * @return
      */
-    List<SysDictType> selectDictByType(String type);
+    List<SysDictType> selectDictByDictName(String dictName);
 
     /**
      * 通过字典ID删除字典信息

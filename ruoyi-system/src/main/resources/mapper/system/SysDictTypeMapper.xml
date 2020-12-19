@@ -58,9 +58,9 @@
         <include refid="selectDictTypeVo"/>
         where dict_type = #{dictType}
     </select>
-    <select id="selectDictByType" parameterType="String" resultMap="SysDictTypeResult">
+    <select id="selectDictByDictName" parameterType="String" resultMap="SysDictTypeResult">
         <include refid="selectDictTypeVo"/>
-        where type = #{type} and status='0'
+        where AND dict_name like concat('%', #{dictName}, '%') and status='0'
     </select>
     <select id="checkDictTypeUnique" parameterType="String" resultMap="SysDictTypeResult">
         <include refid="selectDictTypeVo"/>

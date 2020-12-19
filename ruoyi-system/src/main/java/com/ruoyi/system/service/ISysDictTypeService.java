@@ -87,5 +87,5 @@ public interface ISysDictTypeService {
      */
     public String checkDictTypeUnique(SysDictType dictType);
 
-    List<SysDictType> selectDictByType(String type);
+    List<SysDictType> selectDictByDictName(String dictName);
 }

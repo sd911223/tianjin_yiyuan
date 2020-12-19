@@ -64,7 +64,7 @@ public class SysUserController extends BaseController {
                               @RequestParam(value = "userName", required = false) String userName,
                               @RequestParam(value = "deptId", required = false) Integer deptId) {
         startPage();
-        List<SysUser> list = userService.selectUserByUserName1(userName,deptId);
+        List<SysUser> list = userService.selectUserByUserName1(userName, deptId);
         return getDataTable(list);
     }
 

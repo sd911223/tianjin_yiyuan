@@ -46,14 +46,6 @@ public class SysDictTypeController extends BaseController {
         return getDataTable(list);
     }
 
-    @Log(title = "字典类型", businessType = BusinessType.EXPORT)
-    @PreAuthorize("@ss.hasPermi('system:dict:export')")
-    @GetMapping("/export")
-    public AjaxResult export(SysDictType dictType) {
-        List<SysDictType> list = dictTypeService.selectDictTypeList(dictType);
-        ExcelUtil<SysDictType> util = new ExcelUtil<SysDictType>(SysDictType.class);
-        return util.exportExcel(list, "字典类型");
-    }
 
     /**
      * 查询字典类型详细
@@ -65,12 +57,12 @@ public class SysDictTypeController extends BaseController {
     }
 
     /**
-     * 通过类型查询字典
+     * 通过名称查询字典
      */
-    @ApiOperation("通过类型查询字典")
-    @GetMapping(value = "/getTypeInfo/{type}")
-    public AjaxResult getTypeInfo(@PathVariable String type) {
-        return AjaxResult.success(dictTypeService.selectDictByType(type));
+    @ApiOperation("通过名称查询字典")
+    @GetMapping(value = "/getNameInfo/{dictName}")
+    public AjaxResult getTypeInfo(@PathVariable String dictName) {
+        return AjaxResult.success(dictTypeService.selectDictByDictName(dictName));
     }
 
     /**
