@@ -184,6 +184,6 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService {
 
     @Override
     public List<SysDictType> selectDictByDictName(String dictName) {
-        return dictTypeMapper.selectDictByType(dictName);
+        return dictTypeMapper.selectDictByDictName(dictName);
     }
 }
