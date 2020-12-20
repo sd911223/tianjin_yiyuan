@@ -73,7 +73,7 @@
         <if test="reserveName != null and reserveName != ''">
             AND dept_name like concat('%', #{reserveName}, '%')
         </if>
-        <if test="announcementStartTime != null">
+        <if test="announcementStartTime != null ">
             AND date_format(announcement_start_time,'%y%m%d') &gt;= date_format(#{announcementStartTime},'%y%m%d')
         </if>
         <if test="announcementEndTime != null">

@@ -8,7 +8,6 @@ import com.ruoyi.common.core.domain.entity.BusinessReservePersonnel;
 import com.ruoyi.common.core.domain.entity.req.SiteDetailedReq;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.service.SysReserveContentService;
@@ -22,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
@@ -46,10 +48,10 @@ public class SysSiteController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(@RequestParam("pageNum") Integer pageNum,
                               @RequestParam("pageSize") Integer pageSize,
-                              @RequestParam("reserveName") String reserveName,
-                              @RequestParam("status") String status,
-                              @RequestParam("startTime") String startTime,
-                              @RequestParam("endTime") String endTime) {
+                              @RequestParam(value = "reserveName", required = false) String reserveName,
+                              @RequestParam(value = "status", required = false) String status,
+                              @RequestParam(value = "startTime", required = false) String startTime,
+                              @RequestParam(value = "endTime", required = false) String endTime) throws ParseException {
         startPage();
         BusinessReserve businessReserve = new BusinessReserve();
         if (!StringUtils.isEmpty(reserveName)) {
@@ -58,11 +60,16 @@ public class SysSiteController extends BaseController {
         if (!StringUtils.isEmpty(status)) {
             businessReserve.setStatus(status);
         }
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         if (!StringUtils.isEmpty(startTime)) {
-            businessReserve.setAnnouncementStartTime(DateUtils.dateTime(DateUtils.YYYY_MM_DD_HH_MM_SS, startTime));
+            Date startDate = formatter.parse(startTime);
+            businessReserve.setAnnouncementStartTime(startDate);
+
         }
         if (!StringUtils.isEmpty(endTime)) {
-            businessReserve.setAnnouncementEndTime(DateUtils.dateTime(DateUtils.YYYY_MM_DD_HH_MM_SS, endTime));
+            Date endDate = formatter.parse(endTime);
+            businessReserve.setAnnouncementEndTime(endDate);
         }
         List<BusinessReserve> list = sysReserveService.selectReserveList(businessReserve);
         return getDataTable(list);
