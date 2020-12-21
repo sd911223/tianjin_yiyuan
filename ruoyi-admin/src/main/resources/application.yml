@@ -125,3 +125,7 @@ wechat:
   oauth2_url: ${wechat.domain}/cgi-bin/connect/oauth2/authorize
   access_token_url: ${wechat.domain}/sns/oauth2/access_token
   ticket_url: ${wechat.domain}/cgi-bin/ticket/getticket
+  #模板Id
+  template_id: 123123
+  #模板发送地址
+  template_url: ${wechat.domain}/cgi-bin/message/template/send

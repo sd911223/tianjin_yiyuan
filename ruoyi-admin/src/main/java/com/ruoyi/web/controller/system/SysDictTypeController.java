@@ -97,9 +97,9 @@ public class SysDictTypeController extends BaseController {
         if (!StringUtils.isEmpty(sysDictTypeReq.getRemark())) {
             dict.setRemark(sysDictTypeReq.getRemark());
         }
-        if (UserConstants.NOT_UNIQUE.equals(dictTypeService.checkDictTypeUnique(dict))) {
-            return AjaxResult.error("修改字典'" + dict.getDictName() + "'失败，字典类型已存在");
-        }
+//        if (UserConstants.NOT_UNIQUE.equals(dictTypeService.checkDictTypeUnique(dict))) {
+//            return AjaxResult.error("修改字典'" + dict.getDictName() + "'失败，字典类型已存在");
+//        }
         dict.setUpdateBy(SecurityUtils.getUsername());
         return toAjax(dictTypeService.updateDictType(dict));
     }

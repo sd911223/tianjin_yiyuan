@@ -6,10 +6,12 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.BusinessReserve;
 import com.ruoyi.common.core.domain.entity.BusinessReservePersonnel;
 import com.ruoyi.common.core.domain.entity.req.SiteDetailedReq;
+import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.system.service.SysReserveContentService;
 import com.ruoyi.system.service.SysReservePersonnelService;
 import com.ruoyi.system.service.SysReserveService;
@@ -43,6 +45,8 @@ public class SysSiteController extends BaseController {
     SysReserveContentService sysReserveContentService;
     @Autowired
     SysReservePersonnelService sysReservePersonnelService;
+    @Autowired
+    private TokenService tokenService;
 
     @ApiOperation("现场办理列表")
     @GetMapping("/list")
@@ -51,7 +55,8 @@ public class SysSiteController extends BaseController {
                               @RequestParam(value = "reserveName", required = false) String reserveName,
                               @RequestParam(value = "status", required = false) String status,
                               @RequestParam(value = "startTime", required = false) String startTime,
-                              @RequestParam(value = "endTime", required = false) String endTime) throws ParseException {
+                              @RequestParam(value = "endTime", required = false) String endTime,
+                              HttpServletRequest request) throws ParseException {
         startPage();
         BusinessReserve businessReserve = new BusinessReserve();
         if (!StringUtils.isEmpty(reserveName)) {
@@ -70,6 +75,10 @@ public class SysSiteController extends BaseController {
         if (!StringUtils.isEmpty(endTime)) {
             Date endDate = formatter.parse(endTime);
             businessReserve.setAnnouncementEndTime(endDate);
+        }
+        LoginUser loginUser = tokenService.getLoginUser(request);
+        if (loginUser.getUser().getDeptId() > 0 && loginUser.getUser().getDeptId() != 103) {
+            businessReserve.setDeptId(loginUser.getUser().getDeptId().intValue());
         }
         List<BusinessReserve> list = sysReserveService.selectReserveList(businessReserve);
         return getDataTable(list);

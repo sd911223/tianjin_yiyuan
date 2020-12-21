@@ -146,31 +146,34 @@
     <select id="selectPersonneList" parameterType="BusinessReservePersonnel" resultMap="BusinessReservePersonnelResult">
         <include refid="selectReserveContentVo"/>
         where cance_type='0'
-            <if test="openId != null and openId != ''">
-                AND open_id = #{openId}
-            </if>
-            <if test="reserveNumber != null and reserveNumber != ''">
-                AND reserve_number like concat('%', #{reserveNumber}, '%')
-            </if>
-            <if test="reserveId != null and reserveId != ''">
-                AND reserve_id = #{reserveId}
-            </if>
-            <if test="contentId != null and contentId != ''">
-                AND content_id = #{contentId}
-            </if>
-            <if test="idCard != null and idCard != ''">
-                AND id_card = #{idCard}
-            </if>
-            <if test="phoneNumber != null and phoneNumber != ''">
-                AND phone_number = #{phoneNumber}
-            </if>
-            <if test="name != null and name != ''">
-                AND name = #{name}
-            </if>
-            <if test="appointmentDate != null"><!-- 开始时间检索 -->
-                and date_format(appointment_date,'%y%m%d') = date_format(#{appointmentDate},'%y%m%d')
-            </if>
-            order by d.create_time desc
+        <if test="openId != null and openId != ''">
+            AND open_id = #{openId}
+        </if>
+        <if test="reserveNumber != null and reserveNumber != ''">
+            AND reserve_number like concat('%', #{reserveNumber}, '%')
+        </if>
+        <if test="canceType != null and canceType != ''">
+            AND cance_type = #{canceType}
+        </if>
+        <if test="reserveId != null and reserveId != ''">
+            AND reserve_id = #{reserveId}
+        </if>
+        <if test="contentId != null and contentId != ''">
+            AND content_id = #{contentId}
+        </if>
+        <if test="idCard != null and idCard != ''">
+            AND id_card = #{idCard}
+        </if>
+        <if test="phoneNumber != null and phoneNumber != ''">
+            AND phone_number = #{phoneNumber}
+        </if>
+        <if test="name != null and name != ''">
+            AND name = #{name}
+        </if>
+        <if test="appointmentDate != null"><!-- 开始时间检索 -->
+            and date_format(appointment_date,'%y%m%d') = date_format(#{appointmentDate},'%y%m%d')
+        </if>
+        order by d.create_time desc
     </select>
 
 </mapper> 

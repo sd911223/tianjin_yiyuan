@@ -40,7 +40,10 @@ public class WechatServiceImpl implements WechatService {
     private String appid;
     @Value("${wechat.secret}")
     private String secret;
-
+    @Value("${wechat.template_id}")
+    private String templateId;
+    @Value("${wechat.template_url}")
+    private String templateUrl;
     @Value("${wechat.base_access_token_url}")
     private String baseAccessTokenUrl;
     @Value("${wechat.oauth2_url}")
@@ -126,7 +129,11 @@ public class WechatServiceImpl implements WechatService {
         Date appointmentDate = businessReservePersonnel.getAppointmentDate();
         String date = new SimpleDateFormat("yyyy-MM-dd").format(appointmentDate);
         String appointmentPeriod = businessReservePersonnel.getAppointmentPeriod();
-        List<BusinessReservePersonnel> businessReservePersonnels = sysReservePersonnelMapper.selectPersonneList(businessReservePersonnel);
+        BusinessReservePersonnel personnel = new BusinessReservePersonnel();
+        personnel.setIdCard(businessReservePersonnel.getIdCard());
+        personnel.setReserveId(businessReservePersonnel.getReserveId());
+        personnel.setCanceType("0");
+        List<BusinessReservePersonnel> businessReservePersonnels = sysReservePersonnelMapper.selectPersonneList(personnel);
         if (!businessReservePersonnels.isEmpty()) {
             return AjaxResult.error("你已预约'" + businessReservePersonnel.getAppointmentDate() + " " + businessReservePersonnel.getAppointmentPeriod() + "'项目");
         }
@@ -171,6 +178,12 @@ public class WechatServiceImpl implements WechatService {
             e.printStackTrace();
         }
         return AjaxResult.success("预约成功!");
+    }
+
+    /**
+     * 发送模板
+     */
+    private void sendTemplate(String openId) {
     }
 
     @Override
