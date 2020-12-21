@@ -189,6 +189,9 @@
     <update id="updateReserveNum" parameterType="BusinessReserve">
         update business_reserve set reserve_num = #{reserveNum} where id = #{id}
     </update>
+    <update id="updateRevokeReserve" parameterType="Integer">
+         update business_reserve set reserve_type = '4' where id = #{id}
+    </update>
 
     <delete id="deleteReserveById" parameterType="Integer">
 		update business_reserve set del_flag = '2' where id in

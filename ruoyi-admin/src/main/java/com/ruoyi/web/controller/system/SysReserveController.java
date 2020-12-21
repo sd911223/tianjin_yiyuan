@@ -5,11 +5,15 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.BusinessReserve;
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.entity.req.BusinessReserveReq;
+import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.web.service.TokenService;
+import com.ruoyi.system.service.ISysRoleService;
 import com.ruoyi.system.service.SysReserveContentService;
 import com.ruoyi.system.service.SysReserveService;
 import io.swagger.annotations.Api;
@@ -19,7 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
@@ -37,6 +43,10 @@ public class SysReserveController extends BaseController {
     SysReserveService sysReserveService;
     @Autowired
     SysReserveContentService sysReserveContentService;
+    @Autowired
+    TokenService tokenService;
+    @Autowired
+    ISysRoleService roleService;
 
     @ApiOperation("预约管理列表")
     @GetMapping("/list")
@@ -61,7 +71,7 @@ public class SysReserveController extends BaseController {
         if (!StringUtils.isEmpty(endTime)) {
             businessReserve.setAnnouncementEndTime(DateUtils.dateTime(DateUtils.YYYY_MM_DD_HH_MM_SS, endTime));
         }
-        if (!StringUtils.isEmpty(deptName)){
+        if (!StringUtils.isEmpty(deptName)) {
             businessReserve.setDeptName(deptName);
         }
         List<BusinessReserve> list = sysReserveService.selectReserveList(businessReserve);
@@ -168,4 +178,21 @@ public class SysReserveController extends BaseController {
     public AjaxResult getSignUrl(@PathVariable Integer id) {
         return AjaxResult.success(id);
     }
+
+    @ApiOperation("撤销项目")
+    @GetMapping(value = "/revoke/{id}")
+    public AjaxResult revoke(@PathVariable Integer id, HttpServletRequest request) {
+        BusinessReserve businessReserve = sysReserveService.selectReserveById(id);
+        if (businessReserve == null) {
+            return AjaxResult.error("没有该预约项目");
+        }
+        LoginUser loginUser = tokenService.getLoginUser(request);
+        SysUser user = loginUser.getUser();
+
+        if (!user.isAdmin()) {
+            return AjaxResult.error("只有管理员可以撤销项目");
+        }
+        return AjaxResult.success(sysReserveService.updateRevokeReserve(id));
+    }
+
 }
