@@ -135,7 +135,7 @@ public class WechatServiceImpl implements WechatService {
         personnel.setCanceType("0");
         List<BusinessReservePersonnel> businessReservePersonnels = sysReservePersonnelMapper.selectPersonneList(personnel);
         if (!businessReservePersonnels.isEmpty()) {
-            return AjaxResult.error("你已预约'" + businessReservePersonnel.getAppointmentDate() + " " + businessReservePersonnel.getAppointmentPeriod() + "'项目");
+            return AjaxResult.error("你已预约'" + DateUtils.parseDateToStr("yyyy-MM-dd",businessReservePersonnel.getAppointmentDate()) + " " + businessReservePersonnel.getAppointmentPeriod() + "时间内的项目");
         }
         String[] split = appointmentPeriod.split("-");
         String startTime = date + " " + split[0];
