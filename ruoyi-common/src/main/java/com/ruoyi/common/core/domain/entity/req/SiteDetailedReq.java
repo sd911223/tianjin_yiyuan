@@ -128,4 +128,19 @@ public class SiteDetailedReq {
     public String getIdCard() {
         return idCard;
     }
+
+    @Override
+    public String toString() {
+        return "SiteDetailedReq{" +
+                "reserveId=" + reserveId +
+                ", pageNum=" + pageNum +
+                ", pageSize=" + pageSize +
+                ", appointmentDate=" + appointmentDate +
+                ", appointmentPeriod='" + appointmentPeriod + '\'' +
+                ", reserveNumber='" + reserveNumber + '\'' +
+                ", name='" + name + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", idCard='" + idCard + '\'' +
+                '}';
+    }
 }

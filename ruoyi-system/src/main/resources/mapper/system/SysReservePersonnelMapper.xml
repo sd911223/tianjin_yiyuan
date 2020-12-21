@@ -173,6 +173,9 @@
         <if test="appointmentDate != null"><!-- 开始时间检索 -->
             and date_format(appointment_date,'%y%m%d') = date_format(#{appointmentDate},'%y%m%d')
         </if>
+        <if test="appointmentPeriod != null and appointmentPeriod !=''"><!-- 开始时间检索 -->
+            and appointment_period=#{appointmentPeriod}
+        </if>
         order by d.create_time desc
     </select>
 

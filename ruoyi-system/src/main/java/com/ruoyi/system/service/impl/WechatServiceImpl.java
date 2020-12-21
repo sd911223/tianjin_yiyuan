@@ -211,7 +211,7 @@ public class WechatServiceImpl implements WechatService {
 
         businessReserveContent.setSurplusNumber(businessReserveContent.getSurplusNumber() + 1);
         sysReserveContentMapper.updateSurplusNumber(businessReserveContent);
-        BusinessReserve businessReserve = new BusinessReserve();
+        BusinessReserve businessReserve = sysReserveMapper.selectReserveById(reserveCancelReq.getReserveId());
         businessReserve.setReserveNum(businessReserve.getReserveNum() == null ? 0 : businessReserve.getReserveNum() - 1);
         sysReserveMapper.updateReserveNum(businessReserve);
         return AjaxResult.success("取消预约成功!");
