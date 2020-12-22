@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
@@ -127,11 +126,19 @@ public class SysReserveController extends BaseController {
      */
     @ApiOperation("发布活动")
     @GetMapping(value = "/{id}")
-    public AjaxResult add(@PathVariable Integer id) {
-        BusinessReserve businessReserve = new BusinessReserve();
-        businessReserve.setId(id);
-        businessReserve.setStatus("2");
-        return toAjax(sysReserveService.updateReserveStatus(businessReserve));
+    public AjaxResult add(@PathVariable Integer[] id) {
+        List<Integer> integerList = Arrays.asList(id);
+        if (integerList.isEmpty()) {
+            throw new BaseException("发布活动Id不能为空");
+        }
+        integerList.forEach(e -> {
+            BusinessReserve businessReserve = new BusinessReserve();
+            businessReserve.setId(e);
+            businessReserve.setStatus("2");
+            sysReserveService.updateReserveStatus(businessReserve);
+        });
+
+        return AjaxResult.success("发布成功");
     }
 
     /**
@@ -145,7 +152,7 @@ public class SysReserveController extends BaseController {
         for (int i = 0; i < list.size(); i++) {
             BusinessReserve businessReserve = sysReserveService.selectReserveById(list.get(i));
             if (!"3".equals(businessReserve.getStatus())) {
-                return AjaxResult.error("删除活动'" + list.get(i) + "'失败，只有未发布活动可删除");
+                return AjaxResult.error("删除活动'" + businessReserve.getReserveName() + "'失败，只有未发布活动可删除");
             }
         }
 
@@ -191,11 +198,11 @@ public class SysReserveController extends BaseController {
         }
 
         List<Integer> integerList = Arrays.asList(id);
-        if (!integerList.isEmpty()){
-            integerList.forEach(e->{
+        if (!integerList.isEmpty()) {
+            integerList.forEach(e -> {
                 BusinessReserve businessReserve = sysReserveService.selectReserveById(e);
                 if (businessReserve == null) {
-                    throw new BaseException("项目ID："+e+",没有此项目");
+                    throw new BaseException("项目ID：" + e + ",没有此项目");
                 }
                 sysReserveService.updateRevokeReserve(e);
             });
