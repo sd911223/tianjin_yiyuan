@@ -161,6 +161,19 @@ public class SysReserveController extends BaseController {
 
 
     /**
+     * 取消发布
+     */
+    @ApiOperation("根据id获取预约信息")
+    @GetMapping(value = "/cancelRelease/{id}")
+    public AjaxResult cancelRelease(@PathVariable Integer[] id) {
+        List<Integer> integers = Arrays.asList(id);
+        if (!integers.isEmpty()) {
+            throw new BaseException("项目Id不能为空");
+        }
+        return AjaxResult.success(sysReserveService.updateCancelReleaseById(id));
+    }
+
+    /**
      * 根据id获取预约信息
      */
     @ApiOperation("根据id获取预约信息")

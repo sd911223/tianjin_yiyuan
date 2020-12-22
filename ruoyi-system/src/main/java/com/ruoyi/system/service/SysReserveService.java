@@ -30,4 +30,6 @@ public interface SysReserveService {
     int updateReserve(BusinessReserve upReserve, List<ReserveAmContentReq> reserveAmContentList);
 
     int updateRevokeReserve(Integer id);
+
+    int updateCancelReleaseById(Integer[] id);
 }
