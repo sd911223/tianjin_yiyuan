@@ -163,7 +163,7 @@ public class SysReserveController extends BaseController {
     /**
      * 取消发布
      */
-    @ApiOperation("根据id获取预约信息")
+    @ApiOperation("根据id取消发布")
     @GetMapping(value = "/cancelRelease/{id}")
     public AjaxResult cancelRelease(@PathVariable Integer[] id) {
         List<Integer> integers = Arrays.asList(id);
