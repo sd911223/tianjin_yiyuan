@@ -82,7 +82,7 @@
         <if test="announcementEndTime != null">
             AND date_format(announcement_end_time,'%y%m%d') &lt;= date_format(#{announcementEndTime},'%y%m%d')
         </if>
-        order by d.create_time DESC
+        order by d.status ASC, d.create_time DESC
     </select>
 
     <select id="selectReserveById" parameterType="Integer" resultMap="BusinessReserveResult">
@@ -190,7 +190,7 @@
         update business_reserve set reserve_num = #{reserveNum} where id = #{id}
     </update>
     <update id="updateRevokeReserve" parameterType="Integer">
-         update business_reserve set reserve_type = '4' where id = #{id}
+         update business_reserve set status = '5' where id = #{id}
     </update>
 
     <delete id="deleteReserveById" parameterType="Integer">

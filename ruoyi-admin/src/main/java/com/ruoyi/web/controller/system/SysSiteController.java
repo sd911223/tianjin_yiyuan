@@ -77,9 +77,7 @@ public class SysSiteController extends BaseController {
             businessReserve.setAnnouncementEndTime(endDate);
         }
         LoginUser loginUser = tokenService.getLoginUser(request);
-        if (loginUser.getUser().getDeptId() > 0 && loginUser.getUser().getDeptId() != 103) {
-            businessReserve.setDeptId(loginUser.getUser().getDeptId().intValue());
-        }
+        businessReserve.setDeptId(loginUser.getUser().getDeptId().intValue());
         List<BusinessReserve> list = sysReserveService.selectReserveList(businessReserve);
         return getDataTable(list);
     }
@@ -95,7 +93,8 @@ public class SysSiteController extends BaseController {
     @ApiOperation("现场办理详细导出")
     @Log(title = "现场办理详细导出", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
-    public void export(SiteDetailedReq siteDetailedReq, HttpServletRequest request, HttpServletResponse response) {
+    public void export(HttpServletRequest request, HttpServletResponse response) {
+        SiteDetailedReq siteDetailedReq = new SiteDetailedReq();
         List<BusinessReservePersonnel> list = sysReservePersonnelService.selectPersonneList(siteDetailedReq);
         ExcelUtil<BusinessReservePersonnel> util = new ExcelUtil<BusinessReservePersonnel>(BusinessReservePersonnel.class);
         AjaxResult ajaxResult = util.exportExcel(list, "现场办理导出");

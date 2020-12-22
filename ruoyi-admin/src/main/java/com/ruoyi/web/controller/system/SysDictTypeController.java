@@ -39,9 +39,14 @@ public class SysDictTypeController extends BaseController {
 
     @ApiOperation(("数据字典列表"))
     @GetMapping("/list")
-    public TableDataInfo list(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
-        SysDictType dictType = new SysDictType();
+    public TableDataInfo list(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize,
+                              @RequestParam("dictName") String dictName) {
+
         startPage();
+        SysDictType dictType = new SysDictType();
+        if (!StringUtils.isEmpty(dictName)){
+            dictType.setDictName(dictName);
+        }
         List<SysDictType> list = dictTypeService.selectDictTypeList(dictType);
         return getDataTable(list);
     }
