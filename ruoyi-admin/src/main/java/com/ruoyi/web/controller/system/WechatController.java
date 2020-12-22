@@ -16,6 +16,7 @@ import com.ruoyi.system.service.SysReserveService;
 import com.ruoyi.system.service.WechatService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -64,12 +65,10 @@ public class WechatController extends BaseController {
         BusinessReserve businessReserve = sysReserveService.selectReserveById(id);
         BusinessReserveResp businessReserveResp = new BusinessReserveResp();
         List<BusinessReserveContent> businessReserveContents = sysReserveContentService.selectContentByRId(businessReserve.getId());
-        businessReserveResp.setBusinessReserveContentList(businessReserveContents);
-        businessReserveResp.setId(businessReserve.getId());
-        businessReserveResp.setReserveName(businessReserve.getReserveName());
-        businessReserveResp.setReserveRegister(businessReserve.getReserveRegister());
-        businessReserveResp.setSubmitName(businessReserve.getSubmitName());
-        businessReserveResp.setDictionaryId(businessReserve.getDictionaryId());
+        BeanUtils.copyProperties(businessReserve,businessReserveResp);
+        if (!businessReserveContents.isEmpty()){
+            businessReserveResp.setBusinessReserveContentList(businessReserveContents);
+        }
         return AjaxResult.success(businessReserveResp);
 
     }

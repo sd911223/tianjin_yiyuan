@@ -75,17 +75,26 @@ public class SysReserveServiceImpl implements SysReserveService {
         if (!reserveAmContentList.isEmpty()) {
             List<BusinessReserveContent> contentList = sysReserveContentMapper.selectContentByRId(upReserve.getId());
             if (!contentList.isEmpty()) {
-                contentList.forEach(content -> {
+                for (BusinessReserveContent content: contentList){
                     sysReserveContentMapper.delectReserveContent(content.getId());
-                });
+                }
+
             }
-            reserveAmContentList.forEach(e -> {
+            for (ReserveAmContentReq reserveAmContentReq: reserveAmContentList){
                 BusinessReserveContent businessReserveContent = new BusinessReserveContent();
-                BeanUtils.copyProperties(e, businessReserveContent);
-                businessReserveContent.setSurplusNumber(e.getNumberLimit());
+                BeanUtils.copyProperties(reserveAmContentReq, businessReserveContent);
+                businessReserveContent.setSurplusNumber(reserveAmContentReq.getNumberLimit());
                 businessReserveContent.setReserveId(upReserve.getId());
                 sysReserveContentMapper.insertReserveContent(businessReserveContent);
-            });
+            }
+//            reserveAmContentList.forEach(e -> {
+//                System.out.println("进入插入");
+//                BusinessReserveContent businessReserveContent = new BusinessReserveContent();
+//                BeanUtils.copyProperties(e, businessReserveContent);
+//                businessReserveContent.setSurplusNumber(e.getNumberLimit());
+//                businessReserveContent.setReserveId(upReserve.getId());
+//                sysReserveContentMapper.insertReserveContent(businessReserveContent);
+//            });
         }
         return sysReserveMapper.updateReserve(upReserve);
     }

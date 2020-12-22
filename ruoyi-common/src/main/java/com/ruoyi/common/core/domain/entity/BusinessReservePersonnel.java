@@ -101,9 +101,10 @@ public class BusinessReservePersonnel {
     @ApiModelProperty("openID")
     private String openId;
     /**
-     * 扩展
+     * 取消状态
      */
-    @ApiModelProperty("扩展字段")
+    @ApiModelProperty("取消状态")
+    @Excel(name = "取消状态", readConverterExp = "0=未取消,1=取消")
     private String canceType;
     /**
      * 扩展
