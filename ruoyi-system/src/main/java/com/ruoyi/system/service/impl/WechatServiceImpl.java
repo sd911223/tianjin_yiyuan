@@ -126,39 +126,40 @@ public class WechatServiceImpl implements WechatService {
     @Transactional
     @Override
     public AjaxResult insertPersonnel(BusinessReservePersonnel businessReservePersonnel) {
-        Date appointmentDate = businessReservePersonnel.getAppointmentDate();
-        String date = new SimpleDateFormat("yyyy-MM-dd").format(appointmentDate);
-        String appointmentPeriod = businessReservePersonnel.getAppointmentPeriod();
-        BusinessReservePersonnel personnel = new BusinessReservePersonnel();
-        personnel.setIdCard(businessReservePersonnel.getIdCard());
-        personnel.setReserveId(businessReservePersonnel.getReserveId());
-        personnel.setCanceType("0");
-        List<BusinessReservePersonnel> businessReservePersonnels = sysReservePersonnelMapper.selectPersonneList(personnel);
-        if (!businessReservePersonnels.isEmpty()) {
-            return AjaxResult.error("你已预约'" + DateUtils.parseDateToStr("yyyy-MM-dd",businessReservePersonnel.getAppointmentDate()) + " " + businessReservePersonnel.getAppointmentPeriod() + "时间内的项目");
-        }
-        String[] split = appointmentPeriod.split("-");
-        String startTime = date + " " + split[0];
-        String endTime = date + " " + split[1];
-        Date parseDateStart = DateUtils.parseDate(startTime);
-        Date parseDateEnd = DateUtils.parseDate(endTime);
-        if (new Date().getTime() - parseDateStart.getTime() < 1) {
-            return AjaxResult.error("不在预约时间内");
-        }
-        if (new Date().getTime() - parseDateEnd.getTime() > 1) {
-            return AjaxResult.error("不在预约时间内");
-        }
-        BusinessReserve businessReserve = sysReserveMapper.selectReserveById(businessReservePersonnel.getReserveId());
         try {
             Thread.sleep(2000);
             synchronized (this) {
+                Date appointmentDate = businessReservePersonnel.getAppointmentDate();
+                String date = new SimpleDateFormat("yyyy-MM-dd").format(appointmentDate);
+                String appointmentPeriod = businessReservePersonnel.getAppointmentPeriod();
+                BusinessReservePersonnel personnel = new BusinessReservePersonnel();
+                personnel.setIdCard(businessReservePersonnel.getIdCard());
+                personnel.setReserveId(businessReservePersonnel.getReserveId());
+                personnel.setCanceType("0");
+                List<BusinessReservePersonnel> businessReservePersonnels = sysReservePersonnelMapper.selectPersonneList(personnel);
+                if (!businessReservePersonnels.isEmpty()) {
+                    return AjaxResult.error("你已预约'" + DateUtils.parseDateToStr("yyyy-MM-dd", businessReservePersonnel.getAppointmentDate()) + " " + businessReservePersonnel.getAppointmentPeriod() + "时间内的项目");
+                }
+                String[] split = appointmentPeriod.split("-");
+                String startTime = date + " " + split[0];
+                String endTime = date + " " + split[1];
+                Date parseDateStart = DateUtils.parseDate(startTime);
+                Date parseDateEnd = DateUtils.parseDate(endTime);
+                if (new Date().getTime() - parseDateStart.getTime() < 1) {
+                    return AjaxResult.error("不在预约时间内");
+                }
+                if (new Date().getTime() - parseDateEnd.getTime() > 1) {
+                    return AjaxResult.error("不在预约时间内");
+                }
+                BusinessReserve businessReserve = sysReserveMapper.selectReserveById(businessReservePersonnel.getReserveId());
+
                 if (businessReserve == null) {
                     return AjaxResult.error("我要预约-预约号'" + businessReservePersonnel.getReserveId() + "'失败，预约项目不存在");
                 }
                 if ("1".equals(businessReserve.getReserveType())) {
                     String idCard = businessReserve.getIdCard();
                     if (!idCard.contains(businessReservePersonnel.getIdCard())) {
-                        return AjaxResult.error("我要预约-预约号'" + businessReservePersonnel.getReserveId() + "'失败，不在特定人群");
+                        return AjaxResult.error("我要预约-预约号'" + businessReservePersonnel.getReserveName() + "'失败，不在特定人群");
                     }
                 }
                 sysReservePersonnelMapper.insertPersonnel(businessReservePersonnel);

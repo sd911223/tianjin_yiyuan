@@ -17,9 +17,6 @@ public class BusinessReserveContent {
      */
     @ApiModelProperty("日期")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    /**
-     * 日期
-     */
     private Date appointmentDate;
     /**
      * 日期范围
@@ -53,6 +50,16 @@ public class BusinessReserveContent {
     private Integer sortNumber;
     private Integer dictionaryId;
     private String submitName;
+
+    @ApiModelProperty("是否在有效期")
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public void setDictionaryId(Integer dictionaryId) {
         this.dictionaryId = dictionaryId;

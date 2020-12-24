@@ -11,6 +11,7 @@ import com.ruoyi.common.core.domain.entity.req.TicketReq;
 import com.ruoyi.common.core.domain.entity.resp.BusinessReserveResp;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.system.service.SysReserveContentService;
 import com.ruoyi.system.service.SysReserveService;
 import com.ruoyi.system.service.WechatService;
@@ -21,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
@@ -65,8 +68,22 @@ public class WechatController extends BaseController {
         BusinessReserve businessReserve = sysReserveService.selectReserveById(id);
         BusinessReserveResp businessReserveResp = new BusinessReserveResp();
         List<BusinessReserveContent> businessReserveContents = sysReserveContentService.selectContentByRId(businessReserve.getId());
-        BeanUtils.copyProperties(businessReserve,businessReserveResp);
-        if (!businessReserveContents.isEmpty()){
+        businessReserveContents.forEach(e -> {
+            Date appointmentDate = e.getAppointmentDate();
+            String date = new SimpleDateFormat("yyyy-MM-dd").format(appointmentDate);
+            String[] split = e.getAppointmentPeriod().split("-");
+            String startTime = date + " " + split[0];
+            String endTime = date + " " + split[1];
+            Date parseDateStart = DateUtils.parseDate(startTime);
+            Date parseDateEnd = DateUtils.parseDate(endTime);
+            if (new Date().getTime() - parseDateStart.getTime() > 0 && new Date().getTime() - parseDateEnd.getTime() < 0) {
+                e.setStatus("0");
+            } else {
+                e.setStatus("1");
+            }
+        });
+        BeanUtils.copyProperties(businessReserve, businessReserveResp);
+        if (!businessReserveContents.isEmpty()) {
             businessReserveResp.setBusinessReserveContentList(businessReserveContents);
         }
         return AjaxResult.success(businessReserveResp);
