@@ -111,6 +111,20 @@ public class WechatServiceImpl implements WechatService {
         List<BusinessReservePersonnel> list = sysReservePersonnelMapper.selectPersonneList(businessReservePersonnel);
         if (!list.isEmpty()) {
             BusinessReservePersonnel businessReservePersonnel1 = list.get(0);
+            Date appointmentDate = businessReservePersonnel1.getAppointmentDate();
+            String date = new SimpleDateFormat("yyyy-MM-dd").format(appointmentDate);
+            String appointmentPeriod = businessReservePersonnel1.getAppointmentPeriod();
+            String[] split = appointmentPeriod.split("-");
+            String startTime = date + " " + split[0];
+            String endTime = date + " " + split[1];
+            Date parseDateStart = DateUtils.parseDate(startTime);
+            Date parseDateEnd = DateUtils.parseDate(endTime);
+            if (new Date().getTime() - parseDateStart.getTime() < 1) {
+                return AjaxResult.error("不在签到时间内");
+            }
+            if (new Date().getTime() - parseDateEnd.getTime() > 1) {
+                return AjaxResult.error("不在签到时间内");
+            }
             if (businessReservePersonnel1.getStatus().equals("1")) {
                 return AjaxResult.error("不可重复签到!");
             }
@@ -118,6 +132,8 @@ public class WechatServiceImpl implements WechatService {
             businessReservePersonnel1.setReserveNumber(orderSn);
             businessReservePersonnel1.setSignTime(new Date());
             sysReservePersonnelMapper.updatePersonnelStatus(businessReservePersonnel1);
+        }else {
+
         }
         return AjaxResult.success("签到成功!签到码为: " + orderSn);
     }

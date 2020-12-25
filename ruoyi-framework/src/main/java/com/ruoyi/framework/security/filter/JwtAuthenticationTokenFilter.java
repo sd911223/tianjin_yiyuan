@@ -31,6 +31,10 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException
     {
+        if (request.getRequestURI().contains("/medicineApi/captchaImage")||request.getRequestURI().contains("/medicineApi/login")) {
+            chain.doFilter(request, response);
+            return;
+        }
         LoginUser loginUser = tokenService.getLoginUser(request);
         if (StringUtils.isNotNull(loginUser) && StringUtils.isNull(SecurityUtils.getAuthentication()))
         {
