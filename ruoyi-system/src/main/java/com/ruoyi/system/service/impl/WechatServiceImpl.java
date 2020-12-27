@@ -8,6 +8,7 @@ import com.ruoyi.common.core.domain.entity.BusinessReserveContent;
 import com.ruoyi.common.core.domain.entity.BusinessReservePersonnel;
 import com.ruoyi.common.core.domain.entity.req.ReserveCancelReq;
 import com.ruoyi.common.core.redis.RedisCache;
+import com.ruoyi.common.exception.BaseException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.http.HttpUtils;
@@ -132,7 +133,7 @@ public class WechatServiceImpl implements WechatService {
             businessReservePersonnel1.setReserveNumber(orderSn);
             businessReservePersonnel1.setSignTime(new Date());
             sysReservePersonnelMapper.updatePersonnelStatus(businessReservePersonnel1);
-        }else {
+        } else {
 
         }
         return AjaxResult.success("签到成功!签到码为: " + orderSn);
@@ -213,24 +214,36 @@ public class WechatServiceImpl implements WechatService {
     @Transactional
     @Override
     public AjaxResult reserveCancel(ReserveCancelReq reserveCancelReq) {
-        BusinessReservePersonnel businessReservePersonnel = new BusinessReservePersonnel();
-        businessReservePersonnel.setOpenId(reserveCancelReq.getOpenId());
-        businessReservePersonnel.setReserveId(reserveCancelReq.getReserveId());
-        businessReservePersonnel.setContentId(reserveCancelReq.getContentId());
-        List<BusinessReservePersonnel> list = sysReservePersonnelMapper.selectPersonneList(businessReservePersonnel);
-        if (list.isEmpty()) {
-            return AjaxResult.error("取消预约-内容预约号'" + reserveCancelReq.getReserveId() + "'失败，预约项目不存在");
+        try {
+            Thread.sleep(2000);
+            synchronized (this) {
+                BusinessReservePersonnel businessReservePersonnel = new BusinessReservePersonnel();
+                businessReservePersonnel.setOpenId(reserveCancelReq.getOpenId());
+                businessReservePersonnel.setReserveId(reserveCancelReq.getReserveId());
+                businessReservePersonnel.setContentId(reserveCancelReq.getContentId());
+                List<BusinessReservePersonnel> list = sysReservePersonnelMapper.selectPersonneList(businessReservePersonnel);
+                if (list.isEmpty()) {
+                    return AjaxResult.error("取消预约-内容预约号'" + reserveCancelReq.getReserveId() + "'失败，预约项目不存在");
+                }
+                list.get(0).setCanceType("1");
+                sysReservePersonnelMapper.updatePersonnelCanceType(list.get(0));
+
+                BusinessReserveContent businessReserveContent = sysReserveContentMapper.selectContentById(reserveCancelReq.getContentId());
+
+                businessReserveContent.setSurplusNumber(businessReserveContent.getSurplusNumber() + 1);
+                sysReserveContentMapper.updateSurplusNumber(businessReserveContent);
+                BusinessReserve businessReserve = sysReserveMapper.selectReserveById(reserveCancelReq.getReserveId());
+                if (businessReserve.getReserveNum() < 1) {
+                    throw new BaseException("取消预约失败!");
+                }
+                businessReserve.setReserveNum(businessReserve.getReserveNum() - 1);
+                sysReserveMapper.updateReserveNum(businessReserve);
+                return AjaxResult.success("取消预约成功!");
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        list.get(0).setCanceType("1");
-        sysReservePersonnelMapper.updatePersonnelCanceType(list.get(0));
-
-        BusinessReserveContent businessReserveContent = sysReserveContentMapper.selectContentById(reserveCancelReq.getContentId());
-
-        businessReserveContent.setSurplusNumber(businessReserveContent.getSurplusNumber() + 1);
-        sysReserveContentMapper.updateSurplusNumber(businessReserveContent);
-        BusinessReserve businessReserve = sysReserveMapper.selectReserveById(reserveCancelReq.getReserveId());
-        businessReserve.setReserveNum(businessReserve.getReserveNum() == null ? 0 : businessReserve.getReserveNum() - 1);
-        sysReserveMapper.updateReserveNum(businessReserve);
         return AjaxResult.success("取消预约成功!");
     }
 
