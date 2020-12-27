@@ -79,6 +79,13 @@ public class SysSiteController extends BaseController {
         LoginUser loginUser = tokenService.getLoginUser(request);
         businessReserve.setDeptId(loginUser.getUser().getDeptId().intValue());
         List<BusinessReserve> list = sysReserveService.selectReserveList(businessReserve);
+        if (!list.isEmpty()) {
+            list.forEach(e->{
+                //查询签到人数
+                int finishCount = sysReservePersonnelService.selectFinishCount(e.getId());
+                e.setArrived(finishCount);
+            });
+        }
         return getDataTable(list);
     }
 

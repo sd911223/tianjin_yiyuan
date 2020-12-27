@@ -52,4 +52,9 @@ public class SysReservePersonnelServiceImpl implements SysReservePersonnelServic
     public int updatePersonnelStatus(BusinessReservePersonnel businessReservePersonnel) {
         return sysReservePersonnelMapper.updatePersonnelStatus(businessReservePersonnel);
     }
+
+    @Override
+    public int selectFinishCount(Integer id) {
+        return sysReservePersonnelMapper.selectFinishCount(id);
+    }
 }

@@ -11,4 +11,6 @@ public interface SysReservePersonnelService {
     BusinessReservePersonnel selectPersonnelById(Integer id);
 
     int updatePersonnelStatus(BusinessReservePersonnel businessReservePersonnel);
+
+    int selectFinishCount(Integer id);
 }

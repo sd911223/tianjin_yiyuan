@@ -178,5 +178,9 @@
         </if>
         order by d.create_time desc
     </select>
+    <select id="selectFinishCount" resultType="java.lang.Integer">
+        select count(1)   from business_reserve_personnel
+        where status ='1' and reserve_id=#{id}
+    </select>
 
 </mapper> 
