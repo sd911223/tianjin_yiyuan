@@ -162,9 +162,9 @@ public class WechatServiceImpl implements WechatService {
                 String endTime = date + " " + split[1];
                 Date parseDateStart = DateUtils.parseDate(startTime);
                 Date parseDateEnd = DateUtils.parseDate(endTime);
-                if (new Date().getTime() - parseDateStart.getTime() < 1) {
-                    return AjaxResult.error("不在预约时间内");
-                }
+//                if (new Date().getTime() - parseDateStart.getTime() < 1) {
+//                    return AjaxResult.error("不在预约时间内");
+//                }
                 if (new Date().getTime() - parseDateEnd.getTime() > 1) {
                     return AjaxResult.error("不在预约时间内");
                 }

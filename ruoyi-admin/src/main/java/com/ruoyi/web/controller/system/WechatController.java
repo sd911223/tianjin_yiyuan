@@ -76,10 +76,10 @@ public class WechatController extends BaseController {
             String endTime = date + " " + split[1];
             Date parseDateStart = DateUtils.parseDate(startTime);
             Date parseDateEnd = DateUtils.parseDate(endTime);
-            if (new Date().getTime() - parseDateStart.getTime() > 0 && new Date().getTime() - parseDateEnd.getTime() < 0) {
-                e.setStatus("0");
-            } else {
+            if ((new Date().getTime() - parseDateEnd.getTime() > 0) || (e.getSurplusNumber() < 1)) {
                 e.setStatus("1");
+            } else {
+                e.setStatus("0");
             }
         });
         BeanUtils.copyProperties(businessReserve, businessReserveResp);
