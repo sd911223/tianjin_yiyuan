@@ -9,7 +9,6 @@
     <version>3.2.1</version>
 
     <name>ruoyi</name>
-    <url>http://www.ruoyi.vip</url>
     <description>后台管理系统</description>
     
     <properties>
@@ -36,7 +35,7 @@
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
-        
+
             <!-- SpringBoot的依赖配置-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>

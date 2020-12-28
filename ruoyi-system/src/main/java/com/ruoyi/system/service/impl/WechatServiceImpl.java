@@ -1,6 +1,8 @@
 package com.ruoyi.system.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.BusinessReserve;
@@ -16,6 +18,14 @@ import com.ruoyi.system.mapper.SysReserveContentMapper;
 import com.ruoyi.system.mapper.SysReserveMapper;
 import com.ruoyi.system.mapper.SysReservePersonnelMapper;
 import com.ruoyi.system.service.WechatService;
+import me.chanjar.weixin.common.WxType;
+import me.chanjar.weixin.common.error.WxError;
+import me.chanjar.weixin.common.error.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
+import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
+import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
+import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,13 +40,13 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class WechatServiceImpl implements WechatService {
+    private static final JsonParser JSON_PARSER = new JsonParser();
     @Autowired
     SysReservePersonnelMapper sysReservePersonnelMapper;
     @Autowired
     SysReserveContentMapper sysReserveContentMapper;
     @Autowired
     SysReserveMapper sysReserveMapper;
-
     @Value("${wechat.appid}")
     private String appid;
     @Value("${wechat.secret}")
@@ -191,17 +201,12 @@ public class WechatServiceImpl implements WechatService {
                 sysReserveContentMapper.updateSurplusNumber(businessReserveContent);
                 businessReserve.setReserveNum(businessReserve.getReserveNum() + 1);
                 sysReserveMapper.updateReserveNum(businessReserve);
+                sendTemplate(businessReservePersonnel);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         return AjaxResult.success("预约成功!");
-    }
-
-    /**
-     * 发送模板
-     */
-    private void sendTemplate(String openId) {
     }
 
     @Override
@@ -389,4 +394,65 @@ public class WechatServiceImpl implements WechatService {
         return sb.toString();
     }
 
+    /**
+     * 发送模板
+     *
+     * @param businessReservePersonnel
+     */
+    private void sendTemplate(BusinessReservePersonnel businessReservePersonnel) {
+        //1,配置
+        WxMpInMemoryConfigStorage wxStorage = new WxMpInMemoryConfigStorage();
+        //appid
+        wxStorage.setAppId(appid);
+        //appsecret
+        wxStorage.setSecret(secret);
+        WxMpService wxMpService = new WxMpServiceImpl();
+        wxMpService.setWxMpConfigStorage(wxStorage);
+        //推送消息
+        WxMpTemplateMessage templateMessage = WxMpTemplateMessage.builder()
+                //要推送的用户openid
+                .toUser(businessReservePersonnel.getOpenId())
+                //模板id
+                .templateId(templateId)
+                //点击模板消息要访问的网址
+                .url("")
+                .build();
+        //3,发送消息，，这里需要配置你的信息
+
+        templateMessage.addData(new WxMpTemplateData("first.DATA", "尊敬的" + businessReservePersonnel.getName() + ",您已经成功预约", "#173177"));
+        templateMessage.addData(new WxMpTemplateData("keyword1.DATA", businessReservePersonnel.getReserveName(), "#173177"));
+        templateMessage.addData(new WxMpTemplateData("keyword2.DATA", "现场审核确认", "#173177"));
+        Date appointmentDate = businessReservePersonnel.getAppointmentDate();
+        String date = new SimpleDateFormat("yyyy-MM-dd").format(appointmentDate);
+        String keyword3 = date + " " + businessReservePersonnel.getAppointmentPeriod();
+        templateMessage.addData(new WxMpTemplateData("keyword3.DATA", "请于" + keyword3 + "办理", "#173177"));
+        templateMessage.addData(new WxMpTemplateData("keyword4.DATA", businessReservePersonnel.getReserveName(), "#173177"));
+        templateMessage.addData(new WxMpTemplateData("keyword5.DATA", "如需取消,请在【我的预约】中取消预约", "#173177"));
+        templateMessage.addData(new WxMpTemplateData("remark.DATA", "感谢您的使用", "#173177"));
+        try {
+            String msg = sendTemplateMsg(templateMessage,wxMpService);
+            System.out.println("推送成功:" + msg);
+        } catch (Exception e) {
+            System.out.println("推送失败：" + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 重写SDK
+     * @param templateMessage
+     * @return
+     * @throws WxErrorException
+     */
+    private String sendTemplateMsg(WxMpTemplateMessage templateMessage, WxMpService wxMpService) throws WxErrorException {
+        String url = templateUrl;
+        String responseContent = wxMpService.post(url, templateMessage.toJson());
+        JsonObject jsonObject = JSON_PARSER.parse(responseContent).getAsJsonObject();
+        if (jsonObject.get("errcode").getAsInt() == 0) {
+            return jsonObject.get("msgid").getAsString();
+        } else {
+            throw new WxErrorException(WxError.fromJson(responseContent, WxType.MP));
+        }
+    }
 }
