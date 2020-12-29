@@ -128,4 +128,4 @@ wechat:
   #模板Id
   template_id: kbs5jEL9fgXci4njDeP85RVv7fR5nf3KdFYstbb8sLg
   #模板发送地址
-  template_url: ${wechat.domain}/cgi-bin/message/template/send
+  template_url: https://api.weixin.qq.com/cgi-bin/message/template/send

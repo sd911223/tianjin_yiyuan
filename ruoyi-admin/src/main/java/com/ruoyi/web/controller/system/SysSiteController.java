@@ -100,8 +100,9 @@ public class SysSiteController extends BaseController {
     @ApiOperation("现场办理详细导出")
     @Log(title = "现场办理详细导出", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
-    public void export(HttpServletRequest request, HttpServletResponse response) {
+    public void export(HttpServletRequest request, HttpServletResponse response,@RequestParam("reserveId") Integer reserveId) {
         SiteDetailedReq siteDetailedReq = new SiteDetailedReq();
+        siteDetailedReq.setReserveId(reserveId);
         List<BusinessReservePersonnel> list = sysReservePersonnelService.selectPersonneList(siteDetailedReq);
         ExcelUtil<BusinessReservePersonnel> util = new ExcelUtil<BusinessReservePersonnel>(BusinessReservePersonnel.class);
         AjaxResult ajaxResult = util.exportExcel(list, "现场办理导出");

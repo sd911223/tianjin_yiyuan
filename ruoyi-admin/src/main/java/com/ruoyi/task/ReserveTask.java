@@ -26,14 +26,22 @@ public class ReserveTask {
                 Date reserveStartTime = list.get(i).getReserveStartTime();
                 Date reserveEndTime = list.get(i).getReserveEndTime();
                 Date nowDate = DateUtils.getNowDate();
-                //如果当前时间大于结束时间===项目结束
-                if ((nowDate.getTime()-reserveEndTime.getTime())>=1){
-                    list.get(i).setStatus("4");
+                //如果当前时间大于开始时间并且结束时间大于当前时间
+                if ((nowDate.getTime() - reserveStartTime.getTime()) >= 1 && (reserveEndTime.getTime() - nowDate.getTime()) >= 1) {
+                    list.get(i).setStatus("1");
                     sysReserveService.updateReserveStatus(list.get(i));
                 }
-                //如果当前时间大于开始时间并且结束时间大于当前时间
-                if ((nowDate.getTime()-reserveStartTime.getTime())>=1&&(reserveEndTime.getTime()-nowDate.getTime())>=1){
-                    list.get(i).setStatus("1");
+            }
+        }
+        businessReserve.setStatus("1");
+        List<BusinessReserve> list2 = sysReserveService.selectReserveList(businessReserve);
+        if (!list2.isEmpty()) {
+            for (int i = 0; i < list2.size(); i++) {
+                Date reserveEndTime = list2.get(i).getReserveEndTime();
+                Date nowDate = DateUtils.getNowDate();
+                //如果当前时间大于结束时间===项目结束
+                if ((nowDate.getTime() - reserveEndTime.getTime()) >= 1) {
+                    list.get(i).setStatus("4");
                     sysReserveService.updateReserveStatus(list.get(i));
                 }
             }
