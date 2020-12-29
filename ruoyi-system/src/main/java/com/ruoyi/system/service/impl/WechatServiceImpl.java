@@ -415,7 +415,7 @@ public class WechatServiceImpl implements WechatService {
         wxMpTemplateMessage.setData(params);
         //将java对象转换为json对象
         String sendData = JSONObject.toJSONString(wxMpTemplateMessage);
-        log.info("板参数组装{}", sendData);
+        log.info("模板板参数组装{}", sendData);
         TreeMap<String, String> treeMap = new TreeMap<String, String>();
         treeMap.put("access_token", businessReservePersonnel.getAccessToken());
         String retInfo = HttpUtils.doPost(templateUrl, treeMap, sendData);
