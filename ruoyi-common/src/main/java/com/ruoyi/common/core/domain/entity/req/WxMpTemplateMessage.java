@@ -1,34 +1,64 @@
 package com.ruoyi.common.core.domain.entity.req;
 
 
-import java.util.List;
+import java.util.TreeMap;
 
 public class WxMpTemplateMessage {
-    private String toUser;
-    private String templateId;
-    private List<WxMpTemplateData> data;
+    //用戶openid
+    private String touser;
+    //模板ID
+    private String template_id;
+    //URL置空，则在发送后，点击模板消息会进入一个空白页面（ios），或无法点击（android）
+    private String url;
 
-    public void setToUser(String toUser) {
-        this.toUser = toUser;
+    private TreeMap<String, TreeMap<String, String>> data; //data数据
+
+    public static TreeMap<String, String> item(String value, String color) {
+        TreeMap<String, String> params = new TreeMap<String, String>();
+        params.put("value", value);
+        params.put("color", color);
+        return params;
     }
 
-    public void setTemplateId(String templateId) {
-        this.templateId = templateId;
+    public TreeMap<String, TreeMap<String, String>> getData() {
+        return data;
     }
 
-    public void setData(List<WxMpTemplateData> data) {
+    public void setData(TreeMap<String, TreeMap<String, String>> data) {
         this.data = data;
     }
 
-    public String getToUser() {
-        return toUser;
+    public String getTouser() {
+        return touser;
     }
 
-    public String getTemplateId() {
-        return templateId;
+    public void setTouser(String touser) {
+        this.touser = touser;
     }
 
-    public List<WxMpTemplateData> getData() {
-        return data;
+    public String getTemplate_id() {
+        return template_id;
+    }
+
+    public void setTemplate_id(String template_id) {
+        this.template_id = template_id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    @Override
+    public String toString() {
+        return "WechatTemplate{" +
+                "touser='" + touser + '\'' +
+                ", template_id='" + template_id + '\'' +
+                ", url='" + url + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

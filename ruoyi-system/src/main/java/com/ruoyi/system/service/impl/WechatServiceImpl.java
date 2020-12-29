@@ -7,7 +7,6 @@ import com.ruoyi.common.core.domain.entity.BusinessReserve;
 import com.ruoyi.common.core.domain.entity.BusinessReserveContent;
 import com.ruoyi.common.core.domain.entity.BusinessReservePersonnel;
 import com.ruoyi.common.core.domain.entity.req.ReserveCancelReq;
-import com.ruoyi.common.core.domain.entity.req.WxMpTemplateData;
 import com.ruoyi.common.core.domain.entity.req.WxMpTemplateMessage;
 import com.ruoyi.common.core.redis.RedisCache;
 import com.ruoyi.common.exception.BaseException;
@@ -396,34 +395,31 @@ public class WechatServiceImpl implements WechatService {
     private void sendTemplate(BusinessReservePersonnel businessReservePersonnel) {
         AjaxResult accessToken = getAccessToken();
         String accToken = accessToken.get("data").toString();
-        log.debug("获取：getAccessToken()->{}", accToken);
-        //推送消息
-        WxMpTemplateMessage templateMessage = new WxMpTemplateMessage();
-        //要推送的用户openid
-        templateMessage.setToUser(businessReservePersonnel.getOpenId());
-        //模板id
-        templateMessage.setTemplateId(templateId);
+        log.info("获取：getAccessToken()->{}", accToken);
+        TreeMap<String, TreeMap<String, String>> params = new TreeMap<String, TreeMap<String, String>>();
         //3,发送消息，，这里需要配置你的信息
-        List<WxMpTemplateData> data = new ArrayList<WxMpTemplateData>();
-        data.add(new WxMpTemplateData("first", "尊敬的" + businessReservePersonnel.getName() + ",您已经成功预约", "#173177"));
-        data.add(new WxMpTemplateData("keyword1", businessReservePersonnel.getReserveName(), "#173177"));
-        data.add(new WxMpTemplateData("keyword2", "现场审核确认", "#173177"));
+        params.put("first", WxMpTemplateMessage.item("尊敬的" + businessReservePersonnel.getName() + ",您已经成功预约", "#173177"));
+        params.put("keyword1", WxMpTemplateMessage.item(businessReservePersonnel.getReserveName(), "#173177"));
+        params.put("keyword2", WxMpTemplateMessage.item("现场审核确认", "#173177"));
         Date appointmentDate = businessReservePersonnel.getAppointmentDate();
         String date = new SimpleDateFormat("yyyy-MM-dd").format(appointmentDate);
         String keyword3 = date + " " + businessReservePersonnel.getAppointmentPeriod();
-        data.add(new WxMpTemplateData("keyword3", "请于" + keyword3 + "办理", "#173177"));
-        data.add(new WxMpTemplateData("keyword4", businessReservePersonnel.getReserveName(), "#173177"));
-        data.add(new WxMpTemplateData("keyword5", "如需取消,请在【我的预约】中取消预约", "#173177"));
-        data.add(new WxMpTemplateData("remark", "感谢您的使用", "#173177"));
-        templateMessage.setData(data);
-        try {
-            String sendPost = HttpUtils.sendPost(templateUrl + "?access_token=" + accToken, JSONObject.toJSONString(templateMessage));
-            log.debug("发送模板消息结果：{}", sendPost);
-        } catch (Exception e) {
-            System.out.println("推送失败：" + e.getMessage());
-            e.printStackTrace();
-        }
-
+        params.put("keyword3", WxMpTemplateMessage.item("请于" + keyword3 + "办理", "#173177"));
+        params.put("keyword4", WxMpTemplateMessage.item(businessReservePersonnel.getReserveName(), "#173177"));
+        params.put("keyword5", WxMpTemplateMessage.item("如需取消,请在【我的预约】中取消预约", "#173177"));
+        params.put("remark", WxMpTemplateMessage.item("感谢您的使用", "#173177"));
+        WxMpTemplateMessage wxMpTemplateMessage = new WxMpTemplateMessage();
+        wxMpTemplateMessage.setTemplate_id(templateId);
+        wxMpTemplateMessage.setTouser(businessReservePersonnel.getOpenId());
+        wxMpTemplateMessage.setUrl("");
+        wxMpTemplateMessage.setData(params);
+        //将java对象转换为json对象
+        String sendData = JSONObject.toJSONString(wxMpTemplateMessage);
+        log.info("板参数组装{}", sendData);
+        TreeMap<String, String> treeMap = new TreeMap<String, String>();
+        treeMap.put("access_token", accToken);
+        String retInfo = HttpUtils.doPost(templateUrl, treeMap, sendData);
+        log.info("消息模板返回{}", retInfo);
     }
 
 }

@@ -41,8 +41,8 @@ public class ReserveTask {
                 Date nowDate = DateUtils.getNowDate();
                 //如果当前时间大于结束时间===项目结束
                 if ((nowDate.getTime() - reserveEndTime.getTime()) >= 1) {
-                    list.get(i).setStatus("4");
-                    sysReserveService.updateReserveStatus(list.get(i));
+                    list2.get(i).setStatus("4");
+                    sysReserveService.updateReserveStatus(list2.get(i));
                 }
             }
         }
