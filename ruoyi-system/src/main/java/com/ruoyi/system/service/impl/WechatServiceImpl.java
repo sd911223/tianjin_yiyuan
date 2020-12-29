@@ -393,9 +393,9 @@ public class WechatServiceImpl implements WechatService {
      * @param businessReservePersonnel
      */
     private void sendTemplate(BusinessReservePersonnel businessReservePersonnel) {
-        AjaxResult accessToken = getAccessToken();
-        String accToken = accessToken.get("data").toString();
-        log.info("获取：getAccessToken()->{}", accToken);
+//        AjaxResult accessToken = getAccessToken();
+//        String accToken = accessToken.get("msg").toString();
+//        log.info("获取：getAccessToken()->{}", accToken);
         TreeMap<String, TreeMap<String, String>> params = new TreeMap<String, TreeMap<String, String>>();
         //3,发送消息，，这里需要配置你的信息
         params.put("first", WxMpTemplateMessage.item("尊敬的" + businessReservePersonnel.getName() + ",您已经成功预约", "#173177"));
@@ -417,7 +417,7 @@ public class WechatServiceImpl implements WechatService {
         String sendData = JSONObject.toJSONString(wxMpTemplateMessage);
         log.info("板参数组装{}", sendData);
         TreeMap<String, String> treeMap = new TreeMap<String, String>();
-        treeMap.put("access_token", accToken);
+        treeMap.put("access_token", businessReservePersonnel.getAccessToken());
         String retInfo = HttpUtils.doPost(templateUrl, treeMap, sendData);
         log.info("消息模板返回{}", retInfo);
     }

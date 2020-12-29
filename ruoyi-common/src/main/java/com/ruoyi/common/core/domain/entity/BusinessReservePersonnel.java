@@ -5,7 +5,6 @@ import com.ruoyi.common.annotation.Excel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -134,6 +133,17 @@ public class BusinessReservePersonnel {
     private String expand_4;
 
     private String dictionaryId;
+    @ApiModelProperty("网页权限token")
+    private String accessToken;
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
     public String getDictionaryId() {
         return dictionaryId;
     }
