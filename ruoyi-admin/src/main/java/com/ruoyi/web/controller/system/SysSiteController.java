@@ -9,6 +9,7 @@ import com.ruoyi.common.core.domain.entity.req.SiteDetailedReq;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.web.service.TokenService;
@@ -79,11 +80,32 @@ public class SysSiteController extends BaseController {
         LoginUser loginUser = tokenService.getLoginUser(request);
         businessReserve.setDeptId(loginUser.getUser().getDeptId().intValue());
         List<BusinessReserve> list = sysReserveService.selectReserveList(businessReserve);
+        SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
         if (!list.isEmpty()) {
-            list.forEach(e->{
+            list.forEach(e -> {
                 //查询签到人数
                 int finishCount = sysReservePersonnelService.selectFinishCount(e.getId());
                 e.setArrived(finishCount);
+                SiteDetailedReq siteDetailedReq = new SiteDetailedReq();
+                siteDetailedReq.setReserveId(e.getId());
+                List<BusinessReservePersonnel> personnelList = sysReservePersonnelService.selectPersonneList(siteDetailedReq);
+                int notHereCount = 0;
+                if (!personnelList.isEmpty()) {
+                    for (BusinessReservePersonnel personne : personnelList) {
+                        Date appointmentDate = personne.getAppointmentDate();
+                        String date = formatter2.format(appointmentDate);
+                        String period = personne.getAppointmentPeriod();
+                        String[] split = period.split("-");
+                        String endDate = date + " " + split[1];
+                        Date parseDateEnd = DateUtils.parseDate(endDate);
+                        if (new Date().getTime() - parseDateEnd.getTime() > 1) {
+                            if ((personne.getStatus().equals("0")) && (personne.getCanceType().equals("0"))) {
+                                notHereCount++;
+                            }
+                        }
+                    }
+                }
+                e.setNotHere(notHereCount);
             });
         }
         return getDataTable(list);
@@ -100,7 +122,7 @@ public class SysSiteController extends BaseController {
     @ApiOperation("现场办理详细导出")
     @Log(title = "现场办理详细导出", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
-    public void export(HttpServletRequest request, HttpServletResponse response,@RequestParam("reserveId") Integer reserveId) {
+    public void export(HttpServletRequest request, HttpServletResponse response, @RequestParam("reserveId") Integer reserveId) {
         SiteDetailedReq siteDetailedReq = new SiteDetailedReq();
         siteDetailedReq.setReserveId(reserveId);
         List<BusinessReservePersonnel> list = sysReservePersonnelService.selectPersonneList(siteDetailedReq);
