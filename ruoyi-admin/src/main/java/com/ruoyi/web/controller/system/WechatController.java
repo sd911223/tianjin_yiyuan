@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.system;
 
 import com.ruoyi.common.annotation.Log;
+import com.ruoyi.common.annotation.RepeatSubmit;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.BusinessReserve;
@@ -96,6 +97,7 @@ public class WechatController extends BaseController {
     @ApiOperation("我要预约-保存")
     @Log(title = "微信公众号", businessType = BusinessType.INSERT)
     @PostMapping
+    @RepeatSubmit
     public AjaxResult add(@Validated @RequestBody BusinessReservePersonnel businessReservePersonnel) {
 
         return wechatService.insertPersonnel(businessReservePersonnel);
@@ -118,6 +120,7 @@ public class WechatController extends BaseController {
     @ApiOperation("我要预约-取消")
     @Log(title = "微信公众号", businessType = BusinessType.INSERT)
     @PostMapping("/cancel")
+    @RepeatSubmit
     public AjaxResult cancel(@Validated @RequestBody ReserveCancelReq reserveCancelReq) {
 
         return wechatService.reserveCancel(reserveCancelReq);

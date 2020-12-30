@@ -42,6 +42,7 @@
     <select id="selectContentByRId" parameterType="Integer" resultMap="BusinessReserveContentResult">
         <include refid="selectReserveContentVo"/>
         where d.reserve_id = #{reserveId}
+        ORDER BY d.appointment_date ASC ,d.appointment_period
     </select>
     <insert id="insertReserveContent" parameterType="BusinessReserveContent">
         insert into business_reserve_content(

@@ -145,60 +145,53 @@ public class WechatServiceImpl implements WechatService {
 
     @Transactional
     @Override
-    public AjaxResult insertPersonnel(BusinessReservePersonnel businessReservePersonnel) {
-        try {
-            Thread.sleep(2000);
-            synchronized (this) {
-                Date appointmentDate = businessReservePersonnel.getAppointmentDate();
-                String date = new SimpleDateFormat("yyyy-MM-dd").format(appointmentDate);
-                String appointmentPeriod = businessReservePersonnel.getAppointmentPeriod();
-                BusinessReservePersonnel personnel = new BusinessReservePersonnel();
-                personnel.setIdCard(businessReservePersonnel.getIdCard());
-                personnel.setReserveId(businessReservePersonnel.getReserveId());
-                personnel.setCanceType("0");
-                List<BusinessReservePersonnel> businessReservePersonnels = sysReservePersonnelMapper.selectPersonneList(personnel);
-                if (!businessReservePersonnels.isEmpty()) {
-                    return AjaxResult.error("你已预约'" + DateUtils.parseDateToStr("yyyy-MM-dd", businessReservePersonnel.getAppointmentDate()) + " " + businessReservePersonnel.getAppointmentPeriod() + "时间内的项目");
-                }
-                String[] split = appointmentPeriod.split("-");
-                String startTime = date + " " + split[0];
-                String endTime = date + " " + split[1];
-                Date parseDateStart = DateUtils.parseDate(startTime);
-                Date parseDateEnd = DateUtils.parseDate(endTime);
+    public synchronized AjaxResult insertPersonnel(BusinessReservePersonnel businessReservePersonnel) {
+        Date appointmentDate = businessReservePersonnel.getAppointmentDate();
+        String date = new SimpleDateFormat("yyyy-MM-dd").format(appointmentDate);
+        String appointmentPeriod = businessReservePersonnel.getAppointmentPeriod();
+        BusinessReservePersonnel personnel = new BusinessReservePersonnel();
+        personnel.setIdCard(businessReservePersonnel.getIdCard());
+        personnel.setReserveId(businessReservePersonnel.getReserveId());
+        personnel.setCanceType("0");
+        List<BusinessReservePersonnel> businessReservePersonnels = sysReservePersonnelMapper.selectPersonneList(personnel);
+        if (!businessReservePersonnels.isEmpty()) {
+            return AjaxResult.error("你已预约'" + DateUtils.parseDateToStr("yyyy-MM-dd", businessReservePersonnel.getAppointmentDate()) + " " + businessReservePersonnel.getAppointmentPeriod() + "时间内的项目");
+        }
+        String[] split = appointmentPeriod.split("-");
+        String startTime = date + " " + split[0];
+        String endTime = date + " " + split[1];
+        Date parseDateStart = DateUtils.parseDate(startTime);
+        Date parseDateEnd = DateUtils.parseDate(endTime);
 //                if (new Date().getTime() - parseDateStart.getTime() < 1) {
 //                    return AjaxResult.error("不在预约时间内");
 //                }
-                if (new Date().getTime() - parseDateEnd.getTime() > 1) {
-                    return AjaxResult.error("不在预约时间内");
-                }
-                BusinessReserve businessReserve = sysReserveMapper.selectReserveById(businessReservePersonnel.getReserveId());
-
-                if (businessReserve == null) {
-                    return AjaxResult.error("我要预约-预约号'" + businessReservePersonnel.getReserveId() + "'失败，预约项目不存在");
-                }
-                if ("1".equals(businessReserve.getReserveType())) {
-                    String idCard = businessReserve.getIdCard();
-                    if (!idCard.contains(businessReservePersonnel.getIdCard())) {
-                        return AjaxResult.error("我要预约-预约号'" + businessReservePersonnel.getReserveName() + "'失败，不在特定人群");
-                    }
-                }
-                sysReservePersonnelMapper.insertPersonnel(businessReservePersonnel);
-                BusinessReserveContent businessReserveContent = sysReserveContentMapper.selectContentById(businessReservePersonnel.getContentId());
-                if (businessReserveContent == null) {
-                    return AjaxResult.error("我要预约-内容预约号'" + businessReservePersonnel.getReserveId() + "'失败，预约项目不存在");
-                }
-                if (businessReserveContent.getSurplusNumber() < 1) {
-                    return AjaxResult.error("我要预约-内容预约号'" + businessReservePersonnel.getReserveId() + "'失败，预约已满");
-                }
-                businessReserveContent.setSurplusNumber(businessReserveContent.getSurplusNumber() - 1);
-                sysReserveContentMapper.updateSurplusNumber(businessReserveContent);
-                businessReserve.setReserveNum(businessReserve.getReserveNum() + 1);
-                sysReserveMapper.updateReserveNum(businessReserve);
-                sendTemplate(businessReservePersonnel);
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if (new Date().getTime() - parseDateEnd.getTime() > 1) {
+            return AjaxResult.error("不在预约时间内");
         }
+        BusinessReserve businessReserve = sysReserveMapper.selectReserveById(businessReservePersonnel.getReserveId());
+
+        if (businessReserve == null) {
+            return AjaxResult.error("我要预约-预约号'" + businessReservePersonnel.getReserveId() + "'失败，预约项目不存在");
+        }
+        if ("1".equals(businessReserve.getReserveType())) {
+            String idCard = businessReserve.getIdCard();
+            if (!idCard.contains(businessReservePersonnel.getIdCard())) {
+                return AjaxResult.error("我要预约-预约号'" + businessReservePersonnel.getReserveName() + "'失败，不在特定人群");
+            }
+        }
+        sysReservePersonnelMapper.insertPersonnel(businessReservePersonnel);
+        BusinessReserveContent businessReserveContent = sysReserveContentMapper.selectContentById(businessReservePersonnel.getContentId());
+        if (businessReserveContent == null) {
+            return AjaxResult.error("我要预约-内容预约号'" + businessReservePersonnel.getReserveId() + "'失败，预约项目不存在");
+        }
+        if (businessReserveContent.getSurplusNumber() < 1) {
+            return AjaxResult.error("我要预约-内容预约号'" + businessReservePersonnel.getReserveId() + "'失败，预约已满");
+        }
+        businessReserveContent.setSurplusNumber(businessReserveContent.getSurplusNumber() - 1);
+        sysReserveContentMapper.updateSurplusNumber(businessReserveContent);
+        businessReserve.setReserveNum(businessReserve.getReserveNum() + 1);
+        sysReserveMapper.updateReserveNum(businessReserve);
+        sendTemplate(businessReservePersonnel);
         return AjaxResult.success("预约成功!");
     }
 
@@ -211,38 +204,30 @@ public class WechatServiceImpl implements WechatService {
 
     @Transactional
     @Override
-    public AjaxResult reserveCancel(ReserveCancelReq reserveCancelReq) {
-        try {
-            Thread.sleep(2000);
-            synchronized (this) {
-                BusinessReservePersonnel businessReservePersonnel = new BusinessReservePersonnel();
-                businessReservePersonnel.setOpenId(reserveCancelReq.getOpenId());
-                businessReservePersonnel.setReserveId(reserveCancelReq.getReserveId());
-                businessReservePersonnel.setContentId(reserveCancelReq.getContentId());
-                List<BusinessReservePersonnel> list = sysReservePersonnelMapper.selectPersonneList(businessReservePersonnel);
-                if (list.isEmpty()) {
-                    return AjaxResult.error("取消预约-内容预约号'" + reserveCancelReq.getReserveId() + "'失败，预约项目不存在");
-                }
-                list.get(0).setCanceType("1");
-                sysReservePersonnelMapper.updatePersonnelCanceType(list.get(0));
-
-                BusinessReserveContent businessReserveContent = sysReserveContentMapper.selectContentById(reserveCancelReq.getContentId());
-
-                businessReserveContent.setSurplusNumber(businessReserveContent.getSurplusNumber() + 1);
-                sysReserveContentMapper.updateSurplusNumber(businessReserveContent);
-                BusinessReserve businessReserve = sysReserveMapper.selectReserveById(reserveCancelReq.getReserveId());
-                if (businessReserve.getReserveNum() < 1) {
-                    throw new BaseException("取消预约失败!");
-                }
-                businessReserve.setReserveNum(businessReserve.getReserveNum() - 1);
-                sysReserveMapper.updateReserveNum(businessReserve);
-                return AjaxResult.success("取消预约成功!");
-            }
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    public synchronized AjaxResult reserveCancel(ReserveCancelReq reserveCancelReq) {
+        BusinessReservePersonnel businessReservePersonnel = new BusinessReservePersonnel();
+        businessReservePersonnel.setOpenId(reserveCancelReq.getOpenId());
+        businessReservePersonnel.setReserveId(reserveCancelReq.getReserveId());
+        businessReservePersonnel.setContentId(reserveCancelReq.getContentId());
+        List<BusinessReservePersonnel> list = sysReservePersonnelMapper.selectPersonneList(businessReservePersonnel);
+        if (list.isEmpty()) {
+            return AjaxResult.error("取消预约-内容预约号'" + reserveCancelReq.getReserveId() + "'失败，预约项目不存在");
         }
+        list.get(0).setCanceType("1");
+        sysReservePersonnelMapper.updatePersonnelCanceType(list.get(0));
+
+        BusinessReserveContent businessReserveContent = sysReserveContentMapper.selectContentById(reserveCancelReq.getContentId());
+
+        businessReserveContent.setSurplusNumber(businessReserveContent.getSurplusNumber() + 1);
+        sysReserveContentMapper.updateSurplusNumber(businessReserveContent);
+        BusinessReserve businessReserve = sysReserveMapper.selectReserveById(reserveCancelReq.getReserveId());
+        if (businessReserve.getReserveNum() < 1) {
+            throw new BaseException("取消预约失败!");
+        }
+        businessReserve.setReserveNum(businessReserve.getReserveNum() - 1);
+        sysReserveMapper.updateReserveNum(businessReserve);
         return AjaxResult.success("取消预约成功!");
+
     }
 
     @Override
@@ -327,6 +312,16 @@ public class WechatServiceImpl implements WechatService {
         return Long.toString(System.currentTimeMillis() / 1000);
     }
 
+
+    public String getCacheToken() {
+        Object object = redisCache.getCacheObject(Constants.ACCESS_TOKEN);
+        if (object != null) {
+            return object.toString();
+        } else {
+            return getaccToken();
+        }
+    }
+
     public String getaccToken() {
         StringBuffer sb = new StringBuffer();
         sb.append("grant_type=client_credential&");
@@ -393,8 +388,7 @@ public class WechatServiceImpl implements WechatService {
      * @param businessReservePersonnel
      */
     private void sendTemplate(BusinessReservePersonnel businessReservePersonnel) {
-        AjaxResult accessToken = getAccessToken();
-        String accToken = accessToken.get("data").toString();
+        String accToken = getCacheToken();
         log.info("获取：getAccessToken()->{}", accToken);
         TreeMap<String, TreeMap<String, String>> params = new TreeMap<String, TreeMap<String, String>>();
         //3,发送消息，，这里需要配置你的信息
