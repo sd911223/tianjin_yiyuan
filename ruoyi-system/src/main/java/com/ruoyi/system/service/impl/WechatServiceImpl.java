@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -387,7 +388,8 @@ public class WechatServiceImpl implements WechatService {
      *
      * @param businessReservePersonnel
      */
-    private void sendTemplate(BusinessReservePersonnel businessReservePersonnel) {
+    @Async
+    public void sendTemplate(BusinessReservePersonnel businessReservePersonnel) {
         String accToken = getCacheToken();
         log.info("获取：getAccessToken()->{}", accToken);
         TreeMap<String, TreeMap<String, String>> params = new TreeMap<String, TreeMap<String, String>>();
