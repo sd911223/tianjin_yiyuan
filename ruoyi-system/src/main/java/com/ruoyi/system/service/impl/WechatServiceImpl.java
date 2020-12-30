@@ -399,7 +399,7 @@ public class WechatServiceImpl implements WechatService {
         String date = new SimpleDateFormat("yyyy-MM-dd").format(appointmentDate);
         String keyword3 = date + " " + businessReservePersonnel.getAppointmentPeriod();
         params.put("keyword3", WxMpTemplateMessage.item("请于" + keyword3 + "办理", "#173177"));
-        params.put("keyword4", WxMpTemplateMessage.item(businessReservePersonnel.getReserveName(), "#173177"));
+        params.put("keyword4", WxMpTemplateMessage.item(businessReservePersonnel.getName(), "#173177"));
         params.put("keyword5", WxMpTemplateMessage.item("如需取消,请在【我的预约】中取消预约", "#173177"));
         params.put("remark", WxMpTemplateMessage.item("感谢您的使用", "#173177"));
         WxMpTemplateMessage wxMpTemplateMessage = new WxMpTemplateMessage();
