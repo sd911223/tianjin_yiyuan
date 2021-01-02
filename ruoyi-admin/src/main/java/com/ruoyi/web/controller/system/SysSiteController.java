@@ -89,6 +89,7 @@ public class SysSiteController extends BaseController {
                 SiteDetailedReq siteDetailedReq = new SiteDetailedReq();
                 siteDetailedReq.setReserveId(e.getId());
                 List<BusinessReservePersonnel> personnelList = sysReservePersonnelService.selectPersonneList(siteDetailedReq);
+                //爽约人数
                 int notHereCount = 0;
                 if (!personnelList.isEmpty()) {
                     for (BusinessReservePersonnel personne : personnelList) {
