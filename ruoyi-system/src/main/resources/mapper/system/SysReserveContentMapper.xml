@@ -88,7 +88,7 @@
         where id = #{id}
     </update>
     <update id="updateSurplusNumber">
-     update business_reserve_content set surplus_number = #{surplusNumber} where id = #{id}
+     update business_reserve_content set surplus_number = #{surplusNumber} where id = #{id} and surplus_number>0
     </update>
 
 </mapper> 
