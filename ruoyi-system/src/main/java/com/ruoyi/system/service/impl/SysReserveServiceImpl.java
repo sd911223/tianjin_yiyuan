@@ -67,34 +67,25 @@ public class SysReserveServiceImpl implements SysReserveService {
 
     @Override
     public BusinessReserve selectReserveById(Integer id) {
-        return sysReserveMapper.selectReserveById(id);
+        BusinessReserve businessReserve = sysReserveMapper.selectReserveById(id);
+        List<BusinessReserveContent> businessReserveContents = sysReserveContentMapper.selectContentByRId(businessReserve.getId());
+        businessReserve.setContentList(businessReserveContents);
+        return businessReserve;
     }
 
     @Override
     public int updateReserve(BusinessReserve upReserve, List<ReserveAmContentReq> reserveAmContentList) {
         if (!reserveAmContentList.isEmpty()) {
-            List<BusinessReserveContent> contentList = sysReserveContentMapper.selectContentByRId(upReserve.getId());
-            if (!contentList.isEmpty()) {
-                for (BusinessReserveContent content: contentList){
-                    sysReserveContentMapper.delectReserveContent(content.getId());
+            reserveAmContentList.forEach(e -> {
+                BusinessReserveContent content = sysReserveContentMapper.selectContentByIdForUpdate(e.getId());
+                BeanUtils.copyProperties(e, content);
+                if (e.getAddNumber() != null) {
+                    content.setSurplusNumber(content.getSurplusNumber() + e.getAddNumber());
+                    content.setNumberLimit(content.getNumberLimit() + e.getAddNumber());
+                    sysReserveContentMapper.updateSurNumber(content);
+                    sysReserveContentMapper.updateNumberLimit(content);
                 }
-
-            }
-            for (ReserveAmContentReq reserveAmContentReq: reserveAmContentList){
-                BusinessReserveContent businessReserveContent = new BusinessReserveContent();
-                BeanUtils.copyProperties(reserveAmContentReq, businessReserveContent);
-                businessReserveContent.setSurplusNumber(reserveAmContentReq.getNumberLimit());
-                businessReserveContent.setReserveId(upReserve.getId());
-                sysReserveContentMapper.insertReserveContent(businessReserveContent);
-            }
-//            reserveAmContentList.forEach(e -> {
-//                System.out.println("进入插入");
-//                BusinessReserveContent businessReserveContent = new BusinessReserveContent();
-//                BeanUtils.copyProperties(e, businessReserveContent);
-//                businessReserveContent.setSurplusNumber(e.getNumberLimit());
-//                businessReserveContent.setReserveId(upReserve.getId());
-//                sysReserveContentMapper.insertReserveContent(businessReserveContent);
-//            });
+            });
         }
         return sysReserveMapper.updateReserve(upReserve);
     }

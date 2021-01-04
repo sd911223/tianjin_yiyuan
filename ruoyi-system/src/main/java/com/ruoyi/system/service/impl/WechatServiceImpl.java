@@ -118,34 +118,61 @@ public class WechatServiceImpl implements WechatService {
             BusinessReservePersonnel businessReservePersonnel1 = list.get(0);
             Date appointmentDate = businessReservePersonnel1.getAppointmentDate();
             String date = new SimpleDateFormat("yyyy-MM-dd").format(appointmentDate);
+            String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             String appointmentPeriod = businessReservePersonnel1.getAppointmentPeriod();
             String[] split = appointmentPeriod.split("-");
+            String noonTime = currentDate + " " + "12:00:00";
+            String nightTime = currentDate + " " + "23:59:59";
+            Date night = DateUtils.parseDate(nightTime);
+            Date noon = DateUtils.parseDate(noonTime);
             String startTime = date + " " + split[0];
-            String endTime = date + " " + split[1];
             Date parseDateStart = DateUtils.parseDate(startTime);
-            Date parseDateEnd = DateUtils.parseDate(endTime);
-            if (new Date().getTime() - parseDateStart.getTime() < 1) {
-                return AjaxResult.error("不在签到时间内");
-            }
-            if (new Date().getTime() - parseDateEnd.getTime() > 1) {
+            if (!currentDate.equals(date)) {
+                log.info("签到时间不在同一天,签到时间{},当前时间{}", date, currentDate);
                 return AjaxResult.error("不在签到时间内");
             }
             if (businessReservePersonnel1.getStatus().equals("1")) {
-                return AjaxResult.error("不可重复签到!");
+                log.info("进入已签到人员再次签到,签到人员{}", businessReservePersonnel1.getName());
+                businessReservePersonnel1.setStatus("1");
+                businessReservePersonnel1.setReserveNumber(orderSn);
+                businessReservePersonnel1.setSignTime(new Date());
+                sysReservePersonnelMapper.updatePersonnelStatus(businessReservePersonnel1);
+                return AjaxResult.success("签到成功!签到码为: " + orderSn);
             }
-            businessReservePersonnel1.setStatus("1");
-            businessReservePersonnel1.setReserveNumber(orderSn);
-            businessReservePersonnel1.setSignTime(new Date());
-            sysReservePersonnelMapper.updatePersonnelStatus(businessReservePersonnel1);
-        } else {
+            if (new Date().getTime() - parseDateStart.getTime() < 1) {
+                return AjaxResult.error("不在签到时间内");
+            }
+            if (Double.valueOf(split[1]) <= 12) {
+                log.info("进入12点以前签到,签到人员{}", businessReservePersonnel1.getName());
+                if (noon.getTime() - new Date().getTime() > 1) {
+                    businessReservePersonnel1.setStatus("1");
+                    businessReservePersonnel1.setReserveNumber(orderSn);
+                    businessReservePersonnel1.setSignTime(new Date());
+                    sysReservePersonnelMapper.updatePersonnelStatus(businessReservePersonnel1);
+                    return AjaxResult.success("签到成功!签到码为: " + orderSn);
+                } else {
+                    return AjaxResult.error("不在签到时间内");
+                }
 
+            }
+            if (Double.valueOf(split[1]) <= 24) {
+                log.info("进入12点以后签到,签到人员{}", businessReservePersonnel1.getName());
+                if (night.getTime() - new Date().getTime() > 1) {
+                    businessReservePersonnel1.setStatus("1");
+                    businessReservePersonnel1.setReserveNumber(orderSn);
+                    businessReservePersonnel1.setSignTime(new Date());
+                    sysReservePersonnelMapper.updatePersonnelStatus(businessReservePersonnel1);
+                    return AjaxResult.success("签到成功!签到码为: " + orderSn);
+                } else {
+                    return AjaxResult.error("不在签到时间内");
+                }
+            }
         }
         return AjaxResult.success("签到成功!签到码为: " + orderSn);
     }
 
-
-    @Transactional
     @Override
+    @Transactional
     public synchronized AjaxResult insertPersonnel(BusinessReservePersonnel businessReservePersonnel) {
         try {
             Date appointmentDate = businessReservePersonnel.getAppointmentDate();
@@ -208,8 +235,9 @@ public class WechatServiceImpl implements WechatService {
         return sysReservePersonnelMapper.selectPersonneList(businessReservePersonnel);
     }
 
-    @Transactional
+
     @Override
+    @Transactional
     public synchronized AjaxResult reserveCancel(ReserveCancelReq reserveCancelReq) {
         BusinessReservePersonnel businessReservePersonnel = new BusinessReservePersonnel();
         businessReservePersonnel.setOpenId(reserveCancelReq.getOpenId());

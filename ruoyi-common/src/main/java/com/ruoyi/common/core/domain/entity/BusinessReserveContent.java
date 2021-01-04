@@ -48,15 +48,28 @@ public class BusinessReserveContent {
      */
     @ApiModelProperty("排序字段")
     private Integer sortNumber;
+
     private Integer dictionaryId;
+
     private String submitName;
 
     @ApiModelProperty("是否在有效期")
     private String status;
+    @ApiModelProperty("增加人数")
+    private Integer addNumber;
+
+    public void setAddNumber(Integer addNumber) {
+        this.addNumber = addNumber;
+    }
+
+    public Integer getAddNumber() {
+        return addNumber;
+    }
 
     public String getStatus() {
         return status;
     }
+
     public void setStatus(String status) {
         this.status = status;
     }

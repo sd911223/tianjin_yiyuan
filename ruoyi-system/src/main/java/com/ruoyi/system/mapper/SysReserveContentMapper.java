@@ -17,7 +17,13 @@ public interface SysReserveContentMapper {
 
     BusinessReserveContent  selectContentById(Integer id);
 
+    BusinessReserveContent  selectContentByIdForUpdate(Integer id);
+
     int delectReserveContent(Integer id);
 
     int updateSurplusNumber(BusinessReserveContent businessReserveContent);
+
+    int updateSurNumber(BusinessReserveContent businessReserveContent);
+
+    int updateNumberLimit(BusinessReserveContent businessReserveContent);
 }

@@ -39,6 +39,10 @@
         <include refid="selectReserveContentVo"/>
         where id = #{id}
     </select>
+    <select id="selectContentByIdForUpdate" parameterType="Integer" resultMap="BusinessReserveContentResult">
+        <include refid="selectReserveContentVo"/>
+        where id = #{id} for update
+    </select>
     <select id="selectContentByRId" parameterType="Integer" resultMap="BusinessReserveContentResult">
         <include refid="selectReserveContentVo"/>
         where d.reserve_id = #{reserveId}
@@ -83,6 +87,8 @@
             <if test="reserveId != null ">reserve_id=#{reserveId},</if>
             <if test="surplusNumber != null ">surplus_number=#{surplusNumber},</if>
             <if test="sortNumber != null ">sort_number=#{sortNumber},</if>
+            <if test="dictionaryId != null ">dictionary_id=#{dictionaryId},</if>
+            <if test="submitName != null ">submit_name=#{submitName},</if>
             updata_time=sysdate()
         </set>
         where id = #{id}
@@ -90,5 +96,10 @@
     <update id="updateSurplusNumber">
      update business_reserve_content set surplus_number = #{surplusNumber} where id = #{id} and surplus_number>0
     </update>
-
+    <update id="updateNumberLimit">
+     update business_reserve_content set number_limit = #{numberLimit} where id = #{id}
+    </update>
+    <update id="updateSurNumber">
+     update business_reserve_content set surplus_number = #{surplusNumber} where id = #{id}
+    </update>
 </mapper> 

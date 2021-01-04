@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
+import java.util.List;
 
 @ApiModel("预约管理")
 public class BusinessReserve {
@@ -67,6 +68,8 @@ public class BusinessReserve {
      */
     @ApiModelProperty("预约内容")
     private String reserveContent;
+    @ApiModelProperty("预约内容集合")
+    private List<BusinessReserveContent> contentList;
     /**
      * 预约公共内容
      */
@@ -131,6 +134,14 @@ public class BusinessReserve {
     private Integer dictionaryId;
     @ApiModelProperty("提交人")
     private String submitName;
+
+    public void setContentList(List<BusinessReserveContent> contentList) {
+        this.contentList = contentList;
+    }
+
+    public List<BusinessReserveContent> getContentList() {
+        return contentList;
+    }
 
     public void setDictionaryId(Integer dictionaryId) {
         this.dictionaryId = dictionaryId;

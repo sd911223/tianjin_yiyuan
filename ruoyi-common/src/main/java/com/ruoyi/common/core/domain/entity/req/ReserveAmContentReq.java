@@ -8,6 +8,8 @@ import java.util.Date;
 
 @ApiModel("预约公共内容")
 public class ReserveAmContentReq {
+    @ApiModelProperty("主键ID")
+    private Integer id;
     @ApiModelProperty("日期")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date appointmentDate;
@@ -23,6 +25,24 @@ public class ReserveAmContentReq {
     private Integer dictionaryId;
     @ApiModelProperty("提交人")
     private String submitName;
+    @ApiModelProperty("增加人数")
+    private Integer addNumber;
+
+    public void setAddNumber(Integer addNumber) {
+        this.addNumber = addNumber;
+    }
+
+    public Integer getAddNumber() {
+        return addNumber;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public void setDictionaryId(Integer dictionaryId) {
         this.dictionaryId = dictionaryId;
