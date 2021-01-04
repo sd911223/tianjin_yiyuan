@@ -127,10 +127,6 @@ public class WechatServiceImpl implements WechatService {
             Date noon = DateUtils.parseDate(noonTime);
             String startTime = date + " " + split[0];
             Date parseDateStart = DateUtils.parseDate(startTime);
-            if (!currentDate.equals(date)) {
-                log.info("签到时间不在同一天,签到时间{},当前时间{}", date, currentDate);
-                return AjaxResult.error("不在签到时间内");
-            }
             if (businessReservePersonnel1.getStatus().equals("1")) {
                 log.info("进入已签到人员再次签到,签到人员{}", businessReservePersonnel1.getName());
                 businessReservePersonnel1.setStatus("1");
@@ -138,6 +134,10 @@ public class WechatServiceImpl implements WechatService {
                 businessReservePersonnel1.setSignTime(new Date());
                 sysReservePersonnelMapper.updatePersonnelStatus(businessReservePersonnel1);
                 return AjaxResult.success("签到成功!签到码为: " + orderSn);
+            }
+            if (!currentDate.equals(date)) {
+                log.info("签到时间不在同一天,签到时间{},当前时间{}", date, currentDate);
+                return AjaxResult.error("不在签到时间内");
             }
             if (new Date().getTime() - parseDateStart.getTime() < 1) {
                 return AjaxResult.error("不在签到时间内");
@@ -153,7 +153,6 @@ public class WechatServiceImpl implements WechatService {
                 } else {
                     return AjaxResult.error("不在签到时间内");
                 }
-
             }
             if (Double.valueOf(split[1]) <= 24) {
                 log.info("进入12点以后签到,签到人员{}", businessReservePersonnel1.getName());
