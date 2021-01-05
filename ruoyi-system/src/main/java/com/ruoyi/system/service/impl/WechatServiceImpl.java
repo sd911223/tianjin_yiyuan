@@ -115,6 +115,7 @@ public class WechatServiceImpl implements WechatService {
         String orderSn = OrderSn(reserveCancelReq.getContentId());
         List<BusinessReservePersonnel> list = sysReservePersonnelMapper.selectPersonneList(businessReservePersonnel);
         if (!list.isEmpty()) {
+            log.info("进入签到================》》》签到人：{},签到范围：{}", businessReservePersonnel.getName(), businessReservePersonnel.getAppointmentPeriod());
             BusinessReservePersonnel businessReservePersonnel1 = list.get(0);
             Date appointmentDate = businessReservePersonnel1.getAppointmentDate();
             String date = new SimpleDateFormat("yyyy-MM-dd").format(appointmentDate);
@@ -125,8 +126,6 @@ public class WechatServiceImpl implements WechatService {
             String nightTime = currentDate + " " + "23:59:59";
             Date night = DateUtils.parseDate(nightTime);
             Date noon = DateUtils.parseDate(noonTime);
-            String startTime = date + " " + split[0];
-            Date parseDateStart = DateUtils.parseDate(startTime);
             if (businessReservePersonnel1.getStatus().equals("1")) {
                 log.info("进入已签到人员再次签到,签到人员{}", businessReservePersonnel1.getName());
                 businessReservePersonnel1.setStatus("1");
@@ -139,12 +138,11 @@ public class WechatServiceImpl implements WechatService {
                 log.info("签到时间不在同一天,签到时间{},当前时间{}", date, currentDate);
                 return AjaxResult.error("不在签到时间内");
             }
-            if (new Date().getTime() - parseDateStart.getTime() < 1) {
-                return AjaxResult.error("不在签到时间内");
-            }
-            if (Double.valueOf(split[1]) <= 12) {
-                log.info("进入12点以前签到,签到人员{}", businessReservePersonnel1.getName());
+            String[] hour = split[1].split(":");
+            if (Integer.valueOf(hour[0]) > 0 && Integer.valueOf(hour[0]) <= 12) {
+                log.info("进入12点以前签到,签到人员{},时间为{}", businessReservePersonnel1.getName(), hour);
                 if (noon.getTime() - new Date().getTime() > 1) {
+                    log.info("12点以前签到,签到人员{},时间为{}", businessReservePersonnel1.getName(), hour);
                     businessReservePersonnel1.setStatus("1");
                     businessReservePersonnel1.setReserveNumber(orderSn);
                     businessReservePersonnel1.setSignTime(new Date());
@@ -154,9 +152,10 @@ public class WechatServiceImpl implements WechatService {
                     return AjaxResult.error("不在签到时间内");
                 }
             }
-            if (Double.valueOf(split[1]) <= 24) {
-                log.info("进入12点以后签到,签到人员{}", businessReservePersonnel1.getName());
+            if (Integer.valueOf(hour[0]) > 12 && Integer.valueOf(hour[0]) <= 24) {
+                log.info("进入12点以后签到,签到人员{},时间为{}", businessReservePersonnel1.getName(), hour);
                 if (night.getTime() - new Date().getTime() > 1) {
+                    log.info("12点以后签到,签到人员{},时间为{}", businessReservePersonnel1.getName(), hour);
                     businessReservePersonnel1.setStatus("1");
                     businessReservePersonnel1.setReserveNumber(orderSn);
                     businessReservePersonnel1.setSignTime(new Date());
@@ -166,8 +165,10 @@ public class WechatServiceImpl implements WechatService {
                     return AjaxResult.error("不在签到时间内");
                 }
             }
+            return AjaxResult.error("不在签到时间内");
         }
-        return AjaxResult.success("签到成功!签到码为: " + orderSn);
+        log.info("签到失败！查询不到对应项目，项目ID:{},内容ID{}，", reserveCancelReq.getReserveId(), reserveCancelReq.getContentId());
+        return AjaxResult.success("签到失败!");
     }
 
     @Override
@@ -445,10 +446,19 @@ public class WechatServiceImpl implements WechatService {
         String sendData = JSONObject.toJSONString(wxMpTemplateMessage);
         log.info("模板板参数组装{}", sendData);
         TreeMap<String, String> treeMap = new TreeMap<String, String>();
-//        treeMap.put("access_token", businessReservePersonnel.getAccessToken());
         treeMap.put("access_token", accToken);
         String retInfo = HttpUtils.doPost(templateUrl, treeMap, sendData);
         log.info("消息模板返回{}", retInfo);
     }
 
+    public static void main(String[] args) {
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        System.out.println(currentDate);
+        String shijian = currentDate + " " + "12:00:00";
+        System.out.println(shijian);
+        Date date = DateUtils.parseDate(shijian);
+        if (date.getTime()-new Date().getTime()>1){
+            System.out.println("没问题");
+        }
+    }
 }
