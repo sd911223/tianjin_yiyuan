@@ -77,7 +77,23 @@ public class SysReserveServiceImpl implements SysReserveService {
     @Override
     @Transactional
     public int updateReserve(BusinessReserve upReserve, List<ReserveAmContentReq> reserveAmContentList) {
-        if (!reserveAmContentList.isEmpty()) {
+        BusinessReserve businessReserve = sysReserveMapper.selectReserveById(upReserve.getId());
+        if (businessReserve.getStatus().equals("3")) {
+            List<BusinessReserveContent> contentList = sysReserveContentMapper.selectContentByRId(upReserve.getId());
+            if (!contentList.isEmpty()) {
+                for (BusinessReserveContent content : contentList) {
+                    sysReserveContentMapper.delectReserveContent(content.getId());
+                }
+            }
+            for (ReserveAmContentReq reserveAmContentReq : reserveAmContentList) {
+                BusinessReserveContent businessReserveContent = new BusinessReserveContent();
+                BeanUtils.copyProperties(reserveAmContentReq, businessReserveContent);
+                businessReserveContent.setSurplusNumber(reserveAmContentReq.getNumberLimit());
+                businessReserveContent.setReserveId(upReserve.getId());
+                sysReserveContentMapper.insertReserveContent(businessReserveContent);
+            }
+        }
+        if (!businessReserve.getStatus().equals("3")) {
             reserveAmContentList.forEach(e -> {
                 BusinessReserveContent content = sysReserveContentMapper.selectContentByIdForUpdate(e.getId());
                 BeanUtils.copyProperties(e, content);
