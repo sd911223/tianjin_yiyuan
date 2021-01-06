@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,6 +36,7 @@ import com.ruoyi.generator.service.IGenTableService;
  * 
  * @author ruoyi
  */
+@Api(tags = "代码生成")
 @RestController
 @RequestMapping("/tool/gen")
 public class GenController extends BaseController
@@ -99,7 +103,7 @@ public class GenController extends BaseController
     /**
      * 导入表结构（保存）
      */
-    @PreAuthorize("@ss.hasPermi('tool:gen:list')")
+    @ApiOperation("导入表结构")
     @Log(title = "代码生成", businessType = BusinessType.IMPORT)
     @PostMapping("/importTable")
     public AjaxResult importTableSave(String tables)
@@ -150,7 +154,7 @@ public class GenController extends BaseController
     /**
      * 生成代码（下载方式）
      */
-    @PreAuthorize("@ss.hasPermi('tool:gen:code')")
+    @ApiOperation("代码生成")
     @Log(title = "代码生成", businessType = BusinessType.GENCODE)
     @GetMapping("/download/{tableName}")
     public void download(HttpServletResponse response, @PathVariable("tableName") String tableName) throws IOException
