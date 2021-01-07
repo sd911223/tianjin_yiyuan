@@ -117,4 +117,9 @@ public class SysReserveServiceImpl implements SysReserveService {
     public int updateCancelReleaseById(Integer[] id) {
         return sysReserveMapper.updateCancelReleaseById(id);
     }
+
+    @Override
+    public int updateReserveNum(BusinessReserve reserve) {
+        return sysReserveMapper.updateReserveNum(reserve);
+    }
 }

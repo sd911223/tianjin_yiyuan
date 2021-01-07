@@ -18,4 +18,6 @@ public interface SysReservePersonnelMapper {
     int updatePersonnelCanceType(BusinessReservePersonnel businessReservePersonnel);
 
     int selectFinishCount(Integer id);
+
+    int selectReservationNumBer(Integer reserveId);
 }

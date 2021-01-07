@@ -2,21 +2,29 @@ package com.ruoyi.task;
 
 import com.ruoyi.common.core.domain.entity.BusinessReserve;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.system.service.SysReservePersonnelService;
 import com.ruoyi.system.service.SysReserveService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 @Component
 public class ReserveTask {
+    private static final Logger log = LoggerFactory.getLogger(ReserveTask.class);
     @Autowired
     SysReserveService sysReserveService;
+    @Autowired
+    SysReservePersonnelService sysReservePersonnelService;
 
-    @Scheduled(fixedRate = 5000)
+    /**
+     * 项目开始结束定时
+     */
+    @Scheduled(fixedRate = 12 * 5000)
     public void scheduledTask() {
         BusinessReserve businessReserve = new BusinessReserve();
         businessReserve.setStatus("2");
@@ -46,7 +54,24 @@ public class ReserveTask {
                 }
             }
         }
-        System.out.println("任务执行时间：" + LocalDateTime.now());
     }
 
+    @Scheduled(fixedRate = 5000)
+    public void statisticsTask() {
+        log.info("执行统计预约总人数定时============================");
+        BusinessReserve businessReserve = new BusinessReserve();
+        businessReserve.setStatus("1");
+        List<BusinessReserve> list = sysReserveService.selectReserveList(businessReserve);
+        if (!list.isEmpty()) {
+            list.forEach(e -> {
+                BusinessReserve reserve = new BusinessReserve();
+                reserve.setId(e.getId());
+                int numBer = sysReservePersonnelService.selectReservationNumBer(e.getId());
+                log.info("时间{}：，统计项目：{}，总人数{}：",DateUtils.getNowDate(),e.getId(),numBer);
+                reserve.setReserveNum(numBer);
+                sysReserveService.updateReserveNum(reserve);
+            });
+
+        }
+    }
 }

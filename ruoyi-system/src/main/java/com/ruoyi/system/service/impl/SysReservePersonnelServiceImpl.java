@@ -57,4 +57,9 @@ public class SysReservePersonnelServiceImpl implements SysReservePersonnelServic
     public int selectFinishCount(Integer id) {
         return sysReservePersonnelMapper.selectFinishCount(id);
     }
+
+    @Override
+    public int selectReservationNumBer(Integer reserveId) {
+        return sysReservePersonnelMapper.selectReservationNumBer(reserveId);
+    }
 }

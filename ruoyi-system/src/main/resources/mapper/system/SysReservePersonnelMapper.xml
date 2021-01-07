@@ -182,5 +182,9 @@
         select count(1)   from business_reserve_personnel
         where status ='1' and reserve_id=#{id}
     </select>
+    <select id="selectReservationNumBer" resultType="java.lang.Integer">
+           select count(1) from business_reserve_personnel
+        where cance_type ='0' and reserve_id = #{reserveId}
+    </select>
 
 </mapper> 

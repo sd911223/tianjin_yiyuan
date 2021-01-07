@@ -218,8 +218,8 @@ public class WechatServiceImpl implements WechatService {
             }
             businessReserveContent.setSurplusNumber(businessReserveContent.getSurplusNumber() - 1);
             sysReserveContentMapper.updateSurplusNumber(businessReserveContent);
-            businessReserve.setReserveNum(businessReserve.getReserveNum() + 1);
-            sysReserveMapper.updateReserveNum(businessReserve);
+//            businessReserve.setReserveNum(businessReserve.getReserveNum() + 1);
+//            sysReserveMapper.updateReserveNum(businessReserve);
             sendTemplate(businessReservePersonnel);
             return AjaxResult.success("预约成功!");
         } catch (Exception e) {
@@ -258,8 +258,8 @@ public class WechatServiceImpl implements WechatService {
         if (businessReserve.getReserveNum() < 1) {
             throw new BaseException("取消预约失败!");
         }
-        businessReserve.setReserveNum(businessReserve.getReserveNum() - 1);
-        sysReserveMapper.updateReserveNum(businessReserve);
+//        businessReserve.setReserveNum(businessReserve.getReserveNum() - 1);
+//        sysReserveMapper.updateReserveNum(businessReserve);
         return AjaxResult.success("取消预约成功!");
 
     }

@@ -32,4 +32,6 @@ public interface SysReserveService {
     int updateRevokeReserve(Integer id);
 
     int updateCancelReleaseById(Integer[] id);
+
+    int updateReserveNum(BusinessReserve reserve);
 }
