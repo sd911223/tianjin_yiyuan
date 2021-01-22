@@ -51,10 +51,19 @@ public class WechatController extends BaseController {
                               @RequestParam("pageSize") Integer pageSize) {
         startPage();
         BusinessReserve businessReserve = new BusinessReserve();
-        //查询状态为進行中的 1:已发布
+        //查询状态为進行中的 1
         businessReserve.setStatus("1");
-        businessReserve.setAnnouncementStartTime(new Date());
         List<BusinessReserve> list = sysReserveService.selectReserveList(businessReserve);
+
+        BusinessReserve reserve = new BusinessReserve();
+        //查询状态为已发布
+        reserve.setStatus("2");
+        List<BusinessReserve> reList = sysReserveService.selectReserveList(reserve);
+        if (!reList.isEmpty()){
+            reList.forEach(e->{
+                list.add(e);
+            });
+        }
         return getDataTable(list);
     }
 
