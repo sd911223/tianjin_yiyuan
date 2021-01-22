@@ -53,6 +53,7 @@ public class WechatController extends BaseController {
         BusinessReserve businessReserve = new BusinessReserve();
         //查询状态为進行中的 1:已发布
         businessReserve.setStatus("1");
+        businessReserve.setAnnouncementStartTime(new Date());
         List<BusinessReserve> list = sysReserveService.selectReserveList(businessReserve);
         return getDataTable(list);
     }
