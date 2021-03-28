@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysPromiseSignMapper">
+    
+    <resultMap type="SysPromiseSign" id="SysPromiseSignResult">
+        <result property="id"    column="id"    />
+        <result property="promiseId"    column="promise_id"    />
+        <result property="openId"    column="open_id"    />
+        <result property="basicInfo"    column="basic_info"    />
+        <result property="promiseContent"    column="promise_content"    />
+        <result property="contentSelect"    column="content_select"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="codeColor"    column="code_color"    />
+        <result property="estimate1"    column="estimate_1"    />
+        <result property="estimate2"    column="estimate_2"    />
+        <result property="estimate3"    column="estimate_3"    />
+    </resultMap>
+
+    <sql id="selectSysPromiseSignVo">
+        select id, promise_id, open_id, basic_info, promise_content, content_select, create_by, create_time, update_by, update_time, code_color, estimate_1, estimate_2, estimate_3 from sys_promise_sign
+    </sql>
+
+    <select id="selectSysPromiseSignList" parameterType="SysPromiseSign" resultMap="SysPromiseSignResult">
+        <include refid="selectSysPromiseSignVo"/>
+        <where>  
+            <if test="promiseId != null "> and promise_id = #{promiseId}</if>
+            <if test="openId != null  and openId != ''"> and open_id = #{openId}</if>
+            <if test="basicInfo != null  and basicInfo != ''"> and basic_info = #{basicInfo}</if>
+            <if test="promiseContent != null  and promiseContent != ''"> and promise_content = #{promiseContent}</if>
+            <if test="contentSelect != null  and contentSelect != ''"> and content_select = #{contentSelect}</if>
+            <if test="codeColor != null  and codeColor != ''"> and code_color = #{codeColor}</if>
+            <if test="estimate1 != null  and estimate1 != ''"> and estimate_1 = #{estimate1}</if>
+            <if test="estimate2 != null  and estimate2 != ''"> and estimate_2 = #{estimate2}</if>
+            <if test="estimate3 != null  and estimate3 != ''"> and estimate_3 = #{estimate3}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysPromiseSignById" parameterType="Long" resultMap="SysPromiseSignResult">
+        <include refid="selectSysPromiseSignVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysPromiseSign" parameterType="SysPromiseSign" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_promise_sign
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="promiseId != null">promise_id,</if>
+            <if test="openId != null">open_id,</if>
+            <if test="basicInfo != null">basic_info,</if>
+            <if test="promiseContent != null">promise_content,</if>
+            <if test="contentSelect != null">content_select,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="codeColor != null">code_color,</if>
+            <if test="estimate1 != null">estimate_1,</if>
+            <if test="estimate2 != null">estimate_2,</if>
+            <if test="estimate3 != null">estimate_3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="promiseId != null">#{promiseId},</if>
+            <if test="openId != null">#{openId},</if>
+            <if test="basicInfo != null">#{basicInfo},</if>
+            <if test="promiseContent != null">#{promiseContent},</if>
+            <if test="contentSelect != null">#{contentSelect},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="codeColor != null">#{codeColor},</if>
+            <if test="estimate1 != null">#{estimate1},</if>
+            <if test="estimate2 != null">#{estimate2},</if>
+            <if test="estimate3 != null">#{estimate3},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysPromiseSign" parameterType="SysPromiseSign">
+        update sys_promise_sign
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="promiseId != null">promise_id = #{promiseId},</if>
+            <if test="openId != null">open_id = #{openId},</if>
+            <if test="basicInfo != null">basic_info = #{basicInfo},</if>
+            <if test="promiseContent != null">promise_content = #{promiseContent},</if>
+            <if test="contentSelect != null">content_select = #{contentSelect},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="codeColor != null">code_color = #{codeColor},</if>
+            <if test="estimate1 != null">estimate_1 = #{estimate1},</if>
+            <if test="estimate2 != null">estimate_2 = #{estimate2},</if>
+            <if test="estimate3 != null">estimate_3 = #{estimate3},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysPromiseSignById" parameterType="Long">
+        delete from sys_promise_sign where id = #{id}
+    </delete>
+
+    <delete id="deleteSysPromiseSignByIds" parameterType="String">
+        delete from sys_promise_sign where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
