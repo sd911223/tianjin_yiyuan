@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysPromiseSpecifyMapper">
+
+    <resultMap type="SysPromiseSpecify" id="SysPromiseSpecifyResult">
+        <result property="id" column="id"/>
+        <result property="promiseId" column="promise_id"/>
+        <result property="idCard" column="id_card"/>
+        <result property="name" column="name"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="estimate1" column="estimate_1"/>
+        <result property="estimate2" column="estimate_2"/>
+        <result property="estimate3" column="estimate_3"/>
+    </resultMap>
+
+    <sql id="selectSysPromiseSpecifyVo">
+        select id,
+               promise_id,
+               id_card,
+               name,
+               create_by,
+               create_time,
+               update_by,
+               update_time,
+               del_flag,
+               estimate_1,
+               estimate_2,
+               estimate_3
+        from sys_promise_specify
+    </sql>
+
+    <select id="selectSysPromiseSpecifyList" parameterType="SysPromiseSpecify" resultMap="SysPromiseSpecifyResult">
+        <include refid="selectSysPromiseSpecifyVo"/>
+        <where>
+            del_flag='0'
+            <if test="promiseId != null ">and promise_id = #{promiseId}</if>
+            <if test="idCard != null  and idCard != ''">and id_card = #{idCard}</if>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="estimate1 != null  and estimate1 != ''">and estimate_1 = #{estimate1}</if>
+            <if test="estimate2 != null  and estimate2 != ''">and estimate_2 = #{estimate2}</if>
+            <if test="estimate3 != null  and estimate3 != ''">and estimate_3 = #{estimate3}</if>
+        </where>
+    </select>
+
+    <select id="selectSysPromiseSpecifyById" parameterType="Long" resultMap="SysPromiseSpecifyResult">
+        <include refid="selectSysPromiseSpecifyVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysPromiseSpecify" parameterType="SysPromiseSpecify" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_promise_specify
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="promiseId != null">promise_id,</if>
+            <if test="idCard != null">id_card,</if>
+            <if test="name != null">name,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="estimate1 != null">estimate_1,</if>
+            <if test="estimate2 != null">estimate_2,</if>
+            <if test="estimate3 != null">estimate_3,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="promiseId != null">#{promiseId},</if>
+            <if test="idCard != null">#{idCard},</if>
+            <if test="name != null">#{name},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="estimate1 != null">#{estimate1},</if>
+            <if test="estimate2 != null">#{estimate2},</if>
+            <if test="estimate3 != null">#{estimate3},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysPromiseSpecify" parameterType="SysPromiseSpecify">
+        update sys_promise_specify
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="promiseId != null">promise_id = #{promiseId},</if>
+            <if test="idCard != null">id_card = #{idCard},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="estimate1 != null">estimate_1 = #{estimate1},</if>
+            <if test="estimate2 != null">estimate_2 = #{estimate2},</if>
+            <if test="estimate3 != null">estimate_3 = #{estimate3},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysPromiseSpecifyById" parameterType="Long">
+        delete
+        from sys_promise_specify
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteSysPromiseSpecifyByIds" parameterType="String">
+        delete from sys_promise_specify where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateSysPromiseSpecifyByPId" parameterType="Long">
+        update sys_promise_specify
+        SET delFlag='2'
+        where promise_id = #{promiseId}
+    </update>
+</mapper>

@@ -13,6 +13,8 @@ import com.ruoyi.common.core.domain.entity.resp.BusinessReserveResp;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.system.domain.SysStudentPromise;
+import com.ruoyi.system.service.ISysStudentPromiseService;
 import com.ruoyi.system.service.SysReserveContentService;
 import com.ruoyi.system.service.SysReserveService;
 import com.ruoyi.system.service.WechatService;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
@@ -44,6 +47,32 @@ public class WechatController extends BaseController {
     WechatService wechatService;
     @Autowired
     SysReserveContentService sysReserveContentService;
+    @Autowired
+    ISysStudentPromiseService sysStudentPromiseService;
+
+    @ApiOperation("微信-承诺列表")
+    @GetMapping("/promise/list")
+    public TableDataInfo promiseList(@RequestParam("pageNum") Integer pageNum,
+                                     @RequestParam("pageSize") Integer pageSize) {
+        startPage();
+        SysStudentPromise sysStudentPromise = new SysStudentPromise();
+        List<SysStudentPromise> promiseList = sysStudentPromiseService.selectSysStudentPromiseList(sysStudentPromise);
+        //遍历删除,除去不在时间范围内的
+        Iterator<SysStudentPromise> iterator = promiseList.iterator();
+        while (iterator.hasNext()) {
+            SysStudentPromise studentPromise = iterator.next();
+            if (DateUtils.getNowDate().getTime() - studentPromise.getValidStartTime().getTime() < 1) {
+                //使用迭代器的删除方法删除
+                iterator.remove();
+            }
+            if (DateUtils.getNowDate().getTime() - studentPromise.getValidEndTime().getTime() > 1) {
+                //使用迭代器的删除方法删除
+                iterator.remove();
+            }
+        }
+        return getDataTable(promiseList);
+    }
+
 
     @ApiOperation("预约列表-查询已发布的")
     @GetMapping("/list")
@@ -59,8 +88,8 @@ public class WechatController extends BaseController {
         //查询状态为已发布
         reserve.setStatus("2");
         List<BusinessReserve> reList = sysReserveService.selectReserveList(reserve);
-        if (!reList.isEmpty()){
-            reList.forEach(e->{
+        if (!reList.isEmpty()) {
+            reList.forEach(e -> {
                 list.add(e);
             });
         }

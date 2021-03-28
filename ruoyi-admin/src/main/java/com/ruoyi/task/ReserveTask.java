@@ -24,7 +24,7 @@ public class ReserveTask {
     /**
      * 项目开始结束定时
      */
-    @Scheduled(fixedRate = 12 * 5000)
+//    @Scheduled(fixedRate = 12 * 5000)
     public void scheduledTask() {
         BusinessReserve businessReserve = new BusinessReserve();
         businessReserve.setStatus("2");
@@ -56,7 +56,7 @@ public class ReserveTask {
         }
     }
 
-    @Scheduled(fixedRate = 5000)
+//    @Scheduled(fixedRate = 5000)
     public void statisticsTask() {
         log.info("执行统计预约总人数定时============================");
         BusinessReserve businessReserve = new BusinessReserve();

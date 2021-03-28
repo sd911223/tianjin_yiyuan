@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysStudentPromiseMapper">
+
+    <resultMap type="SysStudentPromise" id="SysStudentPromiseResult">
+        <result property="id" column="id"/>
+        <result property="examName" column="exam_name"/>
+        <result property="validStartTime" column="valid_start_time"/>
+        <result property="validEndTime" column="valid_end_time"/>
+        <result property="healthCode" column="health_code"/>
+        <result property="beauType" column="beau_type"/>
+        <result property="basicInfo" column="basic_info"/>
+        <result property="promiseContent" column="promise_content"/>
+        <result property="contentSelect" column="content_select"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="estimate1" column="estimate_1"/>
+        <result property="estimate2" column="estimate_2"/>
+        <result property="estimate3" column="estimate_3"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="importStu" column="import_stu"/>
+        <result property="moduleStatus" column="module_status"/>
+        <result property="writeNumber" column="write_number"/>
+    </resultMap>
+
+    <sql id="selectSysStudentPromiseVo">
+        select id,
+               exam_name,
+               valid_start_time,
+               valid_end_time,
+               health_code,
+               beau_type,
+               basic_info,
+               promise_content,
+               content_select,
+               create_by,
+               create_time,
+               update_by,
+               update_time,
+               estimate_1,
+               estimate_2,
+               estimate_3,
+               import_stu,
+               module_status,
+               write_number
+        from sys_student_promise
+    </sql>
+
+    <select id="selectSysStudentPromiseList" parameterType="SysStudentPromise" resultMap="SysStudentPromiseResult">
+        <include refid="selectSysStudentPromiseVo"/>
+        <where>
+            del_flag='0'
+            <if test="examName != null  and examName != ''">and exam_name like concat('%', #{examName}, '%')</if>
+            <if test="validStartTime != null ">and valid_start_time = #{validStartTime}</if>
+            <if test="validEndTime != null ">and valid_end_time = #{validEndTime}</if>
+            <if test="healthCode != null ">and health_code = #{healthCode}</if>
+            <if test="beauType != null  and beauType != ''">and beau_type = #{beauType}</if>
+            <if test="basicInfo != null  and basicInfo != ''">and basic_info = #{basicInfo}</if>
+            <if test="promiseContent != null  and promiseContent != ''">and promise_content = #{promiseContent}</if>
+            <if test="contentSelect != null  and contentSelect != ''">and content_select = #{contentSelect}</if>
+            <if test="estimate1 != null  and estimate1 != ''">and estimate_1 = #{estimate1}</if>
+            <if test="estimate2 != null  and estimate2 != ''">and estimate_2 = #{estimate2}</if>
+            <if test="estimate3 != null  and estimate3 != ''">and estimate_3 = #{estimate3}</if>
+            <if test="importStu != null ">and import_stu = #{importStu}</if>
+            <if test="moduleStatus != null  and moduleStatus != ''">and module_status = #{moduleStatus}</if>
+            <if test="writeNumber != null ">and write_number = #{writeNumber}</if>
+        </where>
+        ORDER BY module_status ASC ,valid_start_time ASC
+    </select>
+
+    <select id="selectSysStudentPromiseById" parameterType="Long" resultMap="SysStudentPromiseResult">
+        <include refid="selectSysStudentPromiseVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysStudentPromise" parameterType="SysStudentPromise" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_student_promise
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="examName != null">exam_name,</if>
+            <if test="validStartTime != null">valid_start_time,</if>
+            <if test="validEndTime != null">valid_end_time,</if>
+            <if test="healthCode != null">health_code,</if>
+            <if test="beauType != null">beau_type,</if>
+            <if test="basicInfo != null">basic_info,</if>
+            <if test="promiseContent != null">promise_content,</if>
+            <if test="contentSelect != null">content_select,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="estimate1 != null">estimate_1,</if>
+            <if test="estimate2 != null">estimate_2,</if>
+            <if test="estimate3 != null">estimate_3,</if>
+            <if test="importStu != null">import_stu,</if>
+            <if test="moduleStatus != null">module_status,</if>
+            <if test="writeNumber != null">write_number,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="examName != null">#{examName},</if>
+            <if test="validStartTime != null">#{validStartTime},</if>
+            <if test="validEndTime != null">#{validEndTime},</if>
+            <if test="healthCode != null">#{healthCode},</if>
+            <if test="beauType != null">#{beauType},</if>
+            <if test="basicInfo != null">#{basicInfo},</if>
+            <if test="promiseContent != null">#{promiseContent},</if>
+            <if test="contentSelect != null">#{contentSelect},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="estimate1 != null">#{estimate1},</if>
+            <if test="estimate2 != null">#{estimate2},</if>
+            <if test="estimate3 != null">#{estimate3},</if>
+            <if test="importStu != null">#{importStu},</if>
+            <if test="moduleStatus != null">#{moduleStatus},</if>
+            <if test="writeNumber != null">#{writeNumber},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysStudentPromise" parameterType="SysStudentPromise">
+        update sys_student_promise
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="examName != null">exam_name = #{examName},</if>
+            <if test="validStartTime != null">valid_start_time = #{validStartTime},</if>
+            <if test="validEndTime != null">valid_end_time = #{validEndTime},</if>
+            <if test="healthCode != null">health_code = #{healthCode},</if>
+            <if test="beauType != null">beau_type = #{beauType},</if>
+            <if test="basicInfo != null">basic_info = #{basicInfo},</if>
+            <if test="promiseContent != null">promise_content = #{promiseContent},</if>
+            <if test="contentSelect != null">content_select = #{contentSelect},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="estimate1 != null">estimate_1 = #{estimate1},</if>
+            <if test="estimate2 != null">estimate_2 = #{estimate2},</if>
+            <if test="estimate3 != null">estimate_3 = #{estimate3},</if>
+            <if test="importStu != null">import_stu = #{importStu},</if>
+            <if test="moduleStatus != null">module_status = #{moduleStatus},</if>
+            <if test="writeNumber != null">write_number = #{writeNumber},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+
+    <delete id="deleteSysStudentPromiseById" parameterType="Long">
+        delete
+        from sys_student_promise
+        where id = #{id}
+    </delete>
+
+    <update id="deleteSysStudentPromiseByIds" parameterType="String">
+        update sys_student_promise SET  delFlag='2' where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+</mapper>
