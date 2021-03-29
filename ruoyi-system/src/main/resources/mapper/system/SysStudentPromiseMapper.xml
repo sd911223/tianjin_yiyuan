@@ -159,4 +159,8 @@
             #{id}
         </foreach>
     </update>
+
+    <update id="updateSysStudentPromiseById" parameterType="Long">
+        update sys_student_promise SET  del_flag='2' where id = #{id}
+    </update>
 </mapper>

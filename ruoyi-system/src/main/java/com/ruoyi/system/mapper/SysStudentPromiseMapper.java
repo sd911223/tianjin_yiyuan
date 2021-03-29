@@ -6,15 +6,14 @@ import java.util.List;
 
 /**
  * 承诺管理Mapper接口
- * 
+ *
  * @author ruoyi
  * @date 2021-03-27
  */
-public interface SysStudentPromiseMapper 
-{
+public interface SysStudentPromiseMapper {
     /**
      * 查询承诺管理
-     * 
+     *
      * @param id 承诺管理ID
      * @return 承诺管理
      */
@@ -22,7 +21,7 @@ public interface SysStudentPromiseMapper
 
     /**
      * 查询承诺管理列表
-     * 
+     *
      * @param sysStudentPromise 承诺管理
      * @return 承诺管理集合
      */
@@ -30,7 +29,7 @@ public interface SysStudentPromiseMapper
 
     /**
      * 新增承诺管理
-     * 
+     *
      * @param sysStudentPromise 承诺管理
      * @return 结果
      */
@@ -38,7 +37,7 @@ public interface SysStudentPromiseMapper
 
     /**
      * 修改承诺管理
-     * 
+     *
      * @param sysStudentPromise 承诺管理
      * @return 结果
      */
@@ -46,7 +45,7 @@ public interface SysStudentPromiseMapper
 
     /**
      * 删除承诺管理
-     * 
+     *
      * @param id 承诺管理ID
      * @return 结果
      */
@@ -54,9 +53,11 @@ public interface SysStudentPromiseMapper
 
     /**
      * 批量删除承诺管理
-     * 
+     *
      * @param ids 需要删除的数据ID
      * @return 结果
      */
     public int deleteSysStudentPromiseByIds(Long[] ids);
+
+    int updateSysStudentPromiseById(Long id);
 }

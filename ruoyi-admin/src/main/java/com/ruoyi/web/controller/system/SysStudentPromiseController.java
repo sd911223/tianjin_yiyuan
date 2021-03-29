@@ -116,7 +116,7 @@ public class SysStudentPromiseController extends BaseController {
      */
     @ApiOperation("发布承诺")
     @Log(title = "发布承诺", businessType = BusinessType.UPDATE)
-    @DeleteMapping("/release/{ids}")
+    @GetMapping("/release/{ids}")
     public AjaxResult release(@PathVariable Long[] ids) {
         return toAjax(sysStudentPromiseService.releaseSysStudentPromiseByIds(ids));
     }
@@ -126,7 +126,7 @@ public class SysStudentPromiseController extends BaseController {
      */
     @ApiOperation("关闭承诺")
     @Log(title = "关闭承诺", businessType = BusinessType.UPDATE)
-    @DeleteMapping("/turnOff/{ids}")
+    @GetMapping("/turnOff/{ids}")
     public AjaxResult turnOff(@PathVariable Long[] ids) {
         return toAjax(sysStudentPromiseService.turnOffSysStudentPromiseByIds(ids));
     }
@@ -136,7 +136,7 @@ public class SysStudentPromiseController extends BaseController {
      */
     @ApiOperation("撤销承诺")
     @Log(title = "撤销承诺", businessType = BusinessType.UPDATE)
-    @DeleteMapping("/dismantle/{ids}")
+    @GetMapping("/dismantle/{ids}")
     public AjaxResult dismantle(@PathVariable Long[] ids) {
         return toAjax(sysStudentPromiseService.dismantleSysStudentPromiseByIds(ids));
     }

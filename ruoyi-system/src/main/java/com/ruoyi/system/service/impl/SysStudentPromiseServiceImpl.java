@@ -84,7 +84,11 @@ public class SysStudentPromiseServiceImpl implements ISysStudentPromiseService {
      */
     @Override
     public int deleteSysStudentPromiseByIds(Long[] ids) {
-        return sysStudentPromiseMapper.deleteSysStudentPromiseByIds(ids);
+        List<Long> longList = Arrays.asList(ids);
+        longList.forEach(e -> {
+            sysStudentPromiseMapper.updateSysStudentPromiseById(e);
+        });
+        return longList.size();
     }
 
     /**
