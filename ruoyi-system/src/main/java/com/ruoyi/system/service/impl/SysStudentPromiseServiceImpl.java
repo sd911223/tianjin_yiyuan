@@ -138,6 +138,7 @@ public class SysStudentPromiseServiceImpl implements ISysStudentPromiseService {
         longList.forEach(e -> {
             SysStudentPromise sysStudentPromise = sysStudentPromiseMapper.selectSysStudentPromiseById(e);
             sysStudentPromise.setModuleStatus(PromiseStatus.ISSUE.getCode());
+            sysStudentPromiseMapper.updateSysStudentPromise(sysStudentPromise);
         });
         return longList.size();
     }
@@ -154,6 +155,7 @@ public class SysStudentPromiseServiceImpl implements ISysStudentPromiseService {
         longList.forEach(e -> {
             SysStudentPromise sysStudentPromise = sysStudentPromiseMapper.selectSysStudentPromiseById(e);
             sysStudentPromise.setModuleStatus(PromiseStatus.CLOSE_ISSUE.getCode());
+            sysStudentPromiseMapper.updateSysStudentPromise(sysStudentPromise);
         });
         return longList.size();
     }
@@ -170,6 +172,7 @@ public class SysStudentPromiseServiceImpl implements ISysStudentPromiseService {
         longList.forEach(e -> {
             SysStudentPromise sysStudentPromise = sysStudentPromiseMapper.selectSysStudentPromiseById(e);
             sysStudentPromise.setModuleStatus(PromiseStatus.NO_ISSUE.getCode());
+            sysStudentPromiseMapper.updateSysStudentPromise(sysStudentPromise);
         });
         return longList.size();
     }

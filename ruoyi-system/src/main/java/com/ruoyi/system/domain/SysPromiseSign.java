@@ -1,9 +1,14 @@
 package com.ruoyi.system.domain;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+
+import java.util.List;
+import java.util.TreeMap;
 
 /**
  * 承诺填写对象 sys_promise_sign
@@ -11,6 +16,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author ruoyi
  * @date 2021-03-28
  */
+@ApiModel("承诺填写对象")
 public class SysPromiseSign extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -22,36 +28,42 @@ public class SysPromiseSign extends BaseEntity {
     /**
      * 承诺ID
      */
+    @ApiModelProperty("承诺ID")
     @Excel(name = "承诺ID")
     private Long promiseId;
 
     /**
      * openId
      */
+    @ApiModelProperty("openId")
     @Excel(name = "openId")
     private String openId;
 
     /**
      * 基础信息
      */
+    @ApiModelProperty("基础信息")
     @Excel(name = "基础信息")
     private String basicInfo;
 
     /**
      * 承诺内容
      */
+    @ApiModelProperty("承诺内容")
     @Excel(name = "承诺内容")
     private String promiseContent;
 
     /**
      * 选填信息
      */
+    @ApiModelProperty("选填信息")
     @Excel(name = "选填信息")
     private String contentSelect;
 
     /**
      * 码颜色
      */
+    @ApiModelProperty("码颜色")
     @Excel(name = "码颜色")
     private String codeColor;
     /**
@@ -61,20 +73,34 @@ public class SysPromiseSign extends BaseEntity {
     /**
      * 预留字段1
      */
+    @ApiModelProperty("预留字段1")
     @Excel(name = "预留字段1")
     private String estimate1;
 
     /**
      * 预留字段2
      */
+    @ApiModelProperty("预留字段2")
     @Excel(name = "预留字段2")
     private String estimate2;
 
     /**
      * 预留字段3
      */
+    @ApiModelProperty("预留字段3")
     @Excel(name = "预留字段3")
     private String estimate3;
+
+    @ApiModelProperty("基础信息-排列后的")
+    private TreeMap treeMap;
+
+    public TreeMap getTreeMap() {
+        return treeMap;
+    }
+
+    public void setTreeMap(TreeMap treeMap) {
+        this.treeMap = treeMap;
+    }
 
     public void setId(Long id) {
         this.id = id;

@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
 
@@ -45,6 +46,12 @@ public class SysPromiseSignController extends BaseController {
     public TableDataInfo list(SysPromiseSign sysPromiseSign) {
         startPage();
         List<SysPromiseSign> list = sysPromiseSignService.selectSysPromiseSignList(sysPromiseSign);
+        if (!list.isEmpty()) {
+            list.forEach(e -> {
+                TreeMap treeMap = JsonLoop.jsonLoop(e.getBasicInfo());
+                e.setTreeMap(treeMap);
+            });
+        }
         return getDataTable(list);
     }
 
