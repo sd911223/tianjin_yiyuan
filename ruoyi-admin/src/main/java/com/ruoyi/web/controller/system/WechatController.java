@@ -13,11 +13,9 @@ import com.ruoyi.common.core.domain.entity.resp.BusinessReserveResp;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.system.domain.SysPromiseSign;
 import com.ruoyi.system.domain.SysStudentPromise;
-import com.ruoyi.system.service.ISysStudentPromiseService;
-import com.ruoyi.system.service.SysReserveContentService;
-import com.ruoyi.system.service.SysReserveService;
-import com.ruoyi.system.service.WechatService;
+import com.ruoyi.system.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -49,6 +47,18 @@ public class WechatController extends BaseController {
     SysReserveContentService sysReserveContentService;
     @Autowired
     ISysStudentPromiseService sysStudentPromiseService;
+    @Autowired
+    ISysPromiseSignService sysPromiseSignService;
+
+    /**
+     * 新增承诺填写
+     */
+    @ApiOperation("微信-新增承诺信息")
+    @Log(title = "承诺填写", businessType = BusinessType.INSERT)
+    @PostMapping("/promise/add")
+    public AjaxResult add(@RequestBody SysPromiseSign sysPromiseSign) {
+        return toAjax(sysPromiseSignService.insertSysPromiseSign(sysPromiseSign));
+    }
 
     @ApiOperation("微信-承诺列表")
     @GetMapping("/promise/list")

@@ -16,21 +16,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
         <result property="codeColor"    column="code_color"    />
+        <result property="delFlag"    column="del_flag"    />
         <result property="estimate1"    column="estimate_1"    />
         <result property="estimate2"    column="estimate_2"    />
         <result property="estimate3"    column="estimate_3"    />
     </resultMap>
 
     <sql id="selectSysPromiseSignVo">
-        select id, promise_id, open_id, basic_info, promise_content, content_select, create_by, create_time, update_by, update_time, code_color, estimate_1, estimate_2, estimate_3 from sys_promise_sign
+        select id, promise_id, open_id, basic_info, promise_content, content_select, create_by, create_time, update_by, update_time, code_color, estimate_1, estimate_2, estimate_3,del_flag from sys_promise_sign
     </sql>
 
     <select id="selectSysPromiseSignList" parameterType="SysPromiseSign" resultMap="SysPromiseSignResult">
         <include refid="selectSysPromiseSignVo"/>
-        <where>  
+        <where>
+            del_flag='0'
             <if test="promiseId != null "> and promise_id = #{promiseId}</if>
             <if test="openId != null  and openId != ''"> and open_id = #{openId}</if>
-            <if test="basicInfo != null  and basicInfo != ''"> and basic_info = #{basicInfo}</if>
+            <if test="basicInfo != null  and basicInfo != ''"> and basic_info like concat('%', #{basicInfo}, '%')</if>
             <if test="promiseContent != null  and promiseContent != ''"> and promise_content = #{promiseContent}</if>
             <if test="contentSelect != null  and contentSelect != ''"> and content_select = #{contentSelect}</if>
             <if test="codeColor != null  and codeColor != ''"> and code_color = #{codeColor}</if>
@@ -58,6 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
             <if test="codeColor != null">code_color,</if>
+            <if test="delFlag != null">del_flag,</if>
             <if test="estimate1 != null">estimate_1,</if>
             <if test="estimate2 != null">estimate_2,</if>
             <if test="estimate3 != null">estimate_3,</if>
@@ -73,6 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="codeColor != null">#{codeColor},</if>
+            <if test="delFlag != null">#{delFlag},</if>
             <if test="estimate1 != null">#{estimate1},</if>
             <if test="estimate2 != null">#{estimate2},</if>
             <if test="estimate3 != null">#{estimate3},</if>
