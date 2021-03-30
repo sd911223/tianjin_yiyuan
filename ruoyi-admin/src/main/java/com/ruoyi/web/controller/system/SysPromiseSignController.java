@@ -1,5 +1,8 @@
 package com.ruoyi.web.controller.system;
 
+import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -46,19 +49,25 @@ public class SysPromiseSignController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(@RequestParam("pageNum") Integer pageNum,
                               @RequestParam("pageSize") Integer pageSize,
+                              @RequestParam("promiseId") Long promiseId,
                               @RequestParam(value = "basicInfo",required = false) String basicInfo) {
         startPage();
         SysPromiseSign sysPromiseSign =new SysPromiseSign();
         if (!StringUtils.isEmpty(basicInfo)){
             sysPromiseSign.setBasicInfo(basicInfo);
         }
+        sysPromiseSign.setPromiseId(promiseId);
         List<SysPromiseSign> list = sysPromiseSignService.selectSysPromiseSignList(sysPromiseSign);
-        if (!list.isEmpty()) {
-            list.forEach(e -> {
-                TreeMap treeMap = JsonLoop.jsonLoop(e.getBasicInfo());
-                e.setTreeMap(treeMap);
-            });
+        for (SysPromiseSign sysPromiseSign1:list){
+            TreeMap treeMap = JsonLoop.jsonLoop(JSON.parseObject(sysPromiseSign1.getBasicInfo()));
+            sysPromiseSign1.setTreeMap(treeMap);
         }
+//        if (!list.isEmpty()) {
+//            list.forEach(e -> {
+//                TreeMap treeMap = JsonLoop.jsonLoop(e.getBasicInfo());
+//                e.setTreeMap(treeMap);
+//            });
+//        }
         return getDataTable(list);
     }
 
