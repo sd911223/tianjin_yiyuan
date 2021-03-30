@@ -62,16 +62,12 @@ public class SysPromiseSignController extends BaseController {
         }
         sysPromiseSign.setPromiseId(promiseId);
         List<SysPromiseSign> list = sysPromiseSignService.selectSysPromiseSignList(sysPromiseSign);
-        for (SysPromiseSign sysPromiseSign1:list){
-            TreeMap treeMap = JsonLoop.jsonLoop(JSON.parseObject(sysPromiseSign1.getBasicInfo()));
-            sysPromiseSign1.setTreeMap(treeMap);
+        if (!list.isEmpty()) {
+            list.forEach(e -> {
+                TreeMap treeMap = JsonLoop.jsonLoop(JSON.parseObject(e.getBasicInfo()));
+                e.setTreeMap(treeMap);
+            });
         }
-//        if (!list.isEmpty()) {
-//            list.forEach(e -> {
-//                TreeMap treeMap = JsonLoop.jsonLoop(e.getBasicInfo());
-//                e.setTreeMap(treeMap);
-//            });
-//        }
         return getDataTable(list);
     }
 
