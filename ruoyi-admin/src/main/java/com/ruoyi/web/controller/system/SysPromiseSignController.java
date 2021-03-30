@@ -8,6 +8,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.exception.BaseException;
 import com.ruoyi.common.utils.JsonLoop;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.SysPromiseSign;
 import com.ruoyi.system.service.ISysPromiseSignService;
@@ -43,8 +44,14 @@ public class SysPromiseSignController extends BaseController {
      */
     @ApiOperation("承诺详细列表")
     @GetMapping("/list")
-    public TableDataInfo list(SysPromiseSign sysPromiseSign) {
+    public TableDataInfo list(@RequestParam("pageNum") Integer pageNum,
+                              @RequestParam("pageSize") Integer pageSize,
+                              @RequestParam(value = "basicInfo",required = false) String basicInfo) {
         startPage();
+        SysPromiseSign sysPromiseSign =new SysPromiseSign();
+        if (!StringUtils.isEmpty(basicInfo)){
+            sysPromiseSign.setBasicInfo(basicInfo);
+        }
         List<SysPromiseSign> list = sysPromiseSignService.selectSysPromiseSignList(sysPromiseSign);
         if (!list.isEmpty()) {
             list.forEach(e -> {
