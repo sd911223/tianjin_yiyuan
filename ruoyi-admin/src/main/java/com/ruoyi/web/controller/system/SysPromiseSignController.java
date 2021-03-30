@@ -50,11 +50,15 @@ public class SysPromiseSignController extends BaseController {
     public TableDataInfo list(@RequestParam("pageNum") Integer pageNum,
                               @RequestParam("pageSize") Integer pageSize,
                               @RequestParam("promiseId") Long promiseId,
-                              @RequestParam(value = "basicInfo",required = false) String basicInfo) {
+                              @RequestParam(value = "basicInfo",required = false) String basicInfo,
+                              @RequestParam(value = "codeStatus",required = false) String codeStatus) {
         startPage();
         SysPromiseSign sysPromiseSign =new SysPromiseSign();
         if (!StringUtils.isEmpty(basicInfo)){
             sysPromiseSign.setBasicInfo(basicInfo);
+        }
+        if (!StringUtils.isEmpty(codeStatus)){
+            sysPromiseSign.setCodeColor(codeStatus);
         }
         sysPromiseSign.setPromiseId(promiseId);
         List<SysPromiseSign> list = sysPromiseSignService.selectSysPromiseSignList(sysPromiseSign);
