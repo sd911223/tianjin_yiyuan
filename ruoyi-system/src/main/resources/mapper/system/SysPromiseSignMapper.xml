@@ -42,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectSysPromiseSignById" parameterType="Long" resultMap="SysPromiseSignResult">
+    <select id="selectSysPromiseSignById" parameterType="String" resultMap="SysPromiseSignResult">
         <include refid="selectSysPromiseSignVo"/>
         where id = #{id}
     </select>
@@ -63,7 +63,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
             <if test="codeColor != null">code_color,</if>
-            <if test="delFlag != null">del_flag,</if>
             <if test="estimate1 != null">estimate_1,</if>
             <if test="estimate2 != null">estimate_2,</if>
             <if test="estimate3 != null">estimate_3,</if>
@@ -79,7 +78,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="codeColor != null">#{codeColor},</if>
-            <if test="delFlag != null">#{delFlag},</if>
             <if test="estimate1 != null">#{estimate1},</if>
             <if test="estimate2 != null">#{estimate2},</if>
             <if test="estimate3 != null">#{estimate3},</if>

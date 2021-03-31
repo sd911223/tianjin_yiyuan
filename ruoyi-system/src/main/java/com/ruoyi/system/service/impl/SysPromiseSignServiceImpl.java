@@ -12,11 +12,15 @@ import com.ruoyi.system.mapper.SysPromiseSignMapper;
 import com.ruoyi.system.mapper.SysPromiseSpecifyMapper;
 import com.ruoyi.system.mapper.SysStudentPromiseMapper;
 import com.ruoyi.system.service.ISysPromiseSignService;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 承诺填写Service业务层处理
@@ -67,14 +71,20 @@ public class SysPromiseSignServiceImpl implements ISysPromiseSignService {
         if (StringUtils.isEmpty(sysPromiseSign.getOpenId())) {
             throw new CustomException("openId为空！");
         }
+        SysPromiseSign sign = new SysPromiseSign();
+        sign.setOpenId(sysPromiseSign.getOpenId());
         //查询是否提交过
-        SysPromiseSign promiseSign = sysPromiseSignMapper.selectSysPromiseSignByOpenId(sysPromiseSign.getOpenId());
-        if (promiseSign != null) {
-            BeanUtils.copyProperties(sysPromiseSign, promiseSign);
-            return sysPromiseSignMapper.updateSysPromiseSign(promiseSign);
+        List<SysPromiseSign> promiseSign = sysPromiseSignMapper.selectSysPromiseSignList(sign);
+        if (!promiseSign.isEmpty()) {
+            sysPromiseSign.setId(null);
+            BeanUtils.copyProperties(sysPromiseSign, promiseSign.get(0), getNullPropertyNames(sysPromiseSign));
+            return sysPromiseSignMapper.updateSysPromiseSign(promiseSign.get(0));
         }
         //判断所属人群
         SysStudentPromise sysStudentPromise = sysStudentPromiseMapper.selectSysStudentPromiseById(sysPromiseSign.getPromiseId());
+        if (null == sysStudentPromise) {
+            throw new CustomException("找不到承诺ID！");
+        }
         if (sysStudentPromise.getBeauType().equals(PromiseType.SPECIFY.getCode())) {
             SysPromiseSpecify sysPromiseSpecify = new SysPromiseSpecify();
             sysPromiseSpecify.setPromiseId(sysPromiseSign.getPromiseId());
@@ -89,6 +99,23 @@ public class SysPromiseSignServiceImpl implements ISysPromiseSignService {
         sysStudentPromiseMapper.updateSysStudentPromise(sysStudentPromise);
         sysPromiseSign.setCreateTime(DateUtils.getNowDate());
         return sysPromiseSignMapper.insertSysPromiseSign(sysPromiseSign);
+    }
+
+    public static String[] getNullPropertyNames(Object source) {
+        final BeanWrapper src = new BeanWrapperImpl(source);
+        java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();
+
+        Set<String> emptyNames = new HashSet<String>();
+        for (java.beans.PropertyDescriptor pd : pds) {
+            Object srcValue = src.getPropertyValue(pd.getName());
+            if (srcValue == null) emptyNames.add(pd.getName());
+        }
+        String[] result = new String[emptyNames.size()];
+        return emptyNames.toArray(result);
+    }
+
+    public static void copyPropertiesIgnoreNull(Object src, Object target) {
+        BeanUtils.copyProperties(src, target, getNullPropertyNames(src));
     }
 
     /**
