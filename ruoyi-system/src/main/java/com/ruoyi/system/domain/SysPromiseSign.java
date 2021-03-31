@@ -71,17 +71,15 @@ public class SysPromiseSign extends BaseEntity {
      */
     private String delFlag;
     /**
-     * 预留字段1
+     * 是否在有效期(0:有效,1:无效)
      */
-    @ApiModelProperty("预留字段1")
-    @Excel(name = "预留字段1")
+    @ApiModelProperty("是否在有效期(0:有效,1:无效)")
     private String estimate1;
 
     /**
      * 预留字段2
      */
-    @ApiModelProperty("预留字段2")
-    @Excel(name = "预留字段2")
+    @ApiModelProperty("身份证号冗余字段")
     private String estimate2;
 
     /**

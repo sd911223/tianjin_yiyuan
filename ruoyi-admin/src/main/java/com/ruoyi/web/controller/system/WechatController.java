@@ -1,5 +1,7 @@
 package com.ruoyi.web.controller.system;
 
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.annotation.RepeatSubmit;
 import com.ruoyi.common.core.controller.BaseController;
@@ -13,11 +15,14 @@ import com.ruoyi.common.core.domain.entity.resp.BusinessReserveResp;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.system.domain.SysPromiseSign;
 import com.ruoyi.system.domain.SysStudentPromise;
 import com.ruoyi.system.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -39,6 +44,7 @@ import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
 @RequestMapping(MEDICINE_API + "/wechat/reserve")
 @Api(tags = "微信公众号调用")
 public class WechatController extends BaseController {
+    private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
     @Autowired
     SysReserveService sysReserveService;
     @Autowired
@@ -51,15 +57,44 @@ public class WechatController extends BaseController {
     ISysPromiseSignService sysPromiseSignService;
 
     /**
+     * 查询承诺详情
+     */
+    @ApiOperation("微信-查询承诺详情")
+    @PostMapping("/queryPromise")
+    public AjaxResult queryPromise(@RequestBody SysPromiseSign sysPromiseSign) {
+        List<SysPromiseSign> sysPromiseSigns = sysPromiseSignService.selectSysPromiseSignList(sysPromiseSign);
+        if (!sysPromiseSigns.isEmpty()) {
+            sysPromiseSigns.forEach(e -> {
+                SysStudentPromise sysStudentPromise = sysStudentPromiseService.selectSysStudentPromiseById(e.getPromiseId());
+                long between = DateUtil.between(DateUtils.getNowDate(), e.getCreateTime(), DateUnit.DAY);
+                if (between >= sysStudentPromise.getHealthCode()) {
+                    log.info("二维码过期--------------------openID:{}",e.getOpenId());
+                    e.setEstimate1("1");
+                }
+            });
+
+        }
+        return AjaxResult.success(sysPromiseSigns);
+    }
+
+    /**
      * 新增承诺填写
      */
     @ApiOperation("微信-新增承诺信息")
     @Log(title = "承诺填写", businessType = BusinessType.INSERT)
     @PostMapping("/promise/add")
-    public AjaxResult add(@RequestBody SysPromiseSign sysPromiseSign) {
+    @RepeatSubmit
+    public AjaxResult promiseAdd(@RequestBody SysPromiseSign sysPromiseSign) {
         return toAjax(sysPromiseSignService.insertSysPromiseSign(sysPromiseSign));
     }
 
+    /**
+     * 承诺列表
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @ApiOperation("微信-承诺列表")
     @GetMapping("/promise/list")
     public TableDataInfo promiseList(@RequestParam("pageNum") Integer pageNum,

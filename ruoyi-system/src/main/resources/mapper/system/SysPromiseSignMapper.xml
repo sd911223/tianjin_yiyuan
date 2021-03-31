@@ -46,7 +46,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectSysPromiseSignVo"/>
         where id = #{id}
     </select>
-        
+    <select id="selectSysPromiseSignByOpenId" parameterType="Long" resultMap="SysPromiseSignResult">
+        <include refid="selectSysPromiseSignVo"/>
+        where open_id = #{openId}
+    </select>
     <insert id="insertSysPromiseSign" parameterType="SysPromiseSign" useGeneratedKeys="true" keyProperty="id">
         insert into sys_promise_sign
         <trim prefix="(" suffix=")" suffixOverrides=",">

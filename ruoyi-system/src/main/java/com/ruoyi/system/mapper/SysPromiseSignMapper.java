@@ -20,6 +20,14 @@ public interface SysPromiseSignMapper
     public SysPromiseSign selectSysPromiseSignById(Long id);
 
     /**
+     * 查询承诺填写
+     *
+     * @param openId 承诺填写ID
+     * @return 承诺填写
+     */
+    public SysPromiseSign selectSysPromiseSignByOpenId(String openId);
+
+    /**
      * 查询承诺填写列表
      * 
      * @param sysPromiseSign 承诺填写
