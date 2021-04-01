@@ -119,8 +119,10 @@ xss:
   urlPatterns: /system/*,/monitor/*,/tool/*
 wechat:
   domain: https://api.weixin.qq.com
-  appid: wx47bd8aa584b53c77
-  secret: 6cb1462e6a2341d7c0e281add7d84461
+ # appid: wx47bd8aa584b53c77
+  appid: wx93ea84d052466851
+#  secret: 6cb1462e6a2341d7c0e281add7d84461
+  secret: 8e896a1fdfd39242d750825b89704a89
   base_access_token_url: ${wechat.domain}/cgi-bin/token
   oauth2_url: https://open.weixin.qq.com/cgi-bin/connect/oauth2/authorize
   access_token_url: https://api.weixin.qq.com/sns/oauth2/access_token
