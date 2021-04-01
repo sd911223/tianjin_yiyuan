@@ -42,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectSysPromiseSignById" parameterType="String" resultMap="SysPromiseSignResult">
+    <select id="selectSysPromiseSignById" parameterType="Long" resultMap="SysPromiseSignResult">
         <include refid="selectSysPromiseSignVo"/>
         where id = #{id}
     </select>
