@@ -1,8 +1,6 @@
 package com.ruoyi.web.controller.system;
 
-import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -15,6 +13,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.SysPromiseSign;
 import com.ruoyi.system.service.ISysPromiseSignService;
+import com.ruoyi.system.service.ISysPromiseSpecifyService;
 import com.ruoyi.web.controller.common.CommonController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,6 +40,8 @@ import static com.ruoyi.common.constant.UserConstants.MEDICINE_API;
 public class SysPromiseSignController extends BaseController {
     @Autowired
     private ISysPromiseSignService sysPromiseSignService;
+    @Autowired
+    private ISysPromiseSpecifyService sysPromiseSpecifyService;
 
     /**
      * 查询承诺填写列表
@@ -50,17 +51,17 @@ public class SysPromiseSignController extends BaseController {
     public TableDataInfo list(@RequestParam("pageNum") Integer pageNum,
                               @RequestParam("pageSize") Integer pageSize,
                               @RequestParam("promiseId") Long promiseId,
-                              @RequestParam(value = "basicInfo",required = false) String basicInfo,
-                              @RequestParam(value = "codeStatus",required = false) String codeStatus) {
+                              @RequestParam(value = "basicInfo", required = false) String basicInfo,
+                              @RequestParam(value = "codeStatus", required = false) String codeStatus) {
         startPage();
-        SysPromiseSign sysPromiseSign =new SysPromiseSign();
-        if (!StringUtils.isEmpty(basicInfo)){
+        SysPromiseSign sysPromiseSign = new SysPromiseSign();
+        sysPromiseSign.setPromiseId(promiseId);
+        if (!StringUtils.isEmpty(basicInfo)) {
             sysPromiseSign.setBasicInfo(basicInfo);
         }
-        if (!StringUtils.isEmpty(codeStatus)){
+        if (!StringUtils.isEmpty(codeStatus)) {
             sysPromiseSign.setCodeColor(codeStatus);
         }
-        sysPromiseSign.setPromiseId(promiseId);
         List<SysPromiseSign> list = sysPromiseSignService.selectSysPromiseSignList(sysPromiseSign);
         if (!list.isEmpty()) {
             SysPromiseSign sign = list.get(0);

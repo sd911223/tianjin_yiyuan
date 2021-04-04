@@ -51,6 +51,8 @@ public interface SysPromiseSignMapper
      */
     public int updateSysPromiseSign(SysPromiseSign sysPromiseSign);
 
+    public int updateSysPromiseSignByPid(Long promiseId);
+
     /**
      * 删除承诺填写
      * 

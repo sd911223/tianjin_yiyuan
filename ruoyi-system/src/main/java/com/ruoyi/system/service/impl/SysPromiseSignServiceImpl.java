@@ -5,6 +5,7 @@ import com.ruoyi.common.exception.CustomException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanUtils;
+import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.system.domain.SysPromiseSign;
 import com.ruoyi.system.domain.SysPromiseSpecify;
 import com.ruoyi.system.domain.SysStudentPromise;
@@ -12,6 +13,8 @@ import com.ruoyi.system.mapper.SysPromiseSignMapper;
 import com.ruoyi.system.mapper.SysPromiseSpecifyMapper;
 import com.ruoyi.system.mapper.SysStudentPromiseMapper;
 import com.ruoyi.system.service.ISysPromiseSignService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,7 @@ import java.util.Set;
  */
 @Service
 public class SysPromiseSignServiceImpl implements ISysPromiseSignService {
+    private static final Logger log = LoggerFactory.getLogger(SysPromiseSignServiceImpl.class);
     @Autowired
     private SysPromiseSignMapper sysPromiseSignMapper;
     @Autowired
@@ -71,35 +75,63 @@ public class SysPromiseSignServiceImpl implements ISysPromiseSignService {
         if (StringUtils.isEmpty(sysPromiseSign.getOpenId())) {
             throw new CustomException("openId为空！");
         }
-        SysPromiseSign sign = new SysPromiseSign();
-        sign.setOpenId(sysPromiseSign.getOpenId());
-        //查询是否提交过
-        List<SysPromiseSign> promiseSign = sysPromiseSignMapper.selectSysPromiseSignList(sign);
-        if (!promiseSign.isEmpty()) {
-            sysPromiseSign.setId(null);
-            BeanUtils.copyProperties(sysPromiseSign, promiseSign.get(0), getNullPropertyNames(sysPromiseSign));
-            return sysPromiseSignMapper.updateSysPromiseSign(promiseSign.get(0));
-        }
         //判断所属人群
         SysStudentPromise sysStudentPromise = sysStudentPromiseMapper.selectSysStudentPromiseById(sysPromiseSign.getPromiseId());
         if (null == sysStudentPromise) {
             throw new CustomException("找不到承诺ID！");
         }
+
+        SysPromiseSign sign = new SysPromiseSign();
+//        sign.setOpenId(sysPromiseSign.getOpenId());
+        sign.setIdCard(sysPromiseSign.getIdCard());
+        sign.setPromiseId(sysPromiseSign.getPromiseId());
+        //查询是否提交过
+        List<SysPromiseSign> promiseSign = sysPromiseSignMapper.selectSysPromiseSignList(sign);
+        if (!promiseSign.isEmpty()&&sysStudentPromise.getBeauType().equals(PromiseType.ALL.getCode())) {
+            sysPromiseSign.setId(null);
+            BeanUtils.copyProperties(sysPromiseSign, promiseSign.get(0), getNullPropertyNames(sysPromiseSign));
+            sysStudentPromise.setWriteNumber(sysStudentPromise.getWriteNumber() + 1);
+            //增加报名人数
+            sysStudentPromiseMapper.updateSysStudentPromise(sysStudentPromise);
+            return sysPromiseSignMapper.updateSysPromiseSign(promiseSign.get(0));
+        }
+
+        log.info("承诺ID:{},人群类型:{}",sysPromiseSign.getPromiseId(),sysStudentPromise.getBeauType());
         if (sysStudentPromise.getBeauType().equals(PromiseType.SPECIFY.getCode())) {
+            log.info("=============================进入特定人群================================");
+
             SysPromiseSpecify sysPromiseSpecify = new SysPromiseSpecify();
             sysPromiseSpecify.setPromiseId(sysPromiseSign.getPromiseId());
             sysPromiseSpecify.setIdCard(sysPromiseSign.getEstimate2());
+            sysPromiseSpecify.setName(sysPromiseSign.getName());
             List<SysPromiseSpecify> specifyList = sysPromiseSpecifyMapper.selectSysPromiseSpecifyList(sysPromiseSpecify);
             if (specifyList.isEmpty()) {
+                log.info("没有查到人群:身份证号:{},姓名:{}",sysPromiseSign.getEstimate2(),sysPromiseSign.getName());
                 throw new CustomException("不在规定人群内！");
             }
+            SysPromiseSign sysPromiseSign1 = new SysPromiseSign();
+            sysPromiseSign1.setId(null);
+            sysPromiseSign1.setIdCard(sysPromiseSign.getEstimate2());
+            sysPromiseSign1.setUserName(sysPromiseSign.getName());
+            List<SysPromiseSign> sysPromiseSigns = sysPromiseSignMapper.selectSysPromiseSignList(sysPromiseSign1);
+            SysPromiseSign sysPromiseSign2 = sysPromiseSigns.get(0);
+            BeanUtils.copyProperties(sysPromiseSign, sysPromiseSign2, getNullPropertyNames(sysPromiseSign));
+            log.info("=============================进入特定人群结束================================");
+            sysStudentPromise.setWriteNumber(sysStudentPromise.getWriteNumber() + 1);
+            //增加报名人数
+            sysStudentPromiseMapper.updateSysStudentPromise(sysStudentPromise);
+            sysPromiseSign.setCreateTime(DateUtils.getNowDate());
+            sysPromiseSign.setUpdateTime(DateUtils.getNowDate());
+            return sysPromiseSignMapper.updateSysPromiseSign(sysPromiseSign2);
+        }else {
+            sysStudentPromise.setWriteNumber(sysStudentPromise.getWriteNumber() + 1);
+            //增加报名人数
+            sysStudentPromiseMapper.updateSysStudentPromise(sysStudentPromise);
+            sysPromiseSign.setCreateTime(DateUtils.getNowDate());
+            sysPromiseSign.setUpdateTime(DateUtils.getNowDate());
+            return sysPromiseSignMapper.insertSysPromiseSign(sysPromiseSign);
         }
-        sysStudentPromise.setWriteNumber(sysStudentPromise.getWriteNumber() + 1);
-        //增加报名人数
-        sysStudentPromiseMapper.updateSysStudentPromise(sysStudentPromise);
-        sysPromiseSign.setCreateTime(DateUtils.getNowDate());
-        sysPromiseSign.setUpdateTime(DateUtils.getNowDate());
-        return sysPromiseSignMapper.insertSysPromiseSign(sysPromiseSign);
+
     }
 
     public static String[] getNullPropertyNames(Object source) {

@@ -1,47 +1,69 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.SysPromiseSignMapper">
-    
+
     <resultMap type="SysPromiseSign" id="SysPromiseSignResult">
-        <result property="id"    column="id"    />
-        <result property="promiseId"    column="promise_id"    />
-        <result property="openId"    column="open_id"    />
-        <result property="basicInfo"    column="basic_info"    />
-        <result property="promiseContent"    column="promise_content"    />
-        <result property="contentSelect"    column="content_select"    />
-        <result property="createBy"    column="create_by"    />
-        <result property="createTime"    column="create_time"    />
-        <result property="updateBy"    column="update_by"    />
-        <result property="updateTime"    column="update_time"    />
-        <result property="codeColor"    column="code_color"    />
-        <result property="delFlag"    column="del_flag"    />
-        <result property="estimate1"    column="estimate_1"    />
-        <result property="estimate2"    column="estimate_2"    />
-        <result property="estimate3"    column="estimate_3"    />
+        <result property="id" column="id"/>
+        <result property="promiseId" column="promise_id"/>
+        <result property="openId" column="open_id"/>
+        <result property="basicInfo" column="basic_info"/>
+        <result property="promiseContent" column="promise_content"/>
+        <result property="contentSelect" column="content_select"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="codeColor" column="code_color"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="estimate1" column="estimate_1"/>
+        <result property="estimate2" column="estimate_2"/>
+        <result property="estimate3" column="estimate_3"/>
+        <result property="userName" column="user_name"/>
+        <result property="idCard" column="id_card"/>
     </resultMap>
 
     <sql id="selectSysPromiseSignVo">
-        select id, promise_id, open_id, basic_info, promise_content, content_select, create_by, create_time, update_by, update_time, code_color, estimate_1, estimate_2, estimate_3,del_flag from sys_promise_sign
+        select id,
+               promise_id,
+               open_id,
+               basic_info,
+               promise_content,
+               content_select,
+               create_by,
+               create_time,
+               update_by,
+               update_time,
+               code_color,
+               estimate_1,
+               estimate_2,
+               estimate_3,
+               del_flag,
+               user_name,
+               id_card
+        from sys_promise_sign
     </sql>
 
     <select id="selectSysPromiseSignList" parameterType="SysPromiseSign" resultMap="SysPromiseSignResult">
         <include refid="selectSysPromiseSignVo"/>
         <where>
             del_flag='0'
-            <if test="promiseId != null "> and promise_id = #{promiseId}</if>
-            <if test="openId != null  and openId != ''"> and open_id = #{openId}</if>
-            <if test="basicInfo != null  and basicInfo != ''"> and basic_info like concat('%', #{basicInfo}, '%')</if>
-            <if test="promiseContent != null  and promiseContent != ''"> and promise_content = #{promiseContent}</if>
-            <if test="contentSelect != null  and contentSelect != ''"> and content_select = #{contentSelect}</if>
-            <if test="codeColor != null  and codeColor != ''"> and code_color = #{codeColor}</if>
-            <if test="estimate1 != null  and estimate1 != ''"> and estimate_1 = #{estimate1}</if>
-            <if test="estimate2 != null  and estimate2 != ''"> and estimate_2 = #{estimate2}</if>
-            <if test="estimate3 != null  and estimate3 != ''"> and estimate_3 = #{estimate3}</if>
+            <if test="promiseId != null ">and promise_id = #{promiseId}</if>
+            <if test="openId != null  and openId != ''">and open_id = #{openId}</if>
+            <if test="basicInfo != null  and basicInfo != ''">and basic_info like concat('%', #{basicInfo}, '%')</if>
+            <if test="promiseContent != null  and promiseContent != ''">and promise_content = #{promiseContent}</if>
+            <if test="contentSelect != null  and contentSelect != ''">and content_select = #{contentSelect}</if>
+            <if test="codeColor != null  and codeColor != ''">and code_color = #{codeColor}</if>
+            <if test="estimate1 != null  and estimate1 != ''">and estimate_1 = #{estimate1}</if>
+            <if test="estimate2 != null  and estimate2 != ''">and estimate_2 = #{estimate2}</if>
+            <if test="estimate3 != null  and estimate3 != ''">and estimate_3 = #{estimate3}</if>
+            <if test="userName != null  and userName != ''">and user_name like concat('%', #{userName}, '%')</if>
+            <if test="idCard != null  and idCard != ''">and id_card = #{idCard}</if>
         </where>
+        ORDER BY code_color ASC
     </select>
-    
+
     <select id="selectSysPromiseSignById" parameterType="Long" resultMap="SysPromiseSignResult">
         <include refid="selectSysPromiseSignVo"/>
         where id = #{id}
@@ -66,7 +88,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="estimate1 != null">estimate_1,</if>
             <if test="estimate2 != null">estimate_2,</if>
             <if test="estimate3 != null">estimate_3,</if>
-         </trim>
+            <if test="userName != null">user_name,</if>
+            <if test="idCard != null">id_card,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="promiseId != null">#{promiseId},</if>
             <if test="openId != null">#{openId},</if>
@@ -81,7 +105,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="estimate1 != null">#{estimate1},</if>
             <if test="estimate2 != null">#{estimate2},</if>
             <if test="estimate3 != null">#{estimate3},</if>
-         </trim>
+            <if test="userName != null">#{userName},</if>
+            <if test="idCard != null">#{idCard},</if>
+        </trim>
     </insert>
 
     <update id="updateSysPromiseSign" parameterType="SysPromiseSign">
@@ -100,16 +126,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="estimate1 != null">estimate_1 = #{estimate1},</if>
             <if test="estimate2 != null">estimate_2 = #{estimate2},</if>
             <if test="estimate3 != null">estimate_3 = #{estimate3},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="idCard != null">id_card = #{idCard},</if>
         </trim>
         where id = #{id}
     </update>
+    <update id="updateSysPromiseSignByPid" parameterType="Long">
+        update sys_promise_sign
+        SET delFlag='2'
+        where promise_id = #{promiseId}
+
+    </update>
 
     <delete id="deleteSysPromiseSignById" parameterType="Long">
-        delete from sys_promise_sign where id = #{id}
+        delete
+        from sys_promise_sign
+        where id = #{id}
     </delete>
 
     <delete id="deleteSysPromiseSignByIds" parameterType="String">
-        delete from sys_promise_sign where id in 
+        delete from sys_promise_sign where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

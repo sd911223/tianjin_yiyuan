@@ -1,11 +1,14 @@
 package com.ruoyi.system.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.enums.PromiseStatus;
 import com.ruoyi.common.exception.CustomException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.system.domain.SysPromiseSign;
 import com.ruoyi.system.domain.SysPromiseSpecify;
 import com.ruoyi.system.domain.SysStudentPromise;
+import com.ruoyi.system.mapper.SysPromiseSignMapper;
 import com.ruoyi.system.mapper.SysPromiseSpecifyMapper;
 import com.ruoyi.system.mapper.SysStudentPromiseMapper;
 import com.ruoyi.system.service.ISysStudentPromiseService;
@@ -27,7 +30,9 @@ public class SysStudentPromiseServiceImpl implements ISysStudentPromiseService {
     @Autowired
     private SysStudentPromiseMapper sysStudentPromiseMapper;
     @Autowired
-    SysPromiseSpecifyMapper sysPromiseSpecifyMapper;
+    private SysPromiseSignMapper sysPromiseSignMapper;
+    @Autowired
+    private SysPromiseSpecifyMapper sysPromiseSpecifyMapper;
 
     /**
      * 查询承诺管理
@@ -113,6 +118,7 @@ public class SysStudentPromiseServiceImpl implements ISysStudentPromiseService {
         List<SysPromiseSpecify> sysPromiseSpecifyList = sysPromiseSpecifyMapper.selectSysPromiseSpecifyList(sysPromiseSpecify);
         if (!sysPromiseSpecifyList.isEmpty()) {
             sysPromiseSpecifyMapper.updateSysPromiseSpecifyByPId(promiseId);
+            sysPromiseSignMapper.updateSysPromiseSignByPid(promiseId);
         }
         long successNum = 0;
         for (SysPromiseSpecify specify : userList) {
@@ -129,6 +135,18 @@ public class SysStudentPromiseServiceImpl implements ISysStudentPromiseService {
             specify.setPromiseId(promiseId);
             specify.setCreateTime(DateUtils.getNowDate());
             sysPromiseSpecifyMapper.insertSysPromiseSpecify(specify);
+            SysPromiseSign sign = new SysPromiseSign();
+            sign.setUserName(specify.getName());
+            sign.setIdCard(specify.getIdCard());
+            sign.setDelFlag("0");
+            sign.setPromiseId(promiseId);
+            sign.setCreateTime(DateUtils.getNowDate());
+            sign.setCodeColor("3");
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("姓名",specify.getName());
+            jsonObject.put("身份证号",specify.getIdCard());
+            sign.setBasicInfo(jsonObject.toJSONString());
+            sysPromiseSignMapper.insertSysPromiseSign(sign);
             successNum++;
         }
         SysStudentPromise sysStudentPromise = sysStudentPromiseMapper.selectSysStudentPromiseById(promiseId);

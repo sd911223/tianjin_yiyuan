@@ -82,6 +82,9 @@ public class SysPromiseSign extends BaseEntity {
     @ApiModelProperty("身份证号冗余字段")
     private String estimate2;
 
+    @ApiModelProperty("姓名冗余字段")
+    private String name;
+
     /**
      * 预留字段3
      */
@@ -94,6 +97,35 @@ public class SysPromiseSign extends BaseEntity {
 
     @ApiModelProperty("基础信息-排列后的")
     private TreeMap treeMap;
+
+    @ApiModelProperty("姓名")
+    private String userName;
+    @ApiModelProperty("身份证号")
+    private String idCard;
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public void setTitleList(List<String> titleList) {
         this.titleList = titleList;
