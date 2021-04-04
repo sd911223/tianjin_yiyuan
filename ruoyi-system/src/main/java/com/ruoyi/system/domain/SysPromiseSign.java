@@ -89,8 +89,19 @@ public class SysPromiseSign extends BaseEntity {
     @Excel(name = "预留字段3")
     private String estimate3;
 
+    @ApiModelProperty("标题")
+    private List<String> titleList;
+
     @ApiModelProperty("基础信息-排列后的")
     private TreeMap treeMap;
+
+    public void setTitleList(List<String> titleList) {
+        this.titleList = titleList;
+    }
+
+    public List<String> getTitleList() {
+        return titleList;
+    }
 
     public TreeMap getTreeMap() {
         return treeMap;

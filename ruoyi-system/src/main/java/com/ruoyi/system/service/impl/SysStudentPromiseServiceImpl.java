@@ -116,6 +116,16 @@ public class SysStudentPromiseServiceImpl implements ISysStudentPromiseService {
         }
         long successNum = 0;
         for (SysPromiseSpecify specify : userList) {
+            specify.setDelFlag("0");
+            specify.setPromiseId(promiseId);
+            List<SysPromiseSpecify> specifyList = sysPromiseSpecifyMapper.selectSysPromiseSpecifyList(specify);
+            if (!specifyList.isEmpty()) {
+                SysPromiseSpecify promiseSpecify = specifyList.get(0);
+                promiseSpecify.setIdCard(promiseSpecify.getIdCard());
+                promiseSpecify.setName(promiseSpecify.getName());
+                sysPromiseSpecifyMapper.updateSysPromiseSpecify(promiseSpecify);
+                continue;
+            }
             specify.setPromiseId(promiseId);
             specify.setCreateTime(DateUtils.getNowDate());
             sysPromiseSpecifyMapper.insertSysPromiseSpecify(specify);

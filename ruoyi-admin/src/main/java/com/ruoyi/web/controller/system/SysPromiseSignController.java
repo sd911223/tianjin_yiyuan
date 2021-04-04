@@ -63,6 +63,9 @@ public class SysPromiseSignController extends BaseController {
         sysPromiseSign.setPromiseId(promiseId);
         List<SysPromiseSign> list = sysPromiseSignService.selectSysPromiseSignList(sysPromiseSign);
         if (!list.isEmpty()) {
+            SysPromiseSign sign = list.get(0);
+            List title = JsonLoop.getTitle(JSON.parseObject(sign.getBasicInfo()));
+            sign.setTitleList(title);
             list.forEach(e -> {
                 TreeMap treeMap = JsonLoop.jsonLoop(JSON.parseObject(e.getBasicInfo()));
                 e.setTreeMap(treeMap);
@@ -97,7 +100,7 @@ public class SysPromiseSignController extends BaseController {
             throw new BaseException("没有可导出数据");
         }
         ExcelUtil<SysSignInfo> util = new ExcelUtil<SysSignInfo>(SysSignInfo.class);
-        AjaxResult ajaxResult = util.exportExcel(sysSignInfos, "承诺用户");
+        AjaxResult ajaxResult = util.exportExcel(sysSignInfos, "考生承诺填写情况");
         if (ajaxResult.get("code").equals(200)) {
             CommonController commonController = new CommonController();
             commonController.fileDownload(ajaxResult.get("msg").toString(), true, response, request);

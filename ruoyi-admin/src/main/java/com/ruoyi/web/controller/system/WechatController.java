@@ -14,6 +14,7 @@ import com.ruoyi.common.core.domain.entity.req.TicketReq;
 import com.ruoyi.common.core.domain.entity.resp.BusinessReserveResp;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.enums.PromiseStatus;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.system.domain.SysPromiseSign;
@@ -101,6 +102,7 @@ public class WechatController extends BaseController {
                                      @RequestParam("pageSize") Integer pageSize) {
         startPage();
         SysStudentPromise sysStudentPromise = new SysStudentPromise();
+        sysStudentPromise.setModuleStatus(PromiseStatus.ISSUE.getCode());
         List<SysStudentPromise> promiseList = sysStudentPromiseService.selectSysStudentPromiseList(sysStudentPromise);
         //遍历删除,除去不在时间范围内的
         Iterator<SysStudentPromise> iterator = promiseList.iterator();

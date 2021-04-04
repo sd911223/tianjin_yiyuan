@@ -98,6 +98,7 @@ public class SysPromiseSignServiceImpl implements ISysPromiseSignService {
         //增加报名人数
         sysStudentPromiseMapper.updateSysStudentPromise(sysStudentPromise);
         sysPromiseSign.setCreateTime(DateUtils.getNowDate());
+        sysPromiseSign.setUpdateTime(DateUtils.getNowDate());
         return sysPromiseSignMapper.insertSysPromiseSign(sysPromiseSign);
     }
 

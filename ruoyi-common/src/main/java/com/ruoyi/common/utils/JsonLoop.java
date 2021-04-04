@@ -11,9 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class JsonLoop {
     private static final Logger log = LoggerFactory.getLogger(JsonLoop.class);
@@ -39,6 +37,24 @@ public class JsonLoop {
             }
         }
         return treeMap;
+    }
+
+    public static List getTitle(Object object) {
+        ArrayList<String> list = new ArrayList<>();
+        if (object instanceof JSONObject) {
+            JSONObject jsonObject = (JSONObject) object;
+            for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
+                Object o = entry.getValue();
+                if (o instanceof String) {
+                    log.info("key:{},value:{}", entry.getKey(), entry.getValue());
+                    list.add(entry.getKey());
+                } else {
+                    jsonLoop(o);
+                }
+            }
+        }
+
+        return list;
     }
 
     public static SysSignInfo getSysSignInfo(String json) throws NoSuchFieldException, IllegalAccessException {
