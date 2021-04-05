@@ -18,6 +18,7 @@ import com.ruoyi.common.enums.PromiseStatus;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.system.domain.SysPromiseSign;
+import com.ruoyi.system.domain.SysPromiseSpecify;
 import com.ruoyi.system.domain.SysStudentPromise;
 import com.ruoyi.system.service.*;
 import io.swagger.annotations.Api;
@@ -26,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,6 +58,25 @@ public class WechatController extends BaseController {
     ISysStudentPromiseService sysStudentPromiseService;
     @Autowired
     ISysPromiseSignService sysPromiseSignService;
+    @Autowired
+    ISysPromiseSpecifyService sysPromiseSpecifyService;
+
+    /**
+     * 通过身份号查询
+     */
+    @ApiOperation("微信-通过身份号查询")
+    @GetMapping("/byIdCard")
+    public AjaxResult byIdCard(@RequestParam String idCard,
+                               @RequestParam String name,
+                               @RequestParam Long promiseId
+    ) {
+        SysPromiseSpecify sysPromiseSpecify = new SysPromiseSpecify();
+        sysPromiseSpecify.setIdCard(idCard);
+        sysPromiseSpecify.setPromiseId(promiseId);
+        sysPromiseSpecify.setName(name);
+        List<SysPromiseSpecify> specifyList = sysPromiseSpecifyService.selectSysPromiseSpecifyList(sysPromiseSpecify);
+        return AjaxResult.success(specifyList);
+    }
 
     /**
      * 查询承诺详情
@@ -69,7 +90,7 @@ public class WechatController extends BaseController {
                 SysStudentPromise sysStudentPromise = sysStudentPromiseService.selectSysStudentPromiseById(e.getPromiseId());
                 long between = DateUtil.between(DateUtils.getNowDate(), e.getCreateTime(), DateUnit.DAY);
                 if (between >= sysStudentPromise.getHealthCode()) {
-                    log.info("二维码过期--------------------openID:{}",e.getOpenId());
+                    log.info("二维码过期--------------------openID:{}", e.getOpenId());
                     e.setEstimate1("1");
                 }
             });

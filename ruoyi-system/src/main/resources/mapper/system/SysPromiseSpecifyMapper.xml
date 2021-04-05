@@ -52,6 +52,11 @@
         <include refid="selectSysPromiseSpecifyVo"/>
         where id = #{id}
     </select>
+    <select id="selectSysPromiseSpecifyByIdCard" resultType="com.ruoyi.system.domain.SysPromiseSpecify">
+        <include refid="selectSysPromiseSpecifyVo"/>
+        where id_card = #{idCard}
+
+    </select>
 
     <insert id="insertSysPromiseSpecify" parameterType="SysPromiseSpecify" useGeneratedKeys="true" keyProperty="id">
         insert into sys_promise_specify
@@ -116,7 +121,7 @@
 
     <update id="updateSysPromiseSpecifyByPId" parameterType="Long">
         update sys_promise_specify
-        SET delFlag='2'
+        SET del_flag='2'
         where promise_id = #{promiseId}
     </update>
 </mapper>

@@ -59,4 +59,5 @@ public interface ISysPromiseSpecifyService {
      */
     public int deleteSysPromiseSpecifyById(Long id);
 
+    SysPromiseSpecify selectSysPromiseSpecifyByIdCard(String idCard);
 }

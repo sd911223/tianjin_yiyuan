@@ -61,4 +61,7 @@ public interface SysPromiseSpecifyMapper
 
 
     public int updateSysPromiseSpecifyByPId(Long promiseId);
+
+    SysPromiseSpecify selectSysPromiseSpecifyByIdCard(String idCard);
+
 }

@@ -5,7 +5,6 @@ import com.ruoyi.common.exception.CustomException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanUtils;
-import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.system.domain.SysPromiseSign;
 import com.ruoyi.system.domain.SysPromiseSpecify;
 import com.ruoyi.system.domain.SysStudentPromise;
@@ -87,16 +86,20 @@ public class SysPromiseSignServiceImpl implements ISysPromiseSignService {
         sign.setPromiseId(sysPromiseSign.getPromiseId());
         //查询是否提交过
         List<SysPromiseSign> promiseSign = sysPromiseSignMapper.selectSysPromiseSignList(sign);
-        if (!promiseSign.isEmpty()&&sysStudentPromise.getBeauType().equals(PromiseType.ALL.getCode())) {
+        if (!promiseSign.isEmpty() && sysStudentPromise.getBeauType().equals(PromiseType.ALL.getCode())) {
             sysPromiseSign.setId(null);
-            BeanUtils.copyProperties(sysPromiseSign, promiseSign.get(0), getNullPropertyNames(sysPromiseSign));
-            sysStudentPromise.setWriteNumber(sysStudentPromise.getWriteNumber() + 1);
+            SysPromiseSign sign1 = promiseSign.get(0);
+            BeanUtils.copyProperties(sysPromiseSign, sign1, getNullPropertyNames(sysPromiseSign));
+
             //增加报名人数
-            sysStudentPromiseMapper.updateSysStudentPromise(sysStudentPromise);
+            if (sign1.getCodeColor().equals("3")) {
+                sysStudentPromise.setWriteNumber(sysStudentPromise.getWriteNumber() + 1);
+                sysStudentPromiseMapper.updateSysStudentPromise(sysStudentPromise);
+            }
             return sysPromiseSignMapper.updateSysPromiseSign(promiseSign.get(0));
         }
 
-        log.info("承诺ID:{},人群类型:{}",sysPromiseSign.getPromiseId(),sysStudentPromise.getBeauType());
+        log.info("承诺ID:{},人群类型:{}", sysPromiseSign.getPromiseId(), sysStudentPromise.getBeauType());
         if (sysStudentPromise.getBeauType().equals(PromiseType.SPECIFY.getCode())) {
             log.info("=============================进入特定人群================================");
 
@@ -106,7 +109,7 @@ public class SysPromiseSignServiceImpl implements ISysPromiseSignService {
             sysPromiseSpecify.setName(sysPromiseSign.getName());
             List<SysPromiseSpecify> specifyList = sysPromiseSpecifyMapper.selectSysPromiseSpecifyList(sysPromiseSpecify);
             if (specifyList.isEmpty()) {
-                log.info("没有查到人群:身份证号:{},姓名:{}",sysPromiseSign.getEstimate2(),sysPromiseSign.getName());
+                log.info("没有查到人群:身份证号:{},姓名:{}", sysPromiseSign.getEstimate2(), sysPromiseSign.getName());
                 throw new CustomException("不在规定人群内！");
             }
             SysPromiseSign sysPromiseSign1 = new SysPromiseSign();
@@ -117,15 +120,17 @@ public class SysPromiseSignServiceImpl implements ISysPromiseSignService {
             SysPromiseSign sysPromiseSign2 = sysPromiseSigns.get(0);
             BeanUtils.copyProperties(sysPromiseSign, sysPromiseSign2, getNullPropertyNames(sysPromiseSign));
             log.info("=============================进入特定人群结束================================");
-            sysStudentPromise.setWriteNumber(sysStudentPromise.getWriteNumber() + 1);
             //增加报名人数
-            sysStudentPromiseMapper.updateSysStudentPromise(sysStudentPromise);
+            if (sysPromiseSign2.getCodeColor().equals("3")) {
+                sysStudentPromise.setWriteNumber(sysStudentPromise.getWriteNumber() + 1);
+                sysStudentPromiseMapper.updateSysStudentPromise(sysStudentPromise);
+            }
             sysPromiseSign.setCreateTime(DateUtils.getNowDate());
             sysPromiseSign.setUpdateTime(DateUtils.getNowDate());
             return sysPromiseSignMapper.updateSysPromiseSign(sysPromiseSign2);
-        }else {
-            sysStudentPromise.setWriteNumber(sysStudentPromise.getWriteNumber() + 1);
+        } else {
             //增加报名人数
+            sysStudentPromise.setWriteNumber(sysStudentPromise.getWriteNumber() + 1);
             sysStudentPromiseMapper.updateSysStudentPromise(sysStudentPromise);
             sysPromiseSign.setCreateTime(DateUtils.getNowDate());
             sysPromiseSign.setUpdateTime(DateUtils.getNowDate());

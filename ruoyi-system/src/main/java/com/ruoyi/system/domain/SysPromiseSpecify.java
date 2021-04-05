@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -22,10 +23,12 @@ public class SysPromiseSpecify extends BaseEntity
     private Long promiseId;
 
     /** 身份证号 */
+    @ApiModelProperty("身份证号")
     @Excel(name = "身份证号")
     private String idCard;
 
     /** 姓名 */
+    @ApiModelProperty("姓名")
     @Excel(name = "姓名")
     private String name;
 

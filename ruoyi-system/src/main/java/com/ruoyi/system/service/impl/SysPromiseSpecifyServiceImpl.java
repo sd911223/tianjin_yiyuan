@@ -88,4 +88,9 @@ public class SysPromiseSpecifyServiceImpl implements ISysPromiseSpecifyService {
         return sysPromiseSpecifyMapper.deleteSysPromiseSpecifyById(id);
     }
 
+    @Override
+    public SysPromiseSpecify selectSysPromiseSpecifyByIdCard(String idCard) {
+        return sysPromiseSpecifyMapper.selectSysPromiseSpecifyByIdCard(idCard);
+    }
+
 }

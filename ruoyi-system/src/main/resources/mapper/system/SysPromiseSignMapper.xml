@@ -133,7 +133,7 @@
     </update>
     <update id="updateSysPromiseSignByPid" parameterType="Long">
         update sys_promise_sign
-        SET delFlag='2'
+        SET del_flag='2'
         where promise_id = #{promiseId}
 
     </update>
