@@ -95,7 +95,9 @@ public class SysPromiseSignServiceImpl implements ISysPromiseSignService {
                 sysStudentPromise.setWriteNumber(sysStudentPromise.getWriteNumber() + 1);
                 sysStudentPromiseMapper.updateSysStudentPromise(sysStudentPromise);
             }
-            return sysPromiseSignMapper.updateSysPromiseSign(promiseSign.get(0));
+            sign1.setCreateTime(DateUtils.getNowDate());
+            sign1.setUpdateTime(DateUtils.getNowDate());
+            return sysPromiseSignMapper.updateSysPromiseSign(sign1);
         }
 
         log.info("承诺ID:{},人群类型:{}", sysPromiseSign.getPromiseId(), sysStudentPromise.getBeauType());
@@ -124,8 +126,8 @@ public class SysPromiseSignServiceImpl implements ISysPromiseSignService {
                 sysStudentPromise.setWriteNumber(sysStudentPromise.getWriteNumber() + 1);
                 sysStudentPromiseMapper.updateSysStudentPromise(sysStudentPromise);
             }
-            sysPromiseSign.setCreateTime(DateUtils.getNowDate());
-            sysPromiseSign.setUpdateTime(DateUtils.getNowDate());
+            sysPromiseSign2.setCreateTime(DateUtils.getNowDate());
+            sysPromiseSign2.setUpdateTime(DateUtils.getNowDate());
             return sysPromiseSignMapper.updateSysPromiseSign(sysPromiseSign2);
         } else {
             //增加报名人数

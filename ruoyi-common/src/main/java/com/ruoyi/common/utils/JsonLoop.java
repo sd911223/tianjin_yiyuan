@@ -132,14 +132,12 @@ public class JsonLoop {
             // 获取 memberValues
             Map memberValues = (Map) hField.get(h);
             // 修改 value 属性值
+            memberValues.put("name", key);
             if (key.equals("AAAAAA,姓名")) {
                 memberValues.put("name", key.split(",")[1]);
             }
             if (key.equals("BBBBBB,身份证号")) {
                 memberValues.put("name", key.split(",")[1]);
-                continue;
-            } else {
-                memberValues.put("name", key);
             }
             if (i == 1) {
                 sysSignInfo.setExpected_1(value.toString());
