@@ -79,14 +79,13 @@ public class SysPromiseSignServiceImpl implements ISysPromiseSignService {
         if (null == sysStudentPromise) {
             throw new CustomException("找不到承诺ID！");
         }
-
         SysPromiseSign sign = new SysPromiseSign();
 //        sign.setOpenId(sysPromiseSign.getOpenId());
         sign.setIdCard(sysPromiseSign.getIdCard());
         sign.setPromiseId(sysPromiseSign.getPromiseId());
         //查询是否提交过
         List<SysPromiseSign> promiseSign = sysPromiseSignMapper.selectSysPromiseSignList(sign);
-        if (!promiseSign.isEmpty() && sysStudentPromise.getBeauType().equals(PromiseType.ALL.getCode())) {
+        if (!promiseSign.isEmpty()) {
             sysPromiseSign.setId(null);
             SysPromiseSign sign1 = promiseSign.get(0);
             BeanUtils.copyProperties(sysPromiseSign, sign1, getNullPropertyNames(sysPromiseSign));

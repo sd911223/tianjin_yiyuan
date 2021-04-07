@@ -39,6 +39,51 @@ public class JsonLoop {
         return treeMap;
     }
 
+    public static TreeMap jsonLoop(Object object, String type) {
+        TreeMap<String, Object> treeMap = new TreeMap<>(new Comparator<String>() {
+            /*
+             * int compare(Object o1, Object o2) 返回一个基本类型的整型，
+             * 返回负数表示：o1 小于o2，
+             * 返回0 表示：o1和o2相等，
+             * 返回正数表示：o1大于o2。
+             */
+            public int compare(String o1, String o2) {
+
+                //指定排序器按照降序排列
+                return o1.compareTo(o2);
+            }
+        });
+        if (object instanceof JSONObject) {
+            JSONObject jsonObject = (JSONObject) object;
+            for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
+                Object o = entry.getValue();
+                if (o instanceof String) {
+                    log.info("key:{},value:{}", entry.getKey(), entry.getValue());
+                    if (entry.getKey().equals("姓名")) {
+                        treeMap.put("AAAAAA," + entry.getKey(), entry.getValue());
+                        continue;
+                    }
+                    if (entry.getKey().equals("身份证号")) {
+                        treeMap.put("BBBBBB," + entry.getKey(), entry.getValue());
+                        continue;
+                    } else {
+                        treeMap.put(entry.getKey(), entry.getValue());
+                    }
+                } else {
+                    jsonLoop(o);
+                }
+            }
+        }
+        if (object instanceof JSONArray) {
+            JSONArray jsonArray = (JSONArray) object;
+            for (int i = 0; i < jsonArray.size(); i++) {
+                jsonLoop(jsonArray.get(i));
+            }
+        }
+        return treeMap;
+    }
+
+
     public static List getTitle(Object object) {
         ArrayList<String> list = new ArrayList<>();
         if (object instanceof JSONObject) {
@@ -62,7 +107,7 @@ public class JsonLoop {
         JSONObject jsonObject = JSON.parseObject(json);
         log.info("解析json:{}", jsonObject);
 
-        TreeMap treeMap = jsonLoop(jsonObject);
+        TreeMap treeMap = jsonLoop(jsonObject,"");
 
         //获取SysSignInfo实例
         SysSignInfo sysSignInfo = new SysSignInfo();
@@ -87,7 +132,15 @@ public class JsonLoop {
             // 获取 memberValues
             Map memberValues = (Map) hField.get(h);
             // 修改 value 属性值
-            memberValues.put("name", key);
+            if (key.equals("AAAAAA,姓名")) {
+                memberValues.put("name", key.split(",")[1]);
+            }
+            if (key.equals("BBBBBB,身份证号")) {
+                memberValues.put("name", key.split(",")[1]);
+                continue;
+            } else {
+                memberValues.put("name", key);
+            }
             if (i == 1) {
                 sysSignInfo.setExpected_1(value.toString());
             }
@@ -148,7 +201,6 @@ public class JsonLoop {
             if (i == 20) {
                 sysSignInfo.setExpected_20(value.toString());
             }
-
             i++;
             log.info("Excel.class,注解动态值:{}", excel.name());
         }
@@ -156,9 +208,11 @@ public class JsonLoop {
     }
 
     public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
-        String json = "{\"姓名\":\"石盾\",\"年龄\":\"32\",\"性别\":\"男\",\"准考证\":\"123456\",\"试试\":\"654654\"}";
-        getSysSignInfo(json);
-
+        String json = "{\"姓名\": \"杨梅\", \"身份证号\": \"610524198811285643\", \"手机号\": \"15022086467\", \"性别\": \"女\", \"考场名称\": \"天津医科大学\", \"准考证号\": \"12012136802003\", \"工作单位\": \"天津北辰北门医院\", \"健康状态\": \"黄码\"}";
+        JSONObject jsonObject = JSON.parseObject(json);
+        SysSignInfo sysSignInfo = getSysSignInfo("{\"姓名\": \"杨梅\", \"身份证号\": \"610524198811285643\", \"手机号\": \"15022086467\", \"性别\": \"女\", \"考场名称\": \"天津医科大学\", \"准考证号\": \"12012136802003\", \"工作单位\": \"天津北辰北门医院\", \"健康状态\": \"黄码\"}");
+        TreeMap treeMap = jsonLoop(jsonObject);
+        System.out.println(treeMap);
     }
 
 }
