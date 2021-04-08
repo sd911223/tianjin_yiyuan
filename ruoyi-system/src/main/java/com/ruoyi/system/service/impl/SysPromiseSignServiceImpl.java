@@ -89,12 +89,6 @@ public class SysPromiseSignServiceImpl implements ISysPromiseSignService {
             sysPromiseSign.setId(null);
             SysPromiseSign sign1 = promiseSign.get(0);
             BeanUtils.copyProperties(sysPromiseSign, sign1, getNullPropertyNames(sysPromiseSign));
-
-            //增加报名人数
-            if (sign1.getCodeColor().equals("3")) {
-                sysStudentPromise.setWriteNumber(sysStudentPromise.getWriteNumber() + 1);
-                sysStudentPromiseMapper.updateSysStudentPromise(sysStudentPromise);
-            }
             sign1.setCreateTime(DateUtils.getNowDate());
             sign1.setUpdateTime(DateUtils.getNowDate());
             return sysPromiseSignMapper.updateSysPromiseSign(sign1);
@@ -121,18 +115,10 @@ public class SysPromiseSignServiceImpl implements ISysPromiseSignService {
             SysPromiseSign sysPromiseSign2 = sysPromiseSigns.get(0);
             BeanUtils.copyProperties(sysPromiseSign, sysPromiseSign2, getNullPropertyNames(sysPromiseSign));
             log.info("=============================进入特定人群结束================================");
-            //增加报名人数
-            if (sysPromiseSign2.getCodeColor().equals("3")) {
-                sysStudentPromise.setWriteNumber(sysStudentPromise.getWriteNumber() + 1);
-                sysStudentPromiseMapper.updateSysStudentPromise(sysStudentPromise);
-            }
             sysPromiseSign2.setCreateTime(DateUtils.getNowDate());
             sysPromiseSign2.setUpdateTime(DateUtils.getNowDate());
             return sysPromiseSignMapper.updateSysPromiseSign(sysPromiseSign2);
         } else {
-            //增加报名人数
-            sysStudentPromise.setWriteNumber(sysStudentPromise.getWriteNumber() + 1);
-            sysStudentPromiseMapper.updateSysStudentPromise(sysStudentPromise);
             sysPromiseSign.setCreateTime(DateUtils.getNowDate());
             sysPromiseSign.setUpdateTime(DateUtils.getNowDate());
             return sysPromiseSignMapper.insertSysPromiseSign(sysPromiseSign);
@@ -189,5 +175,10 @@ public class SysPromiseSignServiceImpl implements ISysPromiseSignService {
     @Override
     public int deleteSysPromiseSignById(Long id) {
         return sysPromiseSignMapper.deleteSysPromiseSignById(id);
+    }
+
+    @Override
+    public int selectSysPromiseSignCount(Long promiseId) {
+        return sysPromiseSignMapper.selectSysPromiseSignCount(promiseId);
     }
 }

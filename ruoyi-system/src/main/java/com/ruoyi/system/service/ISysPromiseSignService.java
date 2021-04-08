@@ -58,4 +58,6 @@ public interface ISysPromiseSignService
      * @return 结果
      */
     public int deleteSysPromiseSignById(Long id);
+
+    int selectSysPromiseSignCount(Long id);
 }

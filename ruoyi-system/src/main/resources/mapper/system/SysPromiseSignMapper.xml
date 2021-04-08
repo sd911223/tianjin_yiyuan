@@ -72,6 +72,12 @@
         <include refid="selectSysPromiseSignVo"/>
         where open_id = #{openId}
     </select>
+    <select id="selectSysPromiseSignCount" parameterType="Long" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM sys_promise_sign a
+        WHERE a.promise_id = #{promiseId}
+          AND a.code_color !=3
+    </select>
     <insert id="insertSysPromiseSign" parameterType="SysPromiseSign" useGeneratedKeys="true" keyProperty="id">
         insert into sys_promise_sign
         <trim prefix="(" suffix=")" suffixOverrides=",">

@@ -68,4 +68,6 @@ public interface SysPromiseSignMapper
      * @return 结果
      */
     public int deleteSysPromiseSignByIds(Long[] ids);
+
+    int selectSysPromiseSignCount(Long promiseId);
 }

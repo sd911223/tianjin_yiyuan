@@ -1,7 +1,12 @@
 package com.ruoyi.task;
 
 import com.ruoyi.common.core.domain.entity.BusinessReserve;
+import com.ruoyi.common.enums.PromiseStatus;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.system.domain.SysPromiseSign;
+import com.ruoyi.system.domain.SysStudentPromise;
+import com.ruoyi.system.service.ISysPromiseSignService;
+import com.ruoyi.system.service.ISysStudentPromiseService;
 import com.ruoyi.system.service.SysReservePersonnelService;
 import com.ruoyi.system.service.SysReserveService;
 import org.slf4j.Logger;
@@ -20,6 +25,10 @@ public class ReserveTask {
     SysReserveService sysReserveService;
     @Autowired
     SysReservePersonnelService sysReservePersonnelService;
+    @Autowired
+    ISysStudentPromiseService sysStudentPromiseService;
+    @Autowired
+    ISysPromiseSignService sysPromiseSignService;
 
     /**
      * 项目开始结束定时
@@ -67,9 +76,30 @@ public class ReserveTask {
                 BusinessReserve reserve = new BusinessReserve();
                 reserve.setId(e.getId());
                 int numBer = sysReservePersonnelService.selectReservationNumBer(e.getId());
-                log.info("时间{}：，统计项目：{}，总人数{}：",DateUtils.getNowDate(),e.getId(),numBer);
+                log.info("时间{}：，统计项目：{}，总人数{}：", DateUtils.getNowDate(), e.getId(), numBer);
                 reserve.setReserveNum(numBer);
                 sysReserveService.updateReserveNum(reserve);
+            });
+
+        }
+    }
+
+    /**
+     * 承诺人数
+     */
+    @Scheduled(cron = "0 */1 * * * ?")
+    public void promiseTask() {
+        log.info("执行统计承诺总人数定时============================");
+        SysStudentPromise sysStudentPromise = new SysStudentPromise();
+        sysStudentPromise.setModuleStatus(PromiseStatus.ISSUE.getCode());
+        List<SysStudentPromise> list = sysStudentPromiseService.selectSysStudentPromiseList(sysStudentPromise);
+        log.info("查询到发布的承诺条数:{}============================", list.size());
+        if (!list.isEmpty()) {
+            list.forEach(e -> {
+                int signCount = sysPromiseSignService.selectSysPromiseSignCount(e.getId());
+                log.info("承诺项目ID:{},承诺项目名称:{},报名人数:{}", e.getId(), e.getExamName(), signCount);
+                e.setWriteNumber(Long.valueOf(signCount));
+                sysStudentPromiseService.updateSysStudentPromise(e);
             });
 
         }
