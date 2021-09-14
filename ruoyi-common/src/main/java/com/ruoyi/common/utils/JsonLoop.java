@@ -151,7 +151,7 @@ public class JsonLoop {
             if (i == 4) {
                 sysSignInfo.setExpected_4(value.toString());
             }
-            if (i == 8) {
+            if (i == 5) {
                 sysSignInfo.setExpected_5(value.toString());
             }
             if (i == 6) {
